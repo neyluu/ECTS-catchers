@@ -11,9 +11,7 @@ class MainMenu(Scene):
     def handleEvent(self, event):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_RIGHT:
-                print("test")
                 self.sceneManager.setCurrentScene(1)
-                print("  " + str(self.sceneManager.getCurrentScene()))
 
 
     def update(self):
