@@ -1,5 +1,7 @@
-import pygame as pg
+from src.CoreEngine import CoreEngine
 
 
 if __name__ == "__main__":
-    print("Hello world!")
+    engine = CoreEngine()
+    engine.run()
+
