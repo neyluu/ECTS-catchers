@@ -14,7 +14,7 @@ class Scene:
         pass
 
 
-    def update(self):
+    def update(self, dt : float):
         pass
 
 

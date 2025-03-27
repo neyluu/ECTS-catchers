@@ -1,0 +1,3 @@
+- zrobić 2 instancje gry działające jednocześnie
+- przełączanie lvli
+- osobne sterowanie

@@ -14,7 +14,7 @@ class EndScene(Scene):
                 self.sceneManager.setCurrentScene(1)
 
 
-    def update(self):
+    def update(self, dt : float):
         pass
 
 

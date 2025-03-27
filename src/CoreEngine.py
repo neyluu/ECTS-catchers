@@ -20,12 +20,12 @@ class CoreEngine:
         self.running = True
         self.screen = pg.display.get_surface()
         self.clock = pg.time.Clock()
-
         self.scenes = [
             MainMenu(),
             GameScene(),
             EndScene()
         ]
+        self.dt = 0
 
 
     def handleEvent(self):
@@ -38,7 +38,7 @@ class CoreEngine:
 
 
     def update(self):
-        self.scenes[self.sceneManager.getCurrentScene()].update()
+        self.scenes[self.sceneManager.getCurrentScene()].update(self.dt)
 
 
     def draw(self):
@@ -51,5 +51,5 @@ class CoreEngine:
             self.handleEvent()
             self.update()
             self.draw()
-            self.clock.tick(Settings.TARGET_FPS)
+            self.dt = self.clock.tick(Settings.TARGET_FPS) * 0.001
 
