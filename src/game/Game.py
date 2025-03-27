@@ -4,11 +4,11 @@ from src.game.Player import Player
 
 class Game:
 
-    def __init__(self, screen : pg.Surface, canvas : pg.Rect):
+    def __init__(self, isLeft : bool, screen : pg.Surface, canvas : pg.Rect):
         self.screen = screen
         self.canvas = canvas
-        print(self.canvas)
-        self.player = Player(self.screen, self.canvas)
+        self.isLeft = isLeft
+        self.player = Player(self.isLeft, self.screen, self.canvas)
         self.backgroundColor = "black"
 
 

@@ -1,9 +1,17 @@
 import pygame as pg
 
+from src.game.PlayerKeymap import PlayerKeymap
+from src.common import Settings
+
 class Player:
-    def __init__(self, screen : pg.Surface, canvas : pg.Rect):
+    def __init__(self, isLeft : bool, screen : pg.Surface, canvas : pg.Rect):
         self.screen = screen
         self.canvas = canvas
+        self.isLeft = isLeft
+        if self.isLeft:
+            self.keymap = Settings.PLAYER_LEFT_KEYMAP
+        else:
+            self.keymap = Settings.PLAYER_RIGHT_KEYMAP
         self.color = "black"
 
         self.dt = 0
@@ -20,22 +28,22 @@ class Player:
 
     def handleEvent(self, event):
         if event.type == pg.KEYDOWN:
-            if event.key == pg.K_w:
+            if event.key == self.keymap.MOVE_UP:
                 self.movingUp = True
-            if event.key == pg.K_d:
+            if event.key == self.keymap.MOVE_RIGHT:
                 self.movingRight = True
-            if event.key == pg.K_s:
+            if event.key == self.keymap.MOVE_DOWN:
                 self.movingDown = True
-            if event.key == pg.K_a:
+            if event.key == self.keymap.MOVE_LEFT:
                 self.movingLeft = True
         if event.type == pg.KEYUP:
-            if event.key == pg.K_w:
+            if event.key == self.keymap.MOVE_UP:
                 self.movingUp = False
-            if event.key == pg.K_d:
+            if event.key == self.keymap.MOVE_RIGHT:
                 self.movingRight = False
-            if event.key == pg.K_s:
+            if event.key == self.keymap.MOVE_DOWN:
                 self.movingDown = False
-            if event.key == pg.K_a:
+            if event.key == self.keymap.MOVE_LEFT:
                 self.movingLeft = False
 
 
