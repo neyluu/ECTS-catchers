@@ -8,15 +8,14 @@ from src.game.levels.Level02 import Level02
 
 class Game:
 
-    def __init__(self, isLeft : bool, screen : pg.Surface, canvas : pg.Rect):
-        self.screen = screen
+    def __init__(self, isLeft : bool, canvas : pg.Rect):
         self.canvas = canvas
         self.isLeft = isLeft
-        self.player = Player(self.isLeft, self.screen, self.canvas)
+        self.player = Player(self.isLeft, self.canvas)
         self.backgroundColor = "black"
         self.levels = [
-            Level01(self.isLeft, self.screen, self.canvas),
-            Level02(self.isLeft, self.screen, self.canvas)
+            Level01(self.isLeft, self.canvas),
+            Level02(self.isLeft, self.canvas)
         ]
         self.currentLevel = 0
 
@@ -37,10 +36,10 @@ class Game:
         self.player.update(dt)
 
 
-    def draw(self):
+    def draw(self, screen : pg.Surface):
         # pg.draw.rect(self.screen, self.backgroundColor, self.canvas)
-        self.levels[self.currentLevel].draw()
-        self.player.draw()
+        self.levels[self.currentLevel].draw(screen)
+        self.player.draw(screen)
 
 
     def setBackgroundColor(self, color : pg.Color):

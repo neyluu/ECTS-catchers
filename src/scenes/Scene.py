@@ -6,7 +6,6 @@ from src.SceneManager import SceneManager
 class Scene:
     def __init__(self):
         self.sceneManager = SceneManager()
-        self.screen = pg.display.get_surface()
         super().__init__()
 
 
@@ -18,5 +17,5 @@ class Scene:
         pass
 
 
-    def draw(self):
+    def draw(self, screen : pg.Surface):
         pass

@@ -1,3 +1,5 @@
+from typing import SupportsAbs
+
 import pygame as pg
 
 from src.scenes.Scene import Scene
@@ -18,6 +20,6 @@ class EndScene(Scene):
         pass
 
 
-    def draw(self):
-        self.screen.fill("blue")
+    def draw(self, screen : pg.Surface):
+        screen.fill("blue")
         pass

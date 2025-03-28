@@ -18,6 +18,6 @@ class MainMenu(Scene):
         pass
 
 
-    def draw(self):
-        self.screen.fill("purple")
+    def draw(self, screen : pg.Surface):
+        screen.fill("purple")
         pass

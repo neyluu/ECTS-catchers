@@ -9,8 +9,8 @@ class GameScene(Scene):
 
     def __init__(self):
         super().__init__()
-        self.leftGame  = Game(True, self.screen, pg.Rect(0, 0, Settings.SCREEN_WIDTH // 2, Settings.SCREEN_HEIGHT))
-        self.rightGame = Game(False, self.screen, pg.Rect(Settings.SCREEN_WIDTH // 2, 0, Settings.SCREEN_WIDTH // 2, Settings.SCREEN_HEIGHT))
+        self.leftGame  = Game(True, pg.Rect(0, 0, Settings.SCREEN_WIDTH // 2, Settings.SCREEN_HEIGHT))
+        self.rightGame = Game(False, pg.Rect(Settings.SCREEN_WIDTH // 2, 0, Settings.SCREEN_WIDTH // 2, Settings.SCREEN_HEIGHT))
 
         self.leftGame.setBackgroundColor(pg.Color(255, 0, 0, 0))
         self.rightGame.setBackgroundColor(pg.Color(0, 0, 255, 0))
@@ -35,8 +35,8 @@ class GameScene(Scene):
         self.rightGame.update(dt)
 
 
-    def draw(self):
-        self.screen.fill("red")
+    def draw(self, screen : pg.Surface):
+        screen.fill("red")
 
-        self.leftGame.draw()
-        self.rightGame.draw()
+        self.leftGame.draw(screen)
+        self.rightGame.draw(screen)

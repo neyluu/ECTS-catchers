@@ -1,4 +1,3 @@
-import sys
 import pygame as pg
 
 from src.common import Settings
@@ -8,8 +7,21 @@ from src.scenes.GameScene import GameScene
 from src.scenes.EndScene import EndScene
 
 pg.init()
+
+BASE_RESOLUTION = (1920, 1080)
+
 pg.display.set_caption(Settings.TITLE)
-pg.display.set_mode((Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT))
+# pg.display.set_mode((Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT))
+
+pg.display.set_mode(BASE_RESOLUTION, pg.FULLSCREEN)
+screenWidth = pg.display.Info().current_w
+screenHeight = pg.display.Info().current_h
+
+# Final screen to draw content on
+screen = pg.display.set_mode((screenWidth, screenHeight), pg.FULLSCREEN)
+
+# Temporary screen to draw content to be later scaled
+surface = pg.Surface(BASE_RESOLUTION)
 
 
 class CoreEngine:
@@ -18,7 +30,7 @@ class CoreEngine:
 
         self.sceneManager = SceneManager()
         self.running = True
-        self.screen = pg.display.get_surface()
+        self.screen = surface
         self.clock = pg.time.Clock()
         self.scenes = [
             MainMenu(),
@@ -42,8 +54,12 @@ class CoreEngine:
 
 
     def draw(self):
-        self.scenes[self.sceneManager.getCurrentScene()].draw()
-        pg.display.flip()
+        self.scenes[self.sceneManager.getCurrentScene()].draw(self.screen)
+
+        scaledScreen = pg.transform.scale(self.screen, (screenWidth, screenHeight))
+        screen.blit(scaledScreen, (0, 0))
+        pg.display.update()
+        # pg.display.flip()
 
 
     def run(self):
@@ -52,4 +68,3 @@ class CoreEngine:
             self.update()
             self.draw()
             self.dt = self.clock.tick(Settings.TARGET_FPS) * 0.001
-

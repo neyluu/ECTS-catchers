@@ -1,9 +1,8 @@
 import pygame as pg
 
 class Level:
-    def __init__(self, isLeft : bool, screen: pg.Surface, canvas: pg.Rect):
+    def __init__(self, isLeft : bool, canvas: pg.Rect):
         self.isLeft = isLeft
-        self.screen = screen
         self.canvas = canvas
         self.color = "black"
 
@@ -16,5 +15,5 @@ class Level:
         pass
 
 
-    def draw(self):
-        pg.draw.rect(self.screen, self.color, self.canvas)
+    def draw(self, screen):
+        pg.draw.rect(screen, self.color, self.canvas)

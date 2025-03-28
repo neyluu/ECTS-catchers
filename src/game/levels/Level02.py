@@ -3,8 +3,8 @@ import pygame as pg
 from src.game.levels.Level import Level
 
 class Level02(Level):
-    def __init__(self, isLeft : bool, screen: pg.Surface, canvas: pg.Rect):
-        super().__init__(isLeft, screen, canvas)
+    def __init__(self, isLeft : bool, canvas: pg.Rect):
+        super().__init__(isLeft, canvas)
         self.color = "yellow"
 
 
@@ -16,6 +16,6 @@ class Level02(Level):
         pass
 
 
-    def draw(self):
-        super().draw()
+    def draw(self, screen : pg.Surface):
+        super().draw(screen)
 

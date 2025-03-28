@@ -4,8 +4,7 @@ from src.game.PlayerKeymap import PlayerKeymap
 from src.common import Settings
 
 class Player:
-    def __init__(self, isLeft : bool, screen : pg.Surface, canvas : pg.Rect):
-        self.screen = screen
+    def __init__(self, isLeft : bool, canvas : pg.Rect):
         self.canvas = canvas
         self.isLeft = isLeft
         if self.isLeft:
@@ -52,8 +51,8 @@ class Player:
         self.move()
 
 
-    def draw(self):
-        pg.draw.rect(self.screen, self.color, (self.canvas.left + self.posX, self.canvas.top + self.posY, 32, 32))
+    def draw(self, screen : pg.Surface):
+        pg.draw.rect(screen, self.color, (self.canvas.left + self.posX, self.canvas.top + self.posY, 32, 32))
 
 
     def move(self):
