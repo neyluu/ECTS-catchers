@@ -5,6 +5,7 @@ class Level:
         self.isLeft = isLeft
         self.canvas = canvas
         self.color = "black"
+        print(self.canvas)
 
 
     def handleEvents(self, event):

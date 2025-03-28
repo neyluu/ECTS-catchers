@@ -8,7 +8,7 @@ from src.scenes.EndScene import EndScene
 
 pg.init()
 
-BASE_RESOLUTION = (1920, 1080)
+BASE_RESOLUTION = (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT)
 
 pg.display.set_caption(Settings.TITLE)
 # pg.display.set_mode((Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT))
@@ -17,6 +17,7 @@ pg.display.set_mode(BASE_RESOLUTION, pg.FULLSCREEN)
 screenWidth = pg.display.Info().current_w
 screenHeight = pg.display.Info().current_h
 
+print(screenWidth, screenHeight)
 # Final screen to draw content on
 screen = pg.display.set_mode((screenWidth, screenHeight), pg.FULLSCREEN)
 
@@ -24,7 +25,7 @@ screen = pg.display.set_mode((screenWidth, screenHeight), pg.FULLSCREEN)
 surface = pg.Surface(BASE_RESOLUTION)
 
 
-class CoreEngine:
+class CoreEngine():
     def __init__(self):
         super().__init__()
 
