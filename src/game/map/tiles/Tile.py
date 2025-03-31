@@ -1,9 +1,10 @@
 import pygame as pg
 
 class Tile:
-    def __init__(self):
-        self.sizeX = 32
-        self.sizeY = 32
+    size = 32
+
+    def __init__(self, leftTop : pg.Vector2):
+        self.leftTop = leftTop
         self.color = "red"
         self.isCollision = False
 
@@ -17,5 +18,5 @@ class Tile:
 
 
     def draw(self, screen: pg.Surface):
-        pass
+        pg.draw.rect(screen, self.color, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
 

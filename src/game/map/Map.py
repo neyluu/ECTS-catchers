@@ -7,17 +7,13 @@ class Map:
         self.canvas = canvas
         self.sizeX = 29
         self.sizeY = 33
-        self.tileMap = [[Tile() for _ in range(self.sizeX)] for _ in range(self.sizeY)]
-        self.offsetX = (canvas.width - self.sizeX * self.tileMap[0][0].sizeX) // 2
-        self.offsetY = (canvas.height - self.sizeY * self.tileMap[0][0].sizeY) // 2
+        self.offsetX = (canvas.width - self.sizeX * Tile.size) // 2
+        self.offsetY = (canvas.height - self.sizeY * Tile.size) // 2
 
-        # TMP
-        for i in range(self.sizeX):
-            self.tileMap[0][i].isCollision = True
-            self.tileMap[self.sizeY - 1][i].isCollision = True
-        for i in range(self.sizeY):
-            self.tileMap[i][0].isCollision = True
-            self.tileMap[i][self.sizeX - 1].isCollision = True
+        self.tileMap = []
+
+        self.initTileMap()
+
 
 
     def handleEvent(self, event):
@@ -32,12 +28,43 @@ class Map:
         for i in range(self.sizeY):
             for j in range(self.sizeX):
                 tile = self.tileMap[i][j]
+                tile.draw(screen)
 
-                color = (22, 22, 22) if (i + j) % 2 == 0 else (33, 33, 33)
-                if tile.isCollision:
-                    color = 'red'
+                # color = (22, 22, 22) if (i + j) % 2 == 0 else (33, 33, 33)
+                # if tile.isCollision:
+                #     color = 'red'
+                #
+                # left = self.canvas.left + (j * Tile.size) + self.offsetX
+                # top = self.canvas.top + (i * Tile.size) + self.offsetY
+                #
+                # pg.draw.rect(screen, color, (left, top, Tile.size, Tile.size))
 
-                left = self.canvas.left + (j * tile.sizeX) + self.offsetX
-                top = self.canvas.top + (i * tile.sizeY) + self.offsetY
 
-                pg.draw.rect(screen, color, (left, top, tile.sizeX, tile.sizeY))
+    def initTileMap(self):
+        for i in range(self.sizeY):
+            innerList = []
+            for j in range(self.sizeX):
+                left = self.canvas.left + (j * Tile.size) + self.offsetX
+                top = self.canvas.top + (i * Tile.size) + self.offsetY
+                leftTop = pg.Vector2(left, top)
+                innerList.append(Tile(leftTop))
+            self.tileMap.append(innerList)
+
+        # TODO TMP collisions
+        for i in range(self.sizeX):
+            self.tileMap[0][i].isCollision = True
+            self.tileMap[self.sizeY - 1][i].isCollision = True
+        for i in range(self.sizeY):
+            self.tileMap[i][0].isCollision = True
+            self.tileMap[i][self.sizeX - 1].isCollision = True
+
+        for i in range(self.sizeY):
+            for j in range(self.sizeX):
+                newColor = (22, 22, 22) if (i + j) % 2 == 0 else (33, 33, 33)
+                if self.tileMap[i][j].isCollision:
+                    newColor = (
+                        min(newColor[0] + 100, 255),
+                        min(newColor[1], 255),
+                        min(newColor[2], 255)
+                    )
+                self.tileMap[i][j].color = newColor
