@@ -31,10 +31,13 @@ class Map:
     def draw(self, screen: pg.Surface):
         for i in range(self.sizeY):
             for j in range(self.sizeX):
-                color = (22, 22, 22) if (i + j) % 2 == 0 else (33, 33, 33)
                 tile = self.tileMap[i][j]
+
+                color = (22, 22, 22) if (i + j) % 2 == 0 else (33, 33, 33)
                 if tile.isCollision:
                     color = 'red'
+
                 left = self.canvas.left + (j * tile.sizeX) + self.offsetX
                 top = self.canvas.top + (i * tile.sizeY) + self.offsetY
+
                 pg.draw.rect(screen, color, (left, top, tile.sizeX, tile.sizeY))

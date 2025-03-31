@@ -15,11 +15,11 @@ class Player:
 
         self.dt = 0
 
-        self.speed = 300
+        self.speed = 500
 
         # TODO later rebuild to pos in board grid
-        self.posX : int = 0
-        self.posY : int = 0
+        self.posX : int = 100
+        self.posY : int = 100
 
         self.movingUp    : bool = False
         self.movingRight : bool = False
@@ -60,9 +60,20 @@ class Player:
     def move(self):
         if self.movingUp:
             self.posY -= self.speed * self.dt
+            if self.posY < self.canvas.top:
+                self.posY = 0
+
         if self.movingRight:
             self.posX += self.speed * self.dt
+            if self.posX > self.canvas.width - 32:
+                self.posX = self.canvas.width - 32
+
         if self.movingDown:
             self.posY += self.speed * self.dt
+            if self.posY > self.canvas.top + self.canvas.height - 48:
+                self.posY = self.canvas.top + self.canvas.height - 48
+
         if self.movingLeft:
             self.posX -= self.speed * self.dt
+            if self.posX < 0:
+                self.posX = 0
