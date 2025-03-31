@@ -43,8 +43,9 @@ class CoreEngine():
 
     def handleEvent(self):
         for event in pg.event.get():
-
             if event.type == pg.QUIT:
+                self.running = False
+            if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                 self.running = False
 
             self.scenes[self.sceneManager.getCurrentScene()].handleEvent(event)
