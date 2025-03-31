@@ -16,8 +16,8 @@ class GameScene(Scene):
         self.leftGame.setBackgroundColor(pg.Color(255, 0, 0, 0))
         self.rightGame.setBackgroundColor(pg.Color(0, 0, 255, 0))
 
-        self.leftGame.player.color = pg.Color(0, 0, 0, 0)
-        self.rightGame.player.color = pg.Color(255, 255, 255, 0)
+        self.leftGame.player.color = pg.Color(255, 255, 0, 0)
+        self.rightGame.player.color = pg.Color(0, 255, 255, 0)
 
 
     def handleEvent(self, event):

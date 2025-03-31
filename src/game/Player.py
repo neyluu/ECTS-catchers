@@ -15,6 +15,8 @@ class Player:
 
         self.dt = 0
 
+        self.speed = 300
+
         # TODO later rebuild to pos in board grid
         self.posX : int = 0
         self.posY : int = 0
@@ -52,15 +54,15 @@ class Player:
 
 
     def draw(self, screen : pg.Surface):
-        pg.draw.rect(screen, self.color, (self.canvas.left + self.posX, self.canvas.top + self.posY, 32, 32))
+        pg.draw.rect(screen, self.color, (self.canvas.left + self.posX, self.canvas.top + self.posY, 32, 48))
 
 
     def move(self):
         if self.movingUp:
-            self.posY -= 100 * self.dt
+            self.posY -= self.speed * self.dt
         if self.movingRight:
-            self.posX += 100 * self.dt
+            self.posX += self.speed * self.dt
         if self.movingDown:
-            self.posY += 100 * self.dt
+            self.posY += self.speed * self.dt
         if self.movingLeft:
-            self.posX -= 100 * self.dt
+            self.posX -= self.speed * self.dt
