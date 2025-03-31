@@ -9,11 +9,11 @@ class Level02(Level):
 
 
     def handleEvents(self, event):
-        pass
+        super().handleEvents(event)
 
 
     def update(self, dt: float):
-        pass
+        super().update(dt)
 
 
     def draw(self, screen : pg.Surface):

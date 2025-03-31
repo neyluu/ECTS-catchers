@@ -1,20 +1,24 @@
 import pygame as pg
 
+from src.game.map.Map import Map
+
 class Level:
     def __init__(self, isLeft : bool, canvas: pg.Rect):
         self.isLeft = isLeft
         self.canvas = canvas
         self.color = "black"
+        self.map = Map(self.canvas)
         print(self.canvas)
 
 
     def handleEvents(self, event):
-        pass
+        self.map.handleEvent(event)
 
 
     def update(self, dt : float):
-        pass
+        self.map.update(dt)
 
 
     def draw(self, screen):
         pg.draw.rect(screen, self.color, self.canvas)
+        self.map.draw(screen)
