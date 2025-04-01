@@ -15,11 +15,11 @@ class Player:
         self.color = "black"
 
         self.dt : float = 0
-        self.speed : float = 100
+        self.speed : float = 200
         self.velocityX : float = 0
         self.velocityY : float = 0
         self.jumpForce : float = 5
-        self.gravityForce : float = 10
+        self.gravityForce : float = 15
         self.maxFallingSpeed : int = 10
         self.inAir : bool = False
         self.isJumping = True
@@ -53,9 +53,6 @@ class Player:
             if event.key == self.keymap.MOVE_LEFT:
                 self.movingLeft = True
 
-            # if event.key == self.keymap.MOVE_DOWN:
-            #     self.movingDown = True
-
         if event.type == pg.KEYUP:
             if event.key == self.keymap.MOVE_UP:
                 self.movingUp = False
@@ -65,9 +62,6 @@ class Player:
 
             if event.key == self.keymap.MOVE_LEFT:
                 self.movingLeft = False
-
-            # if event.key == self.keymap.MOVE_DOWN:
-            #     self.movingDown = False
 
 
     def update(self, dt : float):
@@ -103,11 +97,13 @@ class Player:
             self.velocityY = self.maxFallingSpeed
 
         self.dy += self.velocityY
+        self.newPosY = self.posY + self.dy
 
 
     def updatePosition(self):
         self.posX += self.dx
         self.posY += self.dy
+
 
     def checkCollisions(self):
         for i in range(self.tileMap.sizeY):
@@ -116,7 +112,7 @@ class Player:
                 if not tile.isCollision:
                     continue
 
-                playerCol = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.posY, 32, 48)
+                playerCol = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.newPosY, 32, 48)
                 tileCol = pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
 
                 if playerCol.colliderect(tileCol):
@@ -124,14 +120,14 @@ class Player:
                         self.dx = 0
 
                     # Falling down
-                    if self.dy > 0:
+                    if self.velocityY > 0.0:
                         self.posY = tileCol.top - playerCol.height
-                        self.dy = 0
+                        self.dy = 0.0
                         self.velocityY = 0
                         self.isJumping = False
 
                     # Jumping
-                    elif self.dy < 0:
+                    elif self.velocityY < 0.0:
                         self.posY = tileCol.bottom
-                        self.dy = 0
+                        self.dy = 0.0
                         self.velocityY = 0
