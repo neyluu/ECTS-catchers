@@ -14,19 +14,31 @@ class Player:
         self.keymap = Settings.PLAYER_LEFT_KEYMAP if isLeft else Settings.PLAYER_RIGHT_KEYMAP
         self.color = "black"
 
-        self.dt = 0
-        self.speed = 200
+        self.dt : float = 0
+        self.speed : float = 100
+        self.velocityX : float = 0
+        self.velocityY : float = 0
+        self.jumpForce : float = 5
+        self.gravityForce : float = 10
+        self.maxFallingSpeed : int = 10
+        self.inAir : bool = False
+        self.isJumping = True
+
+        self.dx = 0
+        self.dy = 0
 
         # TODO later rebuild to pos in board grid
         self.posX : int = 100
         self.posY : int = 100
-        self.newPosX : int = self.posX
-        self.newPosY : int = self.posY
+        self.newPosX : int = -1
+        self.newPosY : int = -1
 
         self.movingUp    : bool = False
         self.movingRight : bool = False
-        self.movingDown  : bool = False
+        self.movingDown  : bool = True
         self.movingLeft  : bool = False
+
+        self.blocked = False
 
 
 
@@ -34,29 +46,39 @@ class Player:
         if event.type == pg.KEYDOWN:
             if event.key == self.keymap.MOVE_UP:
                 self.movingUp = True
+
             if event.key == self.keymap.MOVE_RIGHT:
                 self.movingRight = True
-            if event.key == self.keymap.MOVE_DOWN:
-                self.movingDown = True
+
             if event.key == self.keymap.MOVE_LEFT:
                 self.movingLeft = True
+
+            # if event.key == self.keymap.MOVE_DOWN:
+            #     self.movingDown = True
+
         if event.type == pg.KEYUP:
             if event.key == self.keymap.MOVE_UP:
                 self.movingUp = False
+
             if event.key == self.keymap.MOVE_RIGHT:
                 self.movingRight = False
-            if event.key == self.keymap.MOVE_DOWN:
-                self.movingDown = False
+
             if event.key == self.keymap.MOVE_LEFT:
                 self.movingLeft = False
+
+            # if event.key == self.keymap.MOVE_DOWN:
+            #     self.movingDown = False
 
 
     def update(self, dt : float):
         self.dt = dt
+
+        self.dx = 0
+        self.dy = 0
+
         self.move()
         self.checkCollisions()
-        print(self.isLeft, self.posX, self.posY)
-
+        self.updatePosition()
 
 
     def draw(self, screen : pg.Surface):
@@ -64,18 +86,28 @@ class Player:
 
 
     def move(self):
-        if self.movingUp:
-            self.posY = self.posY - self.speed * self.dt
+        if self.movingUp and not self.isJumping:
+            self.velocityY = -self.jumpForce
+            self.isJumping = True
+
+        self.movingUp = False
 
         if self.movingRight:
-            self.posX = self.posX + self.speed * self.dt
-
-        if self.movingDown:
-            self.posY = self.posY + self.speed * self.dt
+            self.dx += self.speed * self.dt
 
         if self.movingLeft:
-            self.posX = self.posX - self.speed * self.dt
+            self.dx -= self.speed * self.dt
 
+        self.velocityY += self.gravityForce * self.dt
+        if self.velocityY > self.maxFallingSpeed:
+            self.velocityY = self.maxFallingSpeed
+
+        self.dy += self.velocityY
+
+
+    def updatePosition(self):
+        self.posX += self.dx
+        self.posY += self.dy
 
     def checkCollisions(self):
         for i in range(self.tileMap.sizeY):
@@ -89,14 +121,17 @@ class Player:
 
                 if playerCol.colliderect(tileCol):
                     if self.movingLeft or self.movingRight:
-                        if playerCol.left > tileCol.left:
-                            self.posX = tileCol.left + Tile.size - self.canvas.left
-                        if playerCol.left < tileCol.left:
-                            self.posX = tileCol.left - Tile.size - self.canvas.left
-                    if self.movingUp or self.movingDown:
-                        if playerCol.top < tileCol.top:
-                            self.posY = tileCol.top - 48
-                        if playerCol.top > tileCol.top:
-                            self.posY = tileCol.top + Tile.size
+                        self.dx = 0
 
+                    # Falling down
+                    if self.dy > 0:
+                        self.posY = tileCol.top - playerCol.height
+                        self.dy = 0
+                        self.velocityY = 0
+                        self.isJumping = False
 
+                    # Jumping
+                    elif self.dy < 0:
+                        self.posY = tileCol.bottom
+                        self.dy = 0
+                        self.velocityY = 0

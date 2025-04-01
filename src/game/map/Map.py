@@ -65,6 +65,16 @@ class Map:
         self.tileMap[12][13].isCollision = True
         self.tileMap[13][14].isCollision = True
 
+        self.tileMap[7][1].isCollision = True
+        self.tileMap[8][1].isCollision = True
+        self.tileMap[9][1].isCollision = True
+        self.tileMap[10][2].isCollision = True
+        self.tileMap[10][3].isCollision = True
+        self.tileMap[10][4].isCollision = True
+        self.tileMap[10][5].isCollision = True
+        self.tileMap[10][6].isCollision = True
+        self.tileMap[10][7].isCollision = True
+
 
         for i in range(self.sizeY):
             for j in range(self.sizeX):
