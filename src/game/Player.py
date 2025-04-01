@@ -18,9 +18,9 @@ class Player:
         self.speed : float = 200
         self.velocityX : float = 0
         self.velocityY : float = 0
-        self.jumpForce : float = 250
-        self.gravityForce : float = 600
-        self.maxFallingSpeed : int = 500
+        self.jumpForce : float = 500
+        self.gravityForce : float = 2000
+        self.maxFallingSpeed : int = 1000
         self.inAir : bool = False
         self.isJumping = True
 
@@ -100,7 +100,6 @@ class Player:
         self.posX += self.dx
         self.posY += self.dy
 
-
     def checkCollisions(self):
         for i in range(self.tileMap.sizeY):
             for j in range(self.tileMap.sizeX):
@@ -108,22 +107,25 @@ class Player:
                 if not tile.isCollision:
                     continue
 
-                playerCol = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.newPosY, 32, 48)
+                playerColX = pg.Rect(self.canvas.left + self.posX + self.dx, self.canvas.top + self.posY, 32, 48)
                 tileCol = pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
 
-                if playerCol.colliderect(tileCol):
-                    # Falling down
+                if playerColX.colliderect(tileCol):
+                    if self.dx > 0:
+                        self.posX = tileCol.left - playerColX.width
+                    elif self.dx < 0:
+                        self.posX = tileCol.right
+                    self.dx = 0
+
+                playerColY = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.newPosY, 32, 48)
+                if playerColY.colliderect(tileCol):
                     if self.velocityY > 0.0:
-                        self.posY = tileCol.top - playerCol.height
+                        self.posY = tileCol.top - playerColY.height
                         self.dy = 0.0
                         self.velocityY = 0
                         self.isJumping = False
 
-                    # Jumping
                     elif self.velocityY < 0.0:
                         self.posY = tileCol.bottom
                         self.dy = 0.0
                         self.velocityY = 0
-
-                    if abs(self.velocityX) > 0:
-                        self.dx = 0
