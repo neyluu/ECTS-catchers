@@ -18,16 +18,15 @@ class Player:
         self.speed : float = 200
         self.velocityX : float = 0
         self.velocityY : float = 0
-        self.jumpForce : float = 5
-        self.gravityForce : float = 15
-        self.maxFallingSpeed : int = 10
+        self.jumpForce : float = 250
+        self.gravityForce : float = 600
+        self.maxFallingSpeed : int = 500
         self.inAir : bool = False
         self.isJumping = True
 
         self.dx = 0
         self.dy = 0
 
-        # TODO later rebuild to pos in board grid
         self.posX : int = 100
         self.posY : int = 100
         self.newPosX : int = -1
@@ -37,9 +36,6 @@ class Player:
         self.movingRight : bool = False
         self.movingDown  : bool = True
         self.movingLeft  : bool = False
-
-        self.blocked = False
-
 
 
     def handleEvent(self, event):
@@ -96,7 +92,7 @@ class Player:
         if self.velocityY > self.maxFallingSpeed:
             self.velocityY = self.maxFallingSpeed
 
-        self.dy += self.velocityY
+        self.dy += self.velocityY * self.dt
         self.newPosY = self.posY + self.dy
 
 
@@ -116,9 +112,6 @@ class Player:
                 tileCol = pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
 
                 if playerCol.colliderect(tileCol):
-                    if self.movingLeft or self.movingRight:
-                        self.dx = 0
-
                     # Falling down
                     if self.velocityY > 0.0:
                         self.posY = tileCol.top - playerCol.height
@@ -131,3 +124,6 @@ class Player:
                         self.posY = tileCol.bottom
                         self.dy = 0.0
                         self.velocityY = 0
+
+                    if abs(self.velocityX) > 0:
+                        self.dx = 0
