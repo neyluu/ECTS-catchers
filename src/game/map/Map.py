@@ -58,6 +58,14 @@ class Map:
             self.tileMap[i][0].isCollision = True
             self.tileMap[i][self.sizeX - 1].isCollision = True
 
+        self.tileMap[10][10].isCollision = True
+        self.tileMap[11][11].isCollision = True
+        self.tileMap[10][11].isCollision = True
+        self.tileMap[11][10].isCollision = True
+        self.tileMap[12][13].isCollision = True
+        self.tileMap[13][14].isCollision = True
+
+
         for i in range(self.sizeY):
             for j in range(self.sizeX):
                 newColor = (22, 22, 22) if (i + j) % 2 == 0 else (33, 33, 33)

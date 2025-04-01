@@ -11,13 +11,13 @@ class Game:
     def __init__(self, isLeft : bool, canvas : pg.Rect):
         self.canvas = canvas
         self.isLeft = isLeft
-        self.player = Player(self.isLeft, self.canvas)
         self.backgroundColor = "black"
         self.levels = [
             Level01(self.isLeft, self.canvas),
             Level02(self.isLeft, self.canvas)
         ]
         self.currentLevel = 0
+        self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
 
 
     def handleEvent(self, event):
