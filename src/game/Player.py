@@ -111,10 +111,12 @@ class Player:
                 tileCol = pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
 
                 if playerColX.colliderect(tileCol):
+                    print("xd: ", self.posX, self.posY)
                     if self.dx > 0:
-                        self.posX = tileCol.left - playerColX.width
+                        self.posX = tileCol.left - playerColX.width - self.canvas.left
                     elif self.dx < 0:
-                        self.posX = tileCol.right
+                        self.posX = tileCol.right - self.canvas.left
+                    print(self.posX, self.posY)
                     self.dx = 0
 
                 playerColY = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.newPosY, 32, 48)
