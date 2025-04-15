@@ -1,9 +1,9 @@
 import pygame as pg
 
-from src.game.PlayerKeymap import PlayerKeymap
+from src.common import Settings
 from src.game.map.Map import Map
 from src.game.map.tiles.Tile import Tile
-from src.common import Settings
+
 
 class Player:
     def __init__(self, isLeft : bool, canvas : pg.Rect, tileMap : Map):
@@ -27,8 +27,8 @@ class Player:
         self.dx = 0
         self.dy = 0
 
-        self.posX : int = 100
-        self.posY : int = 100
+        self.posX : int = 630
+        self.posY : int = 950
         self.newPosX : int = -1
         self.newPosY : int = -1
 

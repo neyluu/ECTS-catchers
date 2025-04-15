@@ -62,22 +62,93 @@ class Map:
         self.tileMap[11][11].isCollision = True
         self.tileMap[10][11].isCollision = True
         self.tileMap[11][10].isCollision = True
+        self.tileMap[10][11].isCollision = True
+
+
         self.tileMap[12][13].isCollision = True
         self.tileMap[13][14].isCollision = True
         self.tileMap[14][15].isCollision = True
 
+        self.tileMap[16][15].isCollision = True
+        self.tileMap[16][16].isCollision = True
+        self.tileMap[16][17].isCollision = True
+
+        self.tileMap[16 + 2][15 + 3].isCollision = True
+        self.tileMap[16 + 2][16 + 3].isCollision = True
+        self.tileMap[16 + 2][17 + 3].isCollision = True
+
+        self.tileMap[16 + 5][15 + 5].isCollision = True
+        self.tileMap[16 + 5][16 + 5].isCollision = True
+        self.tileMap[16 + 5][17 + 5].isCollision = True
+        self.tileMap[16 + 5][14 + 5].isCollision = True
+        self.tileMap[16 + 5][13 + 5].isCollision = True
+        self.tileMap[16 + 5][12 + 5].isCollision = True
+        self.tileMap[16 + 5][11 + 5].isCollision = True
+        self.tileMap[15 + 5][17 + 6].isCollision = True
+
+        self.tileMap[16 + 4][10 + 3].isCollision = True
+        self.tileMap[16 + 4][11 + 3].isCollision = True
+        self.tileMap[16 + 4][12 + 3].isCollision = True
+
+        self.tileMap[16 + 4][12 - 4].isCollision = True
+        self.tileMap[16 + 4][11 - 4].isCollision = True
+        self.tileMap[16 + 4][10 - 4].isCollision = True
+
+
         self.tileMap[7][1].isCollision = True
         self.tileMap[8][1].isCollision = True
         self.tileMap[9][1].isCollision = True
+
         self.tileMap[10][2].isCollision = True
         self.tileMap[10][3].isCollision = True
         self.tileMap[10][4].isCollision = True
         self.tileMap[10][5].isCollision = True
         self.tileMap[10][6].isCollision = True
         self.tileMap[10][7].isCollision = True
+
         self.tileMap[7][5].isCollision = True
         self.tileMap[7][6].isCollision = True
-        self.tileMap[7][7].isCollision = True
+        # self.tileMap[7][7].isCollision = True
+
+        self.tileMap[31][18].isCollision = True
+        self.tileMap[30][17].isCollision = True
+        self.tileMap[30][16].isCollision = True
+        self.tileMap[29][15].isCollision = True
+        self.tileMap[29][14].isCollision = True
+        self.tileMap[29][13].isCollision = True
+
+        self.tileMap[28][12].isCollision = True
+        self.tileMap[27][11].isCollision = True
+
+        self.tileMap[26][10].isCollision = True
+        self.tileMap[25][10].isCollision = True
+        self.tileMap[24][10].isCollision = True
+        self.tileMap[23][11].isCollision = True
+        self.tileMap[22][12].isCollision = True
+        self.tileMap[22][13].isCollision = True
+        self.tileMap[22][14].isCollision = True
+        self.tileMap[22][15].isCollision = True
+
+        self.tileMap[25][22].isCollision = True
+        self.tileMap[25][23].isCollision = True
+
+        self.tileMap[23][25].isCollision = True
+        self.tileMap[23][26].isCollision = True
+
+        self.tileMap[21][27].isCollision = True
+
+        # self.tileMap[26][14].isCollision = True
+        self.tileMap[26][15].isCollision = True
+        self.tileMap[26][16].isCollision = True
+        self.tileMap[27][17].isCollision = True
+
+        self.tileMap[31][21].isCollision = True
+        self.tileMap[31][22].isCollision = True
+        self.tileMap[30][21].isCollision = True
+        self.tileMap[29][21].isCollision = True
+        self.tileMap[28][20].isCollision = True
+        self.tileMap[27][19].isCollision = True
+        self.tileMap[27 ][18].isCollision = True
 
 
         for i in range(self.sizeY):
