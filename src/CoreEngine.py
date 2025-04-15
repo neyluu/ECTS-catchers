@@ -70,3 +70,5 @@ class CoreEngine():
             self.update()
             self.draw()
             self.dt = self.clock.tick(Settings.TARGET_FPS) * 0.001
+            self.dt = min(self.dt, 0.05)
+

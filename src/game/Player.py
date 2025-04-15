@@ -18,7 +18,7 @@ class Player:
         self.speed : float = 200
         self.velocityX : float = 0
         self.velocityY : float = 0
-        self.jumpForce : float = 500
+        self.jumpForce : float = 575
         self.gravityForce : float = 2000
         self.maxFallingSpeed : int = 1000
         self.inAir : bool = False
@@ -99,6 +99,7 @@ class Player:
     def updatePosition(self):
         self.posX += self.dx
         self.posY += self.dy
+
 
     def checkCollisions(self):
         for i in range(self.tileMap.sizeY):
