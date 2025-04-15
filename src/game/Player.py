@@ -21,16 +21,22 @@ class Player:
         self.jumpForce : float = 575
         self.gravityForce : float = 2000
         self.maxFallingSpeed : int = 1000
+        self.jumpBufferingLevel : int = 32
+        self.isJumpInBuffer : bool = False
+        self.shouldBufferedJump : bool = False
         self.inAir : bool = False
         self.isJumping = True
 
         self.dx = 0
         self.dy = 0
 
+        # top-left
         self.posX : int = 630
         self.posY : int = 950
         self.newPosX : int = -1
         self.newPosY : int = -1
+
+        self.jumpPositionY = self.posY + 48
 
         self.movingUp    : bool = False
         self.movingRight : bool = False
@@ -66,6 +72,10 @@ class Player:
         self.dx = 0
         self.dy = 0
 
+        if self.shouldBufferedJump:
+            self.shouldBufferedJump = False
+            self.jump()
+
         self.move()
         self.checkCollisions()
         self.updatePosition()
@@ -76,9 +86,13 @@ class Player:
 
 
     def move(self):
-        if self.movingUp and not self.isJumping:
-            self.velocityY = -self.jumpForce
-            self.isJumping = True
+        if self.movingUp:
+            if not self.isJumping:
+                self.jump()
+            else:
+                if self.velocityY > 0 and 0 < (self.jumpPositionY - self.posY) < self.jumpBufferingLevel and not self.isJumpInBuffer:
+                    self.isJumpInBuffer = True
+                    print("jump buffer")
 
         self.movingUp = False
 
@@ -94,6 +108,12 @@ class Player:
 
         self.dy += self.velocityY * self.dt
         self.newPosY = self.posY + self.dy
+
+
+    def jump(self):
+        self.jumpPositionY = self.posY
+        self.velocityY = -self.jumpForce
+        self.isJumping = True
 
 
     def updatePosition(self):
@@ -112,12 +132,10 @@ class Player:
                 tileCol = pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
 
                 if playerColX.colliderect(tileCol):
-                    print("xd: ", self.posX, self.posY)
                     if self.dx > 0:
                         self.posX = tileCol.left - playerColX.width - self.canvas.left
                     elif self.dx < 0:
                         self.posX = tileCol.right - self.canvas.left
-                    print(self.posX, self.posY)
                     self.dx = 0
 
                 playerColY = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.newPosY, 32, 48)
@@ -127,6 +145,9 @@ class Player:
                         self.dy = 0.0
                         self.velocityY = 0
                         self.isJumping = False
+                        if self.isJumpInBuffer:
+                            self.isJumpInBuffer = False
+                            self.shouldBufferedJump = True
 
                     elif self.velocityY < 0.0:
                         self.posY = tileCol.bottom
