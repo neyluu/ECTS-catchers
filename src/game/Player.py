@@ -93,7 +93,6 @@ class Player:
             else:
                 if self.velocityY > 0 and 0 < (self.jumpPositionY - self.posY) < self.jumpBufferingLevel and not self.isJumpInBuffer:
                     self.isJumpInBuffer = True
-                    print("jump buffer")
 
         self.movingUp = False
 
@@ -132,25 +131,33 @@ class Player:
                 playerColX = pg.Rect(self.canvas.left + self.posX + self.dx, self.canvas.top + self.posY, 32, 48)
                 tileCol = pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
 
-                if playerColX.colliderect(tileCol):
-                    if self.dx > 0:
-                        self.posX = tileCol.left - playerColX.width - self.canvas.left
-                    elif self.dx < 0:
-                        self.posX = tileCol.right - self.canvas.left
-                    self.dx = 0
+                self.checkHorizontalCollisions(playerColX, tileCol)
 
                 playerColY = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.newPosY, 32, 48)
-                if playerColY.colliderect(tileCol):
-                    if self.velocityY > 0.0:
-                        self.posY = tileCol.top - playerColY.height
-                        self.dy = 0.0
-                        self.velocityY = 0
-                        self.isJumping = False
-                        if self.isJumpInBuffer:
-                            self.isJumpInBuffer = False
-                            self.shouldBufferedJump = True
+                self.checkVerticalCollisions(playerColY, tileCol)
 
-                    elif self.velocityY < 0.0:
-                        self.posY = tileCol.bottom
-                        self.dy = 0.0
-                        self.velocityY = 0
+
+    def checkHorizontalCollisions(self, playerCollision : pg.Rect, tileCollision : pg.Rect):
+        if playerCollision.colliderect(tileCollision):
+            if self.dx > 0: # right
+                self.posX = tileCollision.left - playerCollision.width - self.canvas.left
+            elif self.dx < 0: # left
+                self.posX = tileCollision.right - self.canvas.left
+            self.dx = 0
+
+
+    def checkVerticalCollisions(self, playerCollision : pg.Rect, tileCollision : pg.Rect):
+        if playerCollision.colliderect(tileCollision):
+            if self.velocityY > 0.0: # falling
+                self.posY = tileCollision.top - playerCollision.height
+                self.dy = 0.0
+                self.velocityY = 0
+                self.isJumping = False
+                if self.isJumpInBuffer:
+                    self.isJumpInBuffer = False
+                    self.shouldBufferedJump = True
+
+            elif self.velocityY < 0.0: # jumping
+                self.posY = tileCollision.bottom
+                self.dy = 0.0
+                self.velocityY = 0
