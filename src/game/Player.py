@@ -22,6 +22,7 @@ class Player:
         self.gravityForce : float = 2000
         self.maxFallingSpeed : int = 1000
         self.jumpBufferingLevel : int = 32
+        self.jumpBufferingDropLevel : int = 350
         self.isJumpInBuffer : bool = False
         self.shouldBufferedJump : bool = False
         self.inAir : bool = False
@@ -87,7 +88,7 @@ class Player:
 
     def move(self):
         if self.movingUp:
-            if not self.isJumping:
+            if not self.isJumping and self.velocityY < self.jumpBufferingDropLevel:
                 self.jump()
             else:
                 if self.velocityY > 0 and 0 < (self.jumpPositionY - self.posY) < self.jumpBufferingLevel and not self.isJumpInBuffer:
