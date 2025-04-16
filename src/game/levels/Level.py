@@ -1,5 +1,6 @@
 import pygame as pg
 
+from src.game.levels.LevelLoader import LevelLoader
 from src.game.map.Map import Map
 
 class Level:
@@ -8,6 +9,7 @@ class Level:
         self.canvas = canvas
         self.color = "black"
         self.map = Map(self.canvas)
+        self.levelLoader = LevelLoader()
         print(self.canvas)
 
 

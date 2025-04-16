@@ -6,6 +6,7 @@ class Level01(Level):
     def __init__(self, isLeft : bool, canvas: pg.Rect):
         super().__init__(isLeft, canvas)
         self.color = "green"
+        self.map = self.levelLoader.load("template.level", self.map)
 
 
     def handleEvents(self, event):
