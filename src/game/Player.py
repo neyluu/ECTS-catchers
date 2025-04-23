@@ -125,16 +125,18 @@ class Player:
         for i in range(self.tileMap.sizeY):
             for j in range(self.tileMap.sizeX):
                 tile = self.tileMap.tileMap[i][j]
-                if not tile.isCollision:
-                    continue
 
                 playerColX = pg.Rect(self.canvas.left + self.posX + self.dx, self.canvas.top + self.posY, 32, 48)
+                playerColY = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.newPosY, 32, 48)
                 tileCol = pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
 
-                self.checkHorizontalCollisions(playerColX, tileCol)
-
-                playerColY = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.newPosY, 32, 48)
-                self.checkVerticalCollisions(playerColY, tileCol)
+                if tile.isTrigger:
+                    if playerColX.colliderect(tileCol):
+                        tile.color = "blue"
+                    continue
+                if tile.isCollision:
+                    self.checkHorizontalCollisions(playerColX, tileCol)
+                    self.checkVerticalCollisions(playerColY, tileCol)
 
 
     def checkHorizontalCollisions(self, playerCollision : pg.Rect, tileCollision : pg.Rect):
