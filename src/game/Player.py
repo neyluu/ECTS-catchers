@@ -14,6 +14,9 @@ class Player:
         self.keymap = Settings.PLAYER_LEFT_KEYMAP if isLeft else Settings.PLAYER_RIGHT_KEYMAP
         self.color = "black"
 
+        self.playerHeight : int = 48
+        self.playerWidth : int = 32
+
         self.dt : float = 0
         self.speed : float = 200
         self.velocityX : float = 0
@@ -83,7 +86,7 @@ class Player:
 
 
     def draw(self, screen : pg.Surface):
-        pg.draw.rect(screen, self.color, (self.canvas.left + self.posX, self.canvas.top + self.posY, 32, 48))
+        pg.draw.rect(screen, self.color, (self.canvas.left + self.posX, self.canvas.top + self.posY, self.playerWidth, self.playerHeight))
 
 
     def move(self):
@@ -126,13 +129,13 @@ class Player:
             for j in range(self.tileMap.sizeX):
                 tile = self.tileMap.tileMap[i][j]
 
-                playerColX = pg.Rect(self.canvas.left + self.posX + self.dx, self.canvas.top + self.posY, 32, 48)
-                playerColY = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.newPosY, 32, 48)
+                playerColX = pg.Rect(self.canvas.left + self.posX + self.dx, self.canvas.top + self.posY, self.playerWidth, self.playerHeight)
+                playerColY = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.newPosY, self.playerWidth, self.playerHeight)
                 tileCol = pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
 
                 if tile.isTrigger:
                     if playerColX.colliderect(tileCol):
-                        tile.color = "blue"
+                        tile.onTrigger()
                     continue
                 if tile.isCollision:
                     self.checkHorizontalCollisions(playerColX, tileCol)

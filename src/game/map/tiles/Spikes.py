@@ -2,11 +2,11 @@ from src.game.map.tiles.Tile import Tile
 
 import pygame as pg
 
-class Coin(Tile):
+class Spikes(Tile):
     def __init__(self):
         super().__init__()
         self.isTrigger = True
-        self.color = "pink"
+        self.color = "green"
 
     def onTrigger(self):
-        self.color = "blue"
+        self.color = "white"
