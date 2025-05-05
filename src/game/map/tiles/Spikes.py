@@ -1,12 +1,14 @@
-from src.game.map.tiles.Tile import Tile
+from src.game.PlayerData import PlayerData
+from src.game.map.tiles.Trigger import Trigger
 
-import pygame as pg
 
-class Spikes(Tile):
+class Spikes(Trigger):
     def __init__(self):
         super().__init__()
-        self.isTrigger = True
         self.color = "green"
 
-    def onTrigger(self):
+    def onTrigger(self, playerData : PlayerData):
+        if self.wasEntered():
+            return
+
         self.color = "white"

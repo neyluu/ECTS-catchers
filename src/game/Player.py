@@ -122,7 +122,7 @@ class Player:
 
                 if tile.isTrigger:
                     if playerColX.colliderect(tileCol):
-                        tile.onTrigger()
+                        tile.onTrigger(self.playerData)
                     continue
                 if tile.isCollision:
                     self.checkHorizontalCollisions(playerColX, tileCol)
