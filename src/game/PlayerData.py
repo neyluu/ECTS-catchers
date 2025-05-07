@@ -14,8 +14,11 @@ class PlayerData():
         self.jumpBufferingDropLevel: int = 350
 
         # top-left
-        self.posX: int = 630
-        self.posY: int = 950
+        self.startPosX: int = 550
+        self.startPosY: int = 950
+
+        self.posX: int = self.startPosX
+        self.posY: int = self.startPosY
         self.newPosX: int = -1
         self.newPosY: int = -1
 
