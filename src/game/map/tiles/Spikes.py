@@ -8,11 +8,8 @@ class Spikes(Trigger):
         self.color = "green"
 
     def onTrigger(self, playerData : PlayerData):
-        # if self.wasEntered():
-        #     return
+        if self.wasEntered():
+            return
 
         playerData.hp -= 1
-        playerData.posX = playerData.startPosX
-        playerData.posY = playerData.startPosY
         print(f"HP: {playerData.hp}")
-        # self.color = "white"
