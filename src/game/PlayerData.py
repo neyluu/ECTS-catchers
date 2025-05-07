@@ -18,3 +18,6 @@ class PlayerData():
         self.posY: int = 950
         self.newPosX: int = -1
         self.newPosY: int = -1
+
+        self.points: int = 0
+        self.hp: int = 3
