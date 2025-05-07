@@ -1,6 +1,7 @@
 import pygame as pg
 
 from src.common import Settings
+from src.game.PlayerData import PlayerData
 from src.game.map.Map import Map
 from src.game.map.tiles.Tile import Tile
 
@@ -11,21 +12,13 @@ class Player:
         self.isLeft = isLeft
         self.tileMap = tileMap
 
+        self.playerData = PlayerData()
+
         self.keymap = Settings.PLAYER_LEFT_KEYMAP if isLeft else Settings.PLAYER_RIGHT_KEYMAP
         self.color = "black"
 
-        self.playerHeight : int = 48
-        self.playerWidth : int = 32
-
         self.dt : float = 0
-        self.speed : float = 200
-        self.velocityX : float = 0
-        self.velocityY : float = 0
-        self.jumpForce : float = 575
-        self.gravityForce : float = 2000
-        self.maxFallingSpeed : int = 1000
-        self.jumpBufferingLevel : int = 32
-        self.jumpBufferingDropLevel : int = 350
+
         self.isJumpInBuffer : bool = False
         self.shouldBufferedJump : bool = False
         self.inAir : bool = False
@@ -34,13 +27,7 @@ class Player:
         self.dx = 0
         self.dy = 0
 
-        # top-left
-        self.posX : int = 630
-        self.posY : int = 950
-        self.newPosX : int = -1
-        self.newPosY : int = -1
-
-        self.jumpPositionY = self.posY + 48
+        self.jumpPositionY = self.playerData.posY + self.playerData.posX
 
         self.movingUp    : bool = False
         self.movingRight : bool = False
@@ -86,42 +73,42 @@ class Player:
 
 
     def draw(self, screen : pg.Surface):
-        pg.draw.rect(screen, self.color, (self.canvas.left + self.posX, self.canvas.top + self.posY, self.playerWidth, self.playerHeight))
+        pg.draw.rect(screen, self.color, (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight))
 
 
     def move(self):
         if self.movingUp:
-            if not self.isJumping and self.velocityY < self.jumpBufferingDropLevel:
+            if not self.isJumping and self.playerData.velocityY < self.playerData.jumpBufferingDropLevel:
                 self.jump()
             else:
-                if self.velocityY > 0 and 0 < (self.jumpPositionY - self.posY) < self.jumpBufferingLevel and not self.isJumpInBuffer:
+                if self.playerData.velocityY > 0 and 0 < (self.jumpPositionY - self.playerData.posY) < self.playerData.jumpBufferingLevel and not self.isJumpInBuffer:
                     self.isJumpInBuffer = True
 
         self.movingUp = False
 
         if self.movingRight:
-            self.dx += self.speed * self.dt
+            self.dx += self.playerData.speed * self.dt
 
         if self.movingLeft:
-            self.dx -= self.speed * self.dt
+            self.dx -= self.playerData.speed * self.dt
 
-        self.velocityY += self.gravityForce * self.dt
-        if self.velocityY > self.maxFallingSpeed:
-            self.velocityY = self.maxFallingSpeed
+        self.playerData.velocityY += self.playerData.gravityForce * self.dt
+        if self.playerData.velocityY > self.playerData.maxFallingSpeed:
+            self.playerData.velocityY = self.playerData.maxFallingSpeed
 
-        self.dy += self.velocityY * self.dt
-        self.newPosY = self.posY + self.dy
+        self.dy += self.playerData.velocityY * self.dt
+        self.playerData.newPosY = self.playerData.posY + self.dy
 
 
     def jump(self):
-        self.jumpPositionY = self.posY
-        self.velocityY = -self.jumpForce
+        self.jumpPositionY = self.playerData.posY
+        self.playerData.velocityY = -self.playerData.jumpForce
         self.isJumping = True
 
 
     def updatePosition(self):
-        self.posX += self.dx
-        self.posY += self.dy
+        self.playerData.posX += self.dx
+        self.playerData.posY += self.dy
 
 
     def checkCollisions(self):
@@ -129,13 +116,13 @@ class Player:
             for j in range(self.tileMap.sizeX):
                 tile = self.tileMap.tileMap[i][j]
 
-                playerColX = pg.Rect(self.canvas.left + self.posX + self.dx, self.canvas.top + self.posY, self.playerWidth, self.playerHeight)
-                playerColY = pg.Rect(self.canvas.left + self.posX, self.canvas.top + self.newPosY, self.playerWidth, self.playerHeight)
+                playerColX = pg.Rect(self.canvas.left + self.playerData.posX + self.dx, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight)
+                playerColY = pg.Rect(self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.newPosY, self.playerData.playerWidth, self.playerData.playerHeight)
                 tileCol = pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
 
                 if tile.isTrigger:
                     if playerColX.colliderect(tileCol):
-                        tile.onTrigger()
+                        tile.onTrigger(self.playerData)
                     continue
                 if tile.isCollision:
                     self.checkHorizontalCollisions(playerColX, tileCol)
@@ -145,24 +132,24 @@ class Player:
     def checkHorizontalCollisions(self, playerCollision : pg.Rect, tileCollision : pg.Rect):
         if playerCollision.colliderect(tileCollision):
             if self.dx > 0: # right
-                self.posX = tileCollision.left - playerCollision.width - self.canvas.left
+                self.playerData.posX = tileCollision.left - playerCollision.width - self.canvas.left
             elif self.dx < 0: # left
-                self.posX = tileCollision.right - self.canvas.left
+                self.playerData.posX = tileCollision.right - self.canvas.left
             self.dx = 0
 
 
     def checkVerticalCollisions(self, playerCollision : pg.Rect, tileCollision : pg.Rect):
         if playerCollision.colliderect(tileCollision):
-            if self.velocityY > 0.0: # falling
-                self.posY = tileCollision.top - playerCollision.height
+            if self.playerData.velocityY > 0.0: # falling
+                self.playerData.posY = tileCollision.top - playerCollision.height
                 self.dy = 0.0
-                self.velocityY = 0
+                self.playerData.velocityY = 0
                 self.isJumping = False
                 if self.isJumpInBuffer:
                     self.isJumpInBuffer = False
                     self.shouldBufferedJump = True
 
-            elif self.velocityY < 0.0: # jumping
-                self.posY = tileCollision.bottom
+            elif self.playerData.velocityY < 0.0: # jumping
+                self.playerData.posY = tileCollision.bottom
                 self.dy = 0.0
-                self.velocityY = 0
+                self.playerData.velocityY = 0
