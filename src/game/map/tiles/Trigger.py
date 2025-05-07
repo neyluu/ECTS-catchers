@@ -9,6 +9,10 @@ class Trigger(Tile):
         self.isActive = True
 
 
+    def reset(self):
+        self.isActive = True
+
+
     def onTrigger(self, playerData : PlayerData):
         raise NotImplementedError
 

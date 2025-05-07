@@ -23,4 +23,5 @@ class PlayerData():
         self.newPosY: int = -1
 
         self.points: int = 0
-        self.hp: int = 3
+        self.startHp = 3
+        self.hp: int = self.startHp
