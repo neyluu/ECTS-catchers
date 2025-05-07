@@ -1,20 +1,22 @@
 from src.game.PlayerData import PlayerData
 from src.game.map.tiles.Trigger import Trigger
 
+import pygame as pg
+import random
 
 class Coin(Trigger):
     def __init__(self):
         super().__init__()
 
-        self.color = "pink"
+        self.color = "gold"
+        self.points = random.randint(1, 5)
 
 
     def onTrigger(self, playerData : PlayerData):
         if self.wasEntered():
             return
 
-        self.color = "blue"
+        self.color = pg.Color(0,0,0,0)
 
-        # TODO TMP
-        playerData.speed *= 2
-        print("test" + str(playerData.speed))
+        playerData.points += self.points
+        print(f"Points: {playerData.points}")
