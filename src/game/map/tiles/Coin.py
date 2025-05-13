@@ -7,7 +7,7 @@ import random
 class Coin(Trigger):
     def __init__(self):
         super().__init__()
-
+        self.isResettable = False
         self.color = "gold"
         self.points = random.randint(1, 5)
 

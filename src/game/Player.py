@@ -140,6 +140,7 @@ class Player:
                         tile.onTrigger(self.playerData)
                         self.enteredTriggers.append(tile)
                     continue
+
                 if tile.isCollision:
                     self.checkHorizontalCollisions(playerColX, tileCol)
                     self.checkVerticalCollisions(playerColY, tileCol)
