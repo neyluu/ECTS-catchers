@@ -4,7 +4,8 @@ class PlayerData():
         self.playerHeight: int = 48
         self.playerWidth: int = 32
 
-        self.speed: float = 200
+        self.startSpeed : float = 200
+        self.speed: float = self.startSpeed
         self.velocityX: float = 0
         self.velocityY: float = 0
         self.jumpForce: float = 575

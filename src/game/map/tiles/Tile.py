@@ -5,7 +5,7 @@ class Tile:
 
     def __init__(self, leftTop : pg.Vector2 = pg.Vector2(0,0)):
         self.leftTop = leftTop
-        self.color = "red"
+        self.color = pg.Color(80,80,80)
         self.isCollision = False
         self.isTrigger = False
 
