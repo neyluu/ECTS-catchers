@@ -1,6 +1,8 @@
 from src.game.map.Map import Map
+
 from src.game.map.tiles.Air import Air
 from src.game.map.tiles.Block import Block
+from src.game.map.tiles.Cobweb import Cobweb
 from src.game.map.tiles.Coin import Coin
 from src.game.map.tiles.Spikes import Spikes
 
@@ -29,6 +31,8 @@ class LevelLoader:
                     levelMap.setTile(x, y, Coin())
                 elif classType == "Spikes":
                     levelMap.setTile(x, y, Spikes())
+                elif classType == "Cobweb":
+                    levelMap.setTile(x, y, Cobweb())
                 else:
                     print("ERROR: class: " + classType + " dont exist!")
 

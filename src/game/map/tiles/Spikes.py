@@ -11,4 +11,5 @@ class Spikes(Trigger):
         if self.wasEntered():
             return
 
-        self.color = "white"
+        playerData.hp -= 1
+        print(f"HP: {playerData.hp}")

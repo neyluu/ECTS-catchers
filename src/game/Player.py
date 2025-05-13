@@ -4,6 +4,7 @@ from src.common import Settings
 from src.game.PlayerData import PlayerData
 from src.game.map.Map import Map
 from src.game.map.tiles.Tile import Tile
+from src.game.map.tiles.Trigger import Trigger
 
 
 class Player:
@@ -34,6 +35,8 @@ class Player:
         self.movingDown  : bool = True
         self.movingLeft  : bool = False
 
+        self.enteredTriggers = []
+
 
     def handleEvent(self, event):
         if event.type == pg.KEYDOWN:
@@ -63,10 +66,16 @@ class Player:
         self.dx = 0
         self.dy = 0
 
+        if self.playerData.hp <= 0:
+            self.playerData.hp = self.playerData.startHp
+            self.moveToStart()
+
         if self.shouldBufferedJump:
             self.shouldBufferedJump = False
             self.jump()
 
+
+        self.checkEnteredTriggers()
         self.move()
         self.checkCollisions()
         self.updatePosition()
@@ -116,14 +125,22 @@ class Player:
             for j in range(self.tileMap.sizeX):
                 tile = self.tileMap.tileMap[i][j]
 
-                playerColX = pg.Rect(self.canvas.left + self.playerData.posX + self.dx, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight)
-                playerColY = pg.Rect(self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.newPosY, self.playerData.playerWidth, self.playerData.playerHeight)
-                tileCol = pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
+                playerColX = self.getPlayerCollisionX()
+                playerColY = self.getPlayerCollisionY()
+                tileCol = self.getTileCollision(tile)
 
                 if tile.isTrigger:
+                    # Scale collision to be 24x24 inside block, to give player more space to movement error
+                    tileCol.left += 4
+                    tileCol.top += 4
+                    tileCol.width -= 4
+                    tileCol.height -= 4
+
                     if playerColX.colliderect(tileCol):
                         tile.onTrigger(self.playerData)
+                        self.enteredTriggers.append(tile)
                     continue
+
                 if tile.isCollision:
                     self.checkHorizontalCollisions(playerColX, tileCol)
                     self.checkVerticalCollisions(playerColY, tileCol)
@@ -153,3 +170,32 @@ class Player:
                 self.playerData.posY = tileCollision.bottom
                 self.dy = 0.0
                 self.playerData.velocityY = 0
+
+
+    def moveToStart(self):
+        self.playerData.posX = self.playerData.startPosX
+        self.playerData.posY = self.playerData.startPosY
+
+
+    def checkEnteredTriggers(self):
+        toPop = []
+
+        for trigger in self.enteredTriggers:
+            if not self.getPlayerCollisionX().colliderect(self.getTileCollision(trigger)):
+                trigger.reset()
+                toPop.append(trigger)
+
+        for element in toPop:
+            self.enteredTriggers.remove(element)
+
+
+    def getPlayerCollisionX(self) -> pg.Rect:
+        return pg.Rect(self.canvas.left + self.playerData.posX + self.dx, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight)
+
+
+    def getPlayerCollisionY(self) -> pg.Rect:
+        return pg.Rect(self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.newPosY, self.playerData.playerWidth, self.playerData.playerHeight)
+
+
+    def getTileCollision(self, tile : Tile) -> pg.Rect:
+        return pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)

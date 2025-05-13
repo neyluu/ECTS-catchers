@@ -7,6 +7,12 @@ class Trigger(Tile):
         super().__init__()
         self.isTrigger = True
         self.isActive = True
+        self.isResettable = True
+
+
+    def reset(self):
+        if self.isResettable:
+            self.isActive = True
 
 
     def onTrigger(self, playerData : PlayerData):

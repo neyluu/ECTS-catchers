@@ -4,7 +4,8 @@ class PlayerData():
         self.playerHeight: int = 48
         self.playerWidth: int = 32
 
-        self.speed: float = 200
+        self.startSpeed : float = 200
+        self.speed: float = self.startSpeed
         self.velocityX: float = 0
         self.velocityY: float = 0
         self.jumpForce: float = 575
@@ -14,10 +15,14 @@ class PlayerData():
         self.jumpBufferingDropLevel: int = 350
 
         # top-left
-        self.posX: int = 630
-        self.posY: int = 950
+        self.startPosX: int = 550
+        self.startPosY: int = 950
+
+        self.posX: int = self.startPosX
+        self.posY: int = self.startPosY
         self.newPosX: int = -1
         self.newPosY: int = -1
 
         self.points: int = 0
-        self.hp: int = 3
+        self.startHp = 3
+        self.hp: int = self.startHp
