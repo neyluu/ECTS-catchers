@@ -1,5 +1,6 @@
 import pygame as pg
 
+from src.game.PlayerData import PlayerData
 from src.game.levels.Level import Level
 
 class Level01(Level):

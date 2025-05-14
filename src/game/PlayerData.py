@@ -26,3 +26,5 @@ class PlayerData():
         self.points: int = 0
         self.startHp = 3
         self.hp: int = self.startHp
+
+        self.currentLevel = 0

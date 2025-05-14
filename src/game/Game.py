@@ -12,12 +12,14 @@ class Game:
         self.canvas = canvas
         self.isLeft = isLeft
         self.backgroundColor = "black"
+        self.currentLevel = 0
         self.levels = [
             Level01(self.isLeft, self.canvas),
             Level02(self.isLeft, self.canvas)
         ]
-        self.currentLevel = 0
         self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
+
+        self.addPlayerDataToLevels()
 
 
     def handleEvent(self, event):
@@ -35,6 +37,9 @@ class Game:
         self.levels[self.currentLevel].update(dt)
         self.player.update(dt)
 
+        if self.player.playerData.currentLevel < len(self.levels) and self.currentLevel != self.player.playerData.currentLevel:
+            self.handleLevelChange()
+
 
     def draw(self, screen : pg.Surface):
         # pg.draw.rect(self.screen, self.backgroundColor, self.canvas)
@@ -44,3 +49,15 @@ class Game:
 
     def setBackgroundColor(self, color : pg.Color):
         self.backgroundColor = color
+
+
+    def handleLevelChange(self):
+        print(f"Changing level to {self.player.playerData.currentLevel}")
+        self.currentLevel = self.player.playerData.currentLevel
+        self.levels[self.currentLevel].reset()
+        self.player.tileMap = self.levels[self.currentLevel].map
+
+
+    def addPlayerDataToLevels(self):
+        for level in self.levels:
+            level.playerData = self.player.playerData
