@@ -12,5 +12,5 @@ class Doors(Trigger):
     def onTrigger(self, playerData : PlayerData):
         if self.wasEntered():
             return
+
         playerData.currentLevel += 1
-        print(f"Level: {playerData.currentLevel}")
