@@ -4,7 +4,6 @@ from src.common import Settings
 from src.game.PlayerData import PlayerData
 from src.game.map.Map import Map
 from src.game.map.tiles.Tile import Tile
-from src.game.map.tiles.Trigger import Trigger
 
 
 class Player:
@@ -39,7 +38,7 @@ class Player:
 
 
     def handleEvent(self, event):
-        if event.type == pg.KEYDOWN:
+        if event.type == pg.KEYDOWN and self.playerData.canMove:
             if event.key == self.keymap.MOVE_UP:
                 self.movingUp = True
 

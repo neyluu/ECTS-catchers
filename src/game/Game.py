@@ -26,7 +26,7 @@ class Game:
 
         self.nextLevel = 0
         self.levelChangeTimer : float = 0
-        self.levelChangeDelay : float = 1 # seconds
+        self.levelChangeDelay : float = 2 # seconds
         self.isLevelChanging : bool = False
 
         self.blinkOpacity = 0
@@ -60,6 +60,7 @@ class Game:
         if self.player.playerData.currentLevel < len(self.levels) and self.currentLevel != self.player.playerData.currentLevel:
             self.isLevelChanging = True
             self.nextLevel = self.player.playerData.currentLevel
+            self.player.playerData.canMove = False
         if self.player.playerData.currentLevel >= len(self.levels):
             # print("Game over!")
             pass
@@ -86,6 +87,7 @@ class Game:
 
         self.levelChangeTimer = 0
         self.isLevelChanging = False
+        self.player.playerData.canMove = True
 
 
     def addPlayerDataToLevels(self):
@@ -94,19 +96,10 @@ class Game:
 
 
     def levelChangeBlink(self, screen : pg.Surface):
-        time = (self.levelChangeTimer % self.levelChangeDelay) / self.levelChangeDelay
+        time = (self.levelChangeTimer % (self.levelChangeDelay * 2)) / (self.levelChangeDelay * 2)
         self.blinkOpacity = 255 * math.sin(math.pi * time)
 
-        # if self.levelChangeTimer < self.levelChangeDelay / 2:
-        #     self.blinkOpacity += self.levelChangeDelay / self.dt
-        #     if self.blinkOpacity > 255:
-        #         self.blinkOpacity = 255
-        # else:
-        #     self.blinkOpacity -= self.levelChangeDelay / self.dt
-        #     if self.blinkOpacity < 0:
-        #         self.blinkOpacity = 0
-
-        print(f"Opacity: {self.blinkOpacity}")
+        # print(f"Opacity: {self.blinkOpacity}")
 
         overlay = pg.Surface((self.canvas.width, self.canvas.height), pg.SRCALPHA)
         overlay.fill((0, 0, 0, self.blinkOpacity))
