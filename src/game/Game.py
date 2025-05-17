@@ -5,6 +5,7 @@ from src.game.Player import Player
 from src.game.levels import *
 from src.game.levels.Level01 import Level01
 from src.game.levels.Level02 import Level02
+from src.gui.animations.Blink import Blink
 
 
 class Game:
@@ -19,17 +20,14 @@ class Game:
             Level02(self.isLeft, self.canvas)
         ]
         self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
+        self.nextLevelAnimation = Blink(self.canvas)
 
         self.addPlayerDataToLevels()
 
-        self.dt = 0
+        self.dt : float = 0
 
-        self.nextLevel = 0
-        self.levelChangeTimer : float = 0
-        self.levelChangeDelay : float = 1 # seconds
+        self.nextLevel : int = 0
         self.isLevelChanging : bool = False
-
-        self.blinkOpacity = 0
 
 
     def handleEvent(self, event):
@@ -52,14 +50,20 @@ class Game:
         self.player.update(dt)
 
         if self.isLevelChanging:
-            self.levelChangeTimer += dt
-            if self.levelChangeTimer > self.levelChangeDelay:
+            if self.nextLevelAnimation.timeElapsed > self.nextLevelAnimation.time / 2:
                 self.handleLevelChange()
 
-        if self.player.playerData.currentLevel < len(self.levels) and self.currentLevel != self.player.playerData.currentLevel:
+            if not self.nextLevelAnimation.running:
+                self.isLevelChanging = False
+                self.nextLevelAnimation.reset()
+            else:
+                self.nextLevelAnimation.update(dt)
+
+        if self.isNextLevel():
             self.isLevelChanging = True
             self.nextLevel = self.player.playerData.currentLevel
             self.player.playerData.canMove = False
+            self.nextLevelAnimation.start()
 
         if self.player.playerData.currentLevel >= len(self.levels):
             # print("Game over!")
@@ -72,7 +76,11 @@ class Game:
         self.player.draw(screen)
 
         if self.isLevelChanging:
-            self.levelChangeBlink(screen)
+            self.nextLevelAnimation.draw(screen)
+
+
+    def isNextLevel(self) -> bool:
+        return self.player.playerData.currentLevel < len(self.levels) and self.currentLevel != self.player.playerData.currentLevel
 
 
     def setBackgroundColor(self, color : pg.Color):
@@ -90,25 +98,3 @@ class Game:
     def addPlayerDataToLevels(self):
         for level in self.levels:
             level.playerData = self.player.playerData
-
-
-    def levelChangeBlink(self, screen : pg.Surface):
-        if self.levelChangeTimer > self.levelChangeDelay * 2:
-            self.levelChangeTimer = 0
-            self.isLevelChanging = False
-
-        if self.levelChangeTimer < self.levelChangeDelay:
-            self.blinkOpacity += 255 / (self.levelChangeDelay / self.dt)
-            if self.blinkOpacity > 255:
-                self.blinkOpacity = 255
-        if self.levelChangeTimer > self.levelChangeDelay:
-            self.blinkOpacity -= 255 / (self.levelChangeDelay / self.dt)
-            if self.blinkOpacity < 0:
-                self.blinkOpacity = 0
-
-        # print(f"timer: {self.levelChangeTimer}")
-        # print(f"Opacity: {self.blinkOpacity}")
-
-        overlay = pg.Surface((self.canvas.width, self.canvas.height), pg.SRCALPHA)
-        overlay.fill((0, 0, 0, self.blinkOpacity))
-        screen.blit(overlay, (self.canvas.left, self.canvas.top))
