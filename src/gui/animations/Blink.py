@@ -22,7 +22,6 @@ class Blink:
             return
 
         self.timeElapsed += dt
-        print(f"Time elapsed: {self.timeElapsed}")
 
         if self.timeElapsed < (self.time / 2) - self.offset:
             self.opacity += 255 / ((self.time / 2 - self.offset) / dt)

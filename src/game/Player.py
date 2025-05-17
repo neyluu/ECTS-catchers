@@ -4,6 +4,7 @@ from src.common import Settings
 from src.game.PlayerData import PlayerData
 from src.game.map.Map import Map
 from src.game.map.tiles.Tile import Tile
+from src.gui.animations.Blink import Blink
 
 
 class Player:
@@ -13,6 +14,12 @@ class Player:
         self.tileMap = tileMap
 
         self.playerData = PlayerData()
+
+        self.deadBlinkAnimation = Blink(canvas)
+        self.deadBlinkAnimation.color = pg.Color(100, 20, 20)
+        self.deadBlinkAnimation.time = 2
+        self.isDead = False
+        self.deadHandled = False
 
         self.keymap = Settings.PLAYER_LEFT_KEYMAP if isLeft else Settings.PLAYER_RIGHT_KEYMAP
         self.color = "black"
@@ -65,9 +72,23 @@ class Player:
         self.dx = 0
         self.dy = 0
 
+        if self.isDead:
+            if self.deadBlinkAnimation.timeElapsed > self.deadBlinkAnimation.time / 2 and not self.deadHandled:
+                self.playerData.hp = self.playerData.startHp
+                self.moveToStart()
+                self.playerData.canMove = True
+                self.deadHandled = True
+            if not self.deadBlinkAnimation.running:
+                self.isDead = False
+                self.deadHandled = False
+                self.deadBlinkAnimation.reset()
+            else:
+                self.deadBlinkAnimation.update(dt)
+
         if self.playerData.hp <= 0:
-            self.playerData.hp = self.playerData.startHp
-            self.moveToStart()
+            self.isDead = True
+            self.playerData.canMove = False
+            self.deadBlinkAnimation.start()
 
         if self.shouldBufferedJump:
             self.shouldBufferedJump = False
@@ -82,6 +103,8 @@ class Player:
 
     def draw(self, screen : pg.Surface):
         pg.draw.rect(screen, self.color, (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight))
+        if self.isDead:
+            self.deadBlinkAnimation.draw(screen)
 
 
     def move(self):

@@ -28,6 +28,7 @@ class Game:
 
         self.nextLevel : int = 0
         self.isLevelChanging : bool = False
+        self.levelChanged : bool = False
 
 
     def handleEvent(self, event):
@@ -50,11 +51,13 @@ class Game:
         self.player.update(dt)
 
         if self.isLevelChanging:
-            if self.nextLevelAnimation.timeElapsed > self.nextLevelAnimation.time / 2:
+            if self.nextLevelAnimation.timeElapsed > self.nextLevelAnimation.time / 2 and not self.levelChanged:
                 self.handleLevelChange()
+                self.levelChanged = True
 
             if not self.nextLevelAnimation.running:
                 self.isLevelChanging = False
+                self.levelChanged = False
                 self.nextLevelAnimation.reset()
             else:
                 self.nextLevelAnimation.update(dt)
