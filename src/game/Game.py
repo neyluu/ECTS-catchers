@@ -6,7 +6,7 @@ from src.game.levels import *
 from src.game.levels.Level01 import Level01
 from src.game.levels.Level02 import Level02
 from src.gui.animations.Blink import Blink
-
+from src.gui.Timer import Timer
 
 class Game:
 
@@ -19,6 +19,7 @@ class Game:
             Level01(self.isLeft, self.canvas),
             Level02(self.isLeft, self.canvas)
         ]
+        self.currentLevel = 0
         self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
         self.nextLevelAnimation = Blink(self.canvas)
 
@@ -30,9 +31,22 @@ class Game:
         self.isLevelChanging : bool = False
         self.levelChanged : bool = False
 
+        self.game_timer = Timer()
+        self.timer_position = (self.canvas.x + 320, self.canvas.y + 4)
+        self.game_paused = False
 
     def handleEvent(self, event):
         if event.type == pg.KEYDOWN:
+            if event.key == pg.K_p:
+                self.game_paused = not self.game_paused  # Przełącz stan pauzy
+                if self.game_paused:
+                    self.game_timer.pause()  # pauza
+                else:
+                    self.game_timer.resume()  # wznow
+                return
+            if self.game_paused:
+                return
+            old_level = self.currentLevel
             if event.key == pg.K_5:
                 self.currentLevel = 0 if self.currentLevel - 1 < 0 else self.currentLevel - 1
 
@@ -47,6 +61,8 @@ class Game:
     def update(self, dt : float):
         self.dt = dt
 
+        if not self.game_paused:
+            self.game_timer.update()
         self.levels[self.currentLevel].update(dt)
         self.player.update(dt)
 
@@ -77,6 +93,8 @@ class Game:
         # pg.draw.rect(self.screen, self.backgroundColor, self.canvas)
         self.levels[self.currentLevel].draw(screen)
         self.player.draw(screen)
+
+        self.game_timer.draw(screen, self.timer_position)
 
         if self.isLevelChanging:
             self.nextLevelAnimation.draw(screen)
