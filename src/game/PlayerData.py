@@ -23,6 +23,10 @@ class PlayerData():
         self.newPosX: int = -1
         self.newPosY: int = -1
 
+        self.canMove : bool = True
+
         self.points: int = 0
         self.startHp = 3
         self.hp: int = self.startHp
+
+        self.currentLevel = 0

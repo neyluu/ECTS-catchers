@@ -1,5 +1,6 @@
 import pygame as pg
 
+from src.game.PlayerData import PlayerData
 from src.game.levels.LevelLoader import LevelLoader
 from src.game.map.Map import Map
 
@@ -8,6 +9,7 @@ class Level:
         self.isLeft = isLeft
         self.canvas = canvas
         self.color = "black"
+        self.playerData : PlayerData = None
         self.map = Map(self.canvas)
         self.levelLoader = LevelLoader()
         print(self.canvas)
@@ -24,3 +26,7 @@ class Level:
     def draw(self, screen):
         pg.draw.rect(screen, self.color, self.canvas)
         self.map.draw(screen)
+
+
+    def reset(self):
+        pass
