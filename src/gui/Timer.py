@@ -18,7 +18,7 @@ class Timer:
         self.last_displayed_second = -1
         self.running = True
 
-    def get_current_total_elapsed_ms(self) -> int:
+    def getCurrentTotalElapsedMs(self) -> int:
         if self.running:
             current_segment_elapsed_ms = pg.time.get_ticks() - self.start_time_current_segment_ticks
             return self.elapsed_time_when_paused_ms + current_segment_elapsed_ms
@@ -26,7 +26,7 @@ class Timer:
             return self.elapsed_time_when_paused_ms
 
     def update(self):
-        total_elapsed_ms = self.get_current_total_elapsed_ms()
+        total_elapsed_ms = self.getCurrentTotalElapsedMs()
         total_seconds = total_elapsed_ms // 1000
 
         if total_seconds != self.last_displayed_second:
@@ -60,6 +60,6 @@ class Timer:
     def get_time_string(self) -> str:
         return self.elapsed_time_str
 
-    def get_total_seconds(self) -> int:
-        total_elapsed_ms = self.get_current_total_elapsed_ms()
+    def getTotalSeconds(self) -> int:
+        total_elapsed_ms = self.getCurrentTotalElapsedMs()
         return total_elapsed_ms // 1000
