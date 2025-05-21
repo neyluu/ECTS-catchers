@@ -12,9 +12,12 @@ class Cobweb(Trigger):
     def reset(self):
         super().reset()
         self.playerData.speed = self.playerData.startSpeed
+        self.playerData.maxFallingSpeed = self.playerData.startMaxFallingSpeed
 
 
     def onTrigger(self, playerData : PlayerData):
         self.playerData = playerData
 
         playerData.speed = playerData.startSpeed / 2
+        playerData.maxFallingSpeed = 50
+        print(playerData.maxFallingSpeed)

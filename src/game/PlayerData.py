@@ -10,7 +10,8 @@ class PlayerData():
         self.velocityY: float = 0
         self.jumpForce: float = 575
         self.gravityForce: float = 2000
-        self.maxFallingSpeed: int = 1000
+        self.startMaxFallingSpeed: int = 1000
+        self.maxFallingSpeed: int = self.startMaxFallingSpeed
         self.jumpBufferingLevel: int = 32
         self.jumpBufferingDropLevel: int = 350
 
