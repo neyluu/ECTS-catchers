@@ -17,6 +17,7 @@ class Game:
         self.currentLevel = 0
         self.levels = [
             Level01(self.isLeft, self.canvas),
+            Level01(self.isLeft, self.canvas),
             Level02(self.isLeft, self.canvas)
         ]
         self.currentLevel = 0
@@ -46,13 +47,6 @@ class Game:
                 return
             if self.game_paused:
                 return
-            old_level = self.currentLevel
-            if event.key == pg.K_5:
-                self.currentLevel = 0 if self.currentLevel - 1 < 0 else self.currentLevel - 1
-
-            # DEBUG level changing
-            # if event.key == pg.K_6:
-            #     self.currentLevel = len(self.levels) - 1 if self.currentLevel + 1 > len(self.levels) - 1 else self.currentLevel + 1
 
         self.levels[self.currentLevel].handleEvents(event)
         self.player.handleEvent(event)
@@ -63,6 +57,7 @@ class Game:
 
         if not self.game_paused:
             self.game_timer.update()
+
         self.levels[self.currentLevel].update(dt)
         self.player.update(dt)
 
@@ -79,14 +74,16 @@ class Game:
                 self.nextLevelAnimation.update(dt)
 
         if self.isNextLevel():
-            self.isLevelChanging = True
             self.nextLevel = self.player.playerData.currentLevel
+
+            if self.nextLevel >= len(self.levels):
+                print("Game over!")
+                self.player.playerData.currentLevel = self.currentLevel
+                return
+
+            self.isLevelChanging = True
             self.player.playerData.canMove = False
             self.nextLevelAnimation.start()
-
-        if self.player.playerData.currentLevel >= len(self.levels):
-            # print("Game over!")
-            pass
 
 
     def draw(self, screen : pg.Surface):
@@ -101,7 +98,7 @@ class Game:
 
 
     def isNextLevel(self) -> bool:
-        return self.player.playerData.currentLevel < len(self.levels) and self.currentLevel != self.player.playerData.currentLevel
+        return self.currentLevel != self.player.playerData.currentLevel
 
 
     def setBackgroundColor(self, color : pg.Color):
@@ -111,9 +108,14 @@ class Game:
     def handleLevelChange(self):
         print(f"Changing level to {self.nextLevel}")
         self.currentLevel = self.nextLevel
-        self.levels[self.currentLevel].reset()
+        self.player.playerData.levelChanged = False
+
+        self.levels[self.currentLevel].reset(self.player.playerData)
+        self.player.playerData.startPosX = self.levels[self.currentLevel].startPosX
+        self.player.playerData.startPosY = self.levels[self.currentLevel].startPosY
+
         self.player.tileMap = self.levels[self.currentLevel].map
-        self.player.playerData.canMove = True
+        self.player.reset()
 
 
     def addPlayerDataToLevels(self):

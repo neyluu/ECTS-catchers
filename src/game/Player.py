@@ -1,7 +1,9 @@
 import pygame as pg
+from pygame.examples.stars import move_stars
 
 from src.common import Settings
 from src.game.PlayerData import PlayerData
+from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.Map import Map
 from src.game.map.tiles.Tile import Tile
 from src.gui.animations.Blink import Blink
@@ -15,7 +17,16 @@ class Player:
 
         self.playerData = PlayerData()
 
+        self.moveAnimations = {
+            "idle": SpriteAnimation("assets/animations/playerIdle", 0.5),
+            "runLeft": SpriteAnimation("assets/animations/playerRunLeft", 0.5),
+            "runRight": SpriteAnimation("assets/animations/playerRunRight", 0.5),
+            "jump": SpriteAnimation("assets/animations/playerJump", 0.5)
+        }
+        self.currentMoveAnimation = "idle"
+
         self.deadBlinkAnimation = Blink(canvas)
+
         self.deadBlinkAnimation.color = pg.Color(100, 20, 20)
         self.deadBlinkAnimation.time = 2
         self.isDead = False
@@ -48,12 +59,16 @@ class Player:
         if event.type == pg.KEYDOWN and self.playerData.canMove:
             if event.key == self.keymap.MOVE_UP:
                 self.movingUp = True
+                self.currentMoveAnimation = "jump"
 
             if event.key == self.keymap.MOVE_RIGHT:
                 self.movingRight = True
+                self.currentMoveAnimation = "runRight"
 
             if event.key == self.keymap.MOVE_LEFT:
                 self.movingLeft = True
+                self.currentMoveAnimation = "runLeft"
+
 
         if event.type == pg.KEYUP:
             if event.key == self.keymap.MOVE_UP:
@@ -65,6 +80,8 @@ class Player:
             if event.key == self.keymap.MOVE_LEFT:
                 self.movingLeft = False
 
+            self.currentMoveAnimation = "idle"
+
 
     def update(self, dt : float):
         self.dt = dt
@@ -72,6 +89,29 @@ class Player:
         self.dx = 0
         self.dy = 0
 
+        self.handleOnDead(dt)
+        self.checkHP()
+
+        if self.shouldBufferedJump:
+            self.shouldBufferedJump = False
+            self.jump()
+
+        self.checkEnteredTriggers()
+        self.move()
+        self.checkCollisions()
+        self.updatePosition()
+        self.moveAnimations[self.currentMoveAnimation].update(dt)
+
+
+    def draw(self, screen : pg.Surface):
+        position = (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight)
+        self.moveAnimations[self.currentMoveAnimation].draw(screen, position)
+
+        if self.isDead:
+            self.deadBlinkAnimation.draw(screen)
+
+
+    def handleOnDead(self, dt):
         if self.isDead:
             if self.deadBlinkAnimation.timeElapsed > self.deadBlinkAnimation.time / 2 and not self.deadHandled:
                 self.playerData.hp = self.playerData.startHp
@@ -85,26 +125,12 @@ class Player:
             else:
                 self.deadBlinkAnimation.update(dt)
 
+
+    def checkHP(self):
         if self.playerData.hp <= 0:
             self.isDead = True
             self.playerData.canMove = False
             self.deadBlinkAnimation.start()
-
-        if self.shouldBufferedJump:
-            self.shouldBufferedJump = False
-            self.jump()
-
-
-        self.checkEnteredTriggers()
-        self.move()
-        self.checkCollisions()
-        self.updatePosition()
-
-
-    def draw(self, screen : pg.Surface):
-        pg.draw.rect(screen, self.color, (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight))
-        if self.isDead:
-            self.deadBlinkAnimation.draw(screen)
 
 
     def move(self):
@@ -221,3 +247,8 @@ class Player:
 
     def getTileCollision(self, tile : Tile) -> pg.Rect:
         return pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
+
+
+    def reset(self):
+        self.moveToStart()
+        self.playerData.canMove = True
