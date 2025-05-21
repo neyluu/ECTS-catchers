@@ -105,7 +105,10 @@ class Player:
 
     def draw(self, screen : pg.Surface):
         position = (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight)
+
+        # pg.draw.rect(screen, self.color, (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight))
         self.moveAnimations[self.currentMoveAnimation].draw(screen, position)
+        # self.drawDebugCollisionBox(screen)
 
         if self.isDead:
             self.deadBlinkAnimation.draw(screen)
@@ -193,15 +196,16 @@ class Player:
                     self.checkHorizontalCollisions(playerColX, tileCol)
                     self.checkVerticalCollisions(playerColY, tileCol)
 
-
-    def checkHorizontalCollisions(self, playerCollision : pg.Rect, tileCollision : pg.Rect):
+    def checkHorizontalCollisions(self, playerCollision : pg.Rect, tileCollision: pg.Rect):
         if playerCollision.colliderect(tileCollision):
-            if self.dx > 0: # right
-                self.playerData.posX = tileCollision.left - playerCollision.width - self.canvas.left
-            elif self.dx < 0: # left
-                self.playerData.posX = tileCollision.right - self.canvas.left
-            self.dx = 0
+            collisionOffsetX = self.playerData.playerWidth - playerCollision.width
 
+            if self.dx > 0:  # moving right
+                self.playerData.posX = int(tileCollision.left - self.playerData.playerWidth + collisionOffsetX / 2 - self.canvas.left)
+            elif self.dx < 0:  # moving left
+                self.playerData.posX = int(tileCollision.right - collisionOffsetX / 2 - self.canvas.left)
+
+            self.dx = 0
 
     def checkVerticalCollisions(self, playerCollision : pg.Rect, tileCollision : pg.Rect):
         if playerCollision.colliderect(tileCollision):
@@ -238,11 +242,22 @@ class Player:
 
 
     def getPlayerCollisionX(self) -> pg.Rect:
-        return pg.Rect(self.canvas.left + self.playerData.posX + self.dx, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight)
-
+        offset = 2
+        return pg.Rect(
+            self.canvas.left + self.playerData.posX + self.dx + offset * 2,
+            self.canvas.top + self.playerData.posY + offset,
+            self.playerData.playerWidth - offset * 4,
+            self.playerData.playerHeight - offset * 2
+        )
 
     def getPlayerCollisionY(self) -> pg.Rect:
-        return pg.Rect(self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.newPosY, self.playerData.playerWidth, self.playerData.playerHeight)
+        offset = 2
+        return pg.Rect(
+            self.canvas.left + self.playerData.posX + offset * 2,
+            self.canvas.top + self.playerData.newPosY + offset // 2,
+            self.playerData.playerWidth - offset * 4,
+            self.playerData.playerHeight - offset
+        )
 
 
     def getTileCollision(self, tile : Tile) -> pg.Rect:
@@ -252,3 +267,8 @@ class Player:
     def reset(self):
         self.moveToStart()
         self.playerData.canMove = True
+
+
+    def drawDebugCollisionBox(self, screen: pg.Surface):
+        pg.draw.rect(screen, (255, 0, 0), self.getPlayerCollisionX(), 1)
+        pg.draw.rect(screen, (0, 255, 0), self.getPlayerCollisionY(), 1)
