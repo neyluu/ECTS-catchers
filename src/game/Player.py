@@ -2,6 +2,7 @@ import pygame as pg
 
 from src.common import Settings
 from src.game.PlayerData import PlayerData
+from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.Map import Map
 from src.game.map.tiles.Tile import Tile
 from src.gui.animations.Blink import Blink
@@ -15,7 +16,10 @@ class Player:
 
         self.playerData = PlayerData()
 
+        self.idleAnimation = SpriteAnimation("assets/animations/playerAnimation", 0.5)
+
         self.deadBlinkAnimation = Blink(canvas)
+
         self.deadBlinkAnimation.color = pg.Color(100, 20, 20)
         self.deadBlinkAnimation.time = 2
         self.isDead = False
@@ -99,10 +103,11 @@ class Player:
         self.move()
         self.checkCollisions()
         self.updatePosition()
+        self.idleAnimation.update(dt)
 
 
     def draw(self, screen : pg.Surface):
-        pg.draw.rect(screen, self.color, (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight))
+        self.idleAnimation.draw(screen, (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight))
         if self.isDead:
             self.deadBlinkAnimation.draw(screen)
 
