@@ -88,28 +88,12 @@ class Player:
         self.dx = 0
         self.dy = 0
 
-        if self.isDead:
-            if self.deadBlinkAnimation.timeElapsed > self.deadBlinkAnimation.time / 2 and not self.deadHandled:
-                self.playerData.hp = self.playerData.startHp
-                self.moveToStart()
-                self.playerData.canMove = True
-                self.deadHandled = True
-            if not self.deadBlinkAnimation.running:
-                self.isDead = False
-                self.deadHandled = False
-                self.deadBlinkAnimation.reset()
-            else:
-                self.deadBlinkAnimation.update(dt)
-
-        if self.playerData.hp <= 0:
-            self.isDead = True
-            self.playerData.canMove = False
-            self.deadBlinkAnimation.start()
+        self.handleOnDead(dt)
+        self.checkHP()
 
         if self.shouldBufferedJump:
             self.shouldBufferedJump = False
             self.jump()
-
 
         self.checkEnteredTriggers()
         self.move()
@@ -124,6 +108,28 @@ class Player:
 
         if self.isDead:
             self.deadBlinkAnimation.draw(screen)
+
+
+    def handleOnDead(self, dt):
+        if self.isDead:
+            if self.deadBlinkAnimation.timeElapsed > self.deadBlinkAnimation.time / 2 and not self.deadHandled:
+                self.playerData.hp = self.playerData.startHp
+                self.moveToStart()
+                self.playerData.canMove = True
+                self.deadHandled = True
+            if not self.deadBlinkAnimation.running:
+                self.isDead = False
+                self.deadHandled = False
+                self.deadBlinkAnimation.reset()
+            else:
+                self.deadBlinkAnimation.update(dt)
+
+
+    def checkHP(self):
+        if self.playerData.hp <= 0:
+            self.isDead = True
+            self.playerData.canMove = False
+            self.deadBlinkAnimation.start()
 
 
     def move(self):

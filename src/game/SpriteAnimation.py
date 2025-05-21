@@ -6,7 +6,6 @@ class SpriteAnimation:
         self.folderPath : str = path
         self.filenames = os.listdir(self.folderPath)
         self.frameFilenames = sorted([f for f in self.filenames if f.endswith(".png")])
-        print(self.frameFilenames)
         self.frames = []
         self.loadFrames()
 
