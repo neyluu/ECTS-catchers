@@ -74,14 +74,16 @@ class Game:
                 self.nextLevelAnimation.update(dt)
 
         if self.isNextLevel():
-            self.isLevelChanging = True
             self.nextLevel = self.player.playerData.currentLevel
+
+            if self.nextLevel >= len(self.levels):
+                print("Game over!")
+                self.player.playerData.currentLevel = self.currentLevel
+                return
+
+            self.isLevelChanging = True
             self.player.playerData.canMove = False
             self.nextLevelAnimation.start()
-
-        if self.player.playerData.currentLevel >= len(self.levels):
-            # print("Game over!")
-            pass
 
 
     def draw(self, screen : pg.Surface):
