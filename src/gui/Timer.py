@@ -57,7 +57,7 @@ class Timer:
             self.start_time_current_segment_ticks = pg.time.get_ticks()
             self.running = True
 
-    def get_time_string(self) -> str:
+    def getTimeString(self) -> str:
         return self.elapsed_time_str
 
     def getTotalSeconds(self) -> int:
