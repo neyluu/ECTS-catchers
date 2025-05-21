@@ -14,6 +14,9 @@ class Level:
         self.levelLoader = LevelLoader()
         print(self.canvas)
 
+        self.startPosX: int = 550
+        self.startPosY: int = 950
+
 
     def handleEvents(self, event):
         self.map.handleEvent(event)
@@ -28,5 +31,5 @@ class Level:
         self.map.draw(screen)
 
 
-    def reset(self):
+    def reset(self, playerData : PlayerData):
         pass

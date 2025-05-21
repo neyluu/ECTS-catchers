@@ -9,6 +9,9 @@ class Level01(Level):
         self.color = "green"
         self.map = self.levelLoader.load("testlevel.level", self.map)
 
+        self.startPosX: int = 550
+        self.startPosY: int = 950
+
 
     def handleEvents(self, event):
         super().handleEvents(event)
@@ -20,4 +23,7 @@ class Level01(Level):
 
     def draw(self, screen : pg.Surface):
         super().draw(screen)
+
+    def reset(self, playerData: PlayerData):
+        pass
 

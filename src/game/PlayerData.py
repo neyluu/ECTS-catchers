@@ -29,4 +29,5 @@ class PlayerData():
         self.startHp = 3
         self.hp: int = self.startHp
 
+        self.levelChanged = False
         self.currentLevel = 0

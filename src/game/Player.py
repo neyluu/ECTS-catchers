@@ -1,4 +1,5 @@
 import pygame as pg
+from pygame.examples.stars import move_stars
 
 from src.common import Settings
 from src.game.PlayerData import PlayerData
@@ -246,3 +247,8 @@ class Player:
 
     def getTileCollision(self, tile : Tile) -> pg.Rect:
         return pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
+
+
+    def reset(self):
+        self.moveToStart()
+        self.playerData.canMove = True

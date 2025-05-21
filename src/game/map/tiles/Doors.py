@@ -10,7 +10,8 @@ class Doors(Trigger):
 
 
     def onTrigger(self, playerData : PlayerData):
-        if self.wasEntered():
+        if self.wasEntered() or playerData.levelChanged:
             return
 
         playerData.currentLevel += 1
+        playerData.levelChanged = True

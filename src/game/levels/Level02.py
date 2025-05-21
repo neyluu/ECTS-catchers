@@ -10,6 +10,9 @@ class Level02(Level):
 
         self.map = self.levelLoader.load("testlevel2.level", self.map)
 
+        self.startPosX: int = 550
+        self.startPosY: int = 950
+
 
     def handleEvents(self, event):
         super().handleEvents(event)
@@ -23,7 +26,7 @@ class Level02(Level):
         super().draw(screen)
 
 
-    def reset(self):
+    def reset(self, playerData: PlayerData):
         self.playerData.posX = self.playerData.startPosX
         self.playerData.posY = self.playerData.startPosY
         self.playerData.hp = self.playerData.startHp
