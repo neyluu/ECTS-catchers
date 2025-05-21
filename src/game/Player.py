@@ -16,7 +16,13 @@ class Player:
 
         self.playerData = PlayerData()
 
-        self.idleAnimation = SpriteAnimation("assets/animations/playerAnimation", 0.5)
+        self.moveAnimations = {
+            "idle": SpriteAnimation("assets/animations/playerIdle", 0.5),
+            "runLeft": SpriteAnimation("assets/animations/playerRunLeft", 0.5),
+            "runRight": SpriteAnimation("assets/animations/playerRunRight", 0.5),
+            "jump": SpriteAnimation("assets/animations/playerJump", 0.5)
+        }
+        self.currentMoveAnimation = "idle"
 
         self.deadBlinkAnimation = Blink(canvas)
 
@@ -52,12 +58,16 @@ class Player:
         if event.type == pg.KEYDOWN and self.playerData.canMove:
             if event.key == self.keymap.MOVE_UP:
                 self.movingUp = True
+                self.currentMoveAnimation = "jump"
 
             if event.key == self.keymap.MOVE_RIGHT:
                 self.movingRight = True
+                self.currentMoveAnimation = "runRight"
 
             if event.key == self.keymap.MOVE_LEFT:
                 self.movingLeft = True
+                self.currentMoveAnimation = "runLeft"
+
 
         if event.type == pg.KEYUP:
             if event.key == self.keymap.MOVE_UP:
@@ -68,6 +78,8 @@ class Player:
 
             if event.key == self.keymap.MOVE_LEFT:
                 self.movingLeft = False
+
+            self.currentMoveAnimation = "idle"
 
 
     def update(self, dt : float):
@@ -103,11 +115,13 @@ class Player:
         self.move()
         self.checkCollisions()
         self.updatePosition()
-        self.idleAnimation.update(dt)
+        self.moveAnimations[self.currentMoveAnimation].update(dt)
 
 
     def draw(self, screen : pg.Surface):
-        self.idleAnimation.draw(screen, (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight))
+        position = (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight)
+        self.moveAnimations[self.currentMoveAnimation].draw(screen, position)
+
         if self.isDead:
             self.deadBlinkAnimation.draw(screen)
 
