@@ -6,7 +6,7 @@ class Doors(Trigger):
     def __init__(self):
         super().__init__()
 
-        self.color = "orange"
+        self.color = "blueviolet"
 
 
     def onTrigger(self, playerData : PlayerData):
