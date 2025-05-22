@@ -25,9 +25,9 @@ class Player:
         self.currentMoveAnimation = "idle"
 
         self.deadBlinkAnimation = Blink(canvas)
-
         self.deadBlinkAnimation.color = pg.Color(100, 20, 20)
-        self.deadBlinkAnimation.time = 2
+        self.deadBlinkAnimation.time = 1
+
         self.isDead = False
         self.deadHandled = False
 
@@ -85,6 +85,7 @@ class Player:
     def update(self, dt : float):
         self.dt = dt
 
+
         self.dx = 0
         self.dy = 0
 
@@ -105,6 +106,8 @@ class Player:
         self.checkCollisions()
         self.updatePosition()
         self.moveAnimations[self.currentMoveAnimation].update(dt)
+
+        self.playerData.gotDamaged = False
 
 
     def draw(self, screen : pg.Surface):
@@ -134,6 +137,9 @@ class Player:
 
 
     def checkHP(self):
+        if self.playerData.gotDamaged:
+            self.playerData.hp -= 1
+
         if self.playerData.hp <= 0:
             self.isDead = True
             self.playerData.canMove = False

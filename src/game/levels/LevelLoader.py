@@ -5,6 +5,7 @@ from src.game.map.tiles.Block import Block
 from src.game.map.tiles.Cobweb import Cobweb
 from src.game.map.tiles.Coin import Coin
 from src.game.map.tiles.Doors import Doors
+from src.game.map.tiles.Lava import Lava
 from src.game.map.tiles.Spikes import Spikes
 
 
@@ -36,6 +37,8 @@ class LevelLoader:
                     levelMap.setTile(x, y, Cobweb())
                 elif classType == "Doors":
                     levelMap.setTile(x, y, Doors())
+                elif classType == "Lava":
+                    levelMap.setTile(x, y, Lava())
                 else:
                     print("ERROR: class: " + classType + " dont exist!")
 

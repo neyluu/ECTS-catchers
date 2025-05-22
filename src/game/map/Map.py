@@ -15,13 +15,15 @@ class Map:
         self.initTileMap()
 
 
-
     def handleEvent(self, event):
         pass
 
 
     def update(self, dt : float):
-        pass
+        for i in range(self.sizeY):
+            for j in range(self.sizeX):
+                tile = self.tileMap[i][j]
+                tile.update(dt)
 
 
     def draw(self, screen: pg.Surface):
