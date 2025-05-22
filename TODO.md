@@ -1,3 +1,2 @@
 - przebudowa lvli ???
 - lava
-- pajeczyna zwolnienie spadania

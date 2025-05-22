@@ -1,5 +1,4 @@
 import pygame as pg
-from pygame.examples.stars import move_stars
 
 from src.common import Settings
 from src.game.PlayerData import PlayerData
@@ -96,6 +95,11 @@ class Player:
             self.shouldBufferedJump = False
             self.jump()
 
+        if self.playerData.velocityY < 0:
+            self.currentMoveAnimation = "jump"
+        if self.playerData.velocityY == 0:
+            self.currentMoveAnimation = "idle"
+
         self.checkEnteredTriggers()
         self.move()
         self.checkCollisions()
@@ -148,9 +152,11 @@ class Player:
 
         if self.movingRight:
             self.dx += self.playerData.speed * self.dt
+            self.currentMoveAnimation = "runRight"
 
         if self.movingLeft:
             self.dx -= self.playerData.speed * self.dt
+            self.currentMoveAnimation = "runLeft"
 
         self.playerData.velocityY += self.playerData.gravityForce * self.dt
         if self.playerData.velocityY > self.playerData.maxFallingSpeed:
