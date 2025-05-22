@@ -273,6 +273,10 @@ class Player:
     def reset(self):
         self.moveToStart()
         self.playerData.canMove = True
+        self.playerData.posX = self.playerData.startPosX
+        self.playerData.posY = self.playerData.startPosY
+        self.playerData.hp = self.playerData.startHp
+        self.playerData.points = 0
 
 
     def drawDebugCollisionBox(self, screen: pg.Surface):
