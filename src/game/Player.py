@@ -1,5 +1,4 @@
 import pygame as pg
-from pygame.examples.stars import move_stars
 
 from src.common import Settings
 from src.game.PlayerData import PlayerData
@@ -26,9 +25,9 @@ class Player:
         self.currentMoveAnimation = "idle"
 
         self.deadBlinkAnimation = Blink(canvas)
-
         self.deadBlinkAnimation.color = pg.Color(100, 20, 20)
-        self.deadBlinkAnimation.time = 2
+        self.deadBlinkAnimation.time = 1
+
         self.isDead = False
         self.deadHandled = False
 
@@ -86,6 +85,7 @@ class Player:
     def update(self, dt : float):
         self.dt = dt
 
+
         self.dx = 0
         self.dy = 0
 
@@ -96,11 +96,18 @@ class Player:
             self.shouldBufferedJump = False
             self.jump()
 
+        if self.playerData.velocityY < 0:
+            self.currentMoveAnimation = "jump"
+        if self.playerData.velocityY == 0:
+            self.currentMoveAnimation = "idle"
+
         self.checkEnteredTriggers()
         self.move()
         self.checkCollisions()
         self.updatePosition()
         self.moveAnimations[self.currentMoveAnimation].update(dt)
+
+        self.playerData.gotDamaged = False
 
 
     def draw(self, screen : pg.Surface):
@@ -130,6 +137,9 @@ class Player:
 
 
     def checkHP(self):
+        if self.playerData.gotDamaged:
+            self.playerData.hp -= 1
+
         if self.playerData.hp <= 0:
             self.isDead = True
             self.playerData.canMove = False
@@ -148,9 +158,11 @@ class Player:
 
         if self.movingRight:
             self.dx += self.playerData.speed * self.dt
+            self.currentMoveAnimation = "runRight"
 
         if self.movingLeft:
             self.dx -= self.playerData.speed * self.dt
+            self.currentMoveAnimation = "runLeft"
 
         self.playerData.velocityY += self.playerData.gravityForce * self.dt
         if self.playerData.velocityY > self.playerData.maxFallingSpeed:
@@ -267,6 +279,10 @@ class Player:
     def reset(self):
         self.moveToStart()
         self.playerData.canMove = True
+        self.playerData.posX = self.playerData.startPosX
+        self.playerData.posY = self.playerData.startPosY
+        self.playerData.hp = self.playerData.startHp
+        self.playerData.points = 0
 
 
     def drawDebugCollisionBox(self, screen: pg.Surface):

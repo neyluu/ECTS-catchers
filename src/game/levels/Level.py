@@ -1,21 +1,20 @@
 import pygame as pg
 
-from src.game.PlayerData import PlayerData
 from src.game.levels.LevelLoader import LevelLoader
 from src.game.map.Map import Map
 
 class Level:
-    def __init__(self, isLeft : bool, canvas: pg.Rect):
-        self.isLeft = isLeft
-        self.canvas = canvas
-        self.color = "black"
-        self.playerData : PlayerData = None
-        self.map = Map(self.canvas)
-        self.levelLoader = LevelLoader()
-        print(self.canvas)
+    def __init__(self, isLeft : bool, canvas: pg.Rect, filename : str, startPosX : int, startPosY : int):
+        self.isLeft : bool = isLeft
+        self.canvas : pg.Rect = canvas
+        self.filename : str = filename
+        self.startPosX : int = startPosX
+        self.startPosY : int = startPosY
 
-        self.startPosX: int = 550
-        self.startPosY: int = 950
+        self.color = "black"
+        self.levelLoader = LevelLoader()
+        self.map = Map(self.canvas)
+        self.map = self.levelLoader.load(filename, self.map)
 
 
     def handleEvents(self, event):
@@ -29,7 +28,3 @@ class Level:
     def draw(self, screen):
         pg.draw.rect(screen, self.color, self.canvas)
         self.map.draw(screen)
-
-
-    def reset(self, playerData : PlayerData):
-        pass

@@ -29,6 +29,7 @@ class PlayerData():
         self.points: int = 0
         self.startHp = 3
         self.hp: int = self.startHp
+        self.gotDamaged : bool = False
 
         self.levelChanged = False
         self.currentLevel = 0

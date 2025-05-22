@@ -1,12 +1,10 @@
-import math
 import pygame as pg
 
 from src.game.Player import Player
-from src.game.levels import *
-from src.game.levels.Level01 import Level01
-from src.game.levels.Level02 import Level02
-from src.gui.animations.Blink import Blink
+from src.game.levels.Level import Level
 from src.gui.Timer import Timer
+from src.gui.animations.Blink import Blink
+
 
 class Game:
 
@@ -15,26 +13,27 @@ class Game:
         self.isLeft = isLeft
         self.backgroundColor = "black"
         self.currentLevel = 0
-        self.levels = [
-            Level01(self.isLeft, self.canvas),
-            Level01(self.isLeft, self.canvas),
-            Level02(self.isLeft, self.canvas)
-        ]
-        self.currentLevel = 0
-        self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
-        self.nextLevelAnimation = Blink(self.canvas)
 
-        self.addPlayerDataToLevels()
+        self.levels = [
+            Level(self.isLeft, self.canvas, "testlevel.level", 550, 950),
+            Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950)
+        ]
+
+        self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
+        self.setPlayerStartingPosition()
 
         self.dt : float = 0
 
         self.nextLevel : int = 0
         self.isLevelChanging : bool = False
         self.levelChanged : bool = False
+        self.nextLevelAnimation = Blink(self.canvas)
+
 
         self.game_timer = Timer()
         self.timer_position = (self.canvas.x + 320, self.canvas.y + 4)
         self.game_paused = False
+
 
     def handleEvent(self, event):
         if event.type == pg.KEYDOWN:
@@ -110,14 +109,12 @@ class Game:
         self.currentLevel = self.nextLevel
         self.player.playerData.levelChanged = False
 
-        self.levels[self.currentLevel].reset(self.player.playerData)
-        self.player.playerData.startPosX = self.levels[self.currentLevel].startPosX
-        self.player.playerData.startPosY = self.levels[self.currentLevel].startPosY
+        self.setPlayerStartingPosition()
 
         self.player.tileMap = self.levels[self.currentLevel].map
         self.player.reset()
 
 
-    def addPlayerDataToLevels(self):
-        for level in self.levels:
-            level.playerData = self.player.playerData
+    def setPlayerStartingPosition(self):
+        self.player.playerData.startPosX = self.levels[self.currentLevel].startPosX
+        self.player.playerData.startPosY = self.levels[self.currentLevel].startPosY
