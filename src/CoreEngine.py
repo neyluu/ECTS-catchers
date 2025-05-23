@@ -29,6 +29,8 @@ class CoreEngine():
     def __init__(self):
         super().__init__()
 
+        self.font = pg.font.SysFont("Arial", 24)
+
         self.sceneManager = SceneManager()
         self.running = True
         self.screen = surface
@@ -57,6 +59,10 @@ class CoreEngine():
 
     def draw(self):
         self.scenes[self.sceneManager.getCurrentScene()].draw(self.screen)
+
+        fps = self.clock.get_fps()
+        fps_text = self.font.render(f"FPS: {int(fps)}", True, pg.Color('white'))
+        self.screen.blit(fps_text, (10, 10))
 
         scaledScreen = pg.transform.scale(self.screen, (screenWidth, screenHeight))
         screen.blit(scaledScreen, (0, 0))
