@@ -6,7 +6,7 @@ class DoubleJump(Trigger):
     def __init__(self):
         super().__init__()
 
-        self.color = "navajowhite2"
+        self.color = "olivedrab1"
         self.playerData = None
 
     def update(self, dt: float):
@@ -19,3 +19,4 @@ class DoubleJump(Trigger):
 
         print("Double jump")
         self.playerData : PlayerData = playerData
+        self.playerData.canDoubleJump = True

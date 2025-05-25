@@ -38,7 +38,6 @@ class Player:
 
         self.isJumpInBuffer : bool = False
         self.shouldBufferedJump : bool = False
-        self.inAir : bool = False
         self.isJumping = True
 
         self.dx = 0
@@ -84,7 +83,6 @@ class Player:
 
     def update(self, dt : float):
         self.dt = dt
-
 
         self.dx = 0
         self.dy = 0
@@ -150,6 +148,10 @@ class Player:
         if self.movingUp:
             if not self.isJumping and self.playerData.velocityY < self.playerData.jumpBufferingDropLevel:
                 self.jump()
+            elif self.playerData.canDoubleJump:
+                self.jump()
+                print("double jumper!")
+                self.playerData.canDoubleJump = False
             else:
                 if self.playerData.velocityY > 0 and 0 < (self.jumpPositionY - self.playerData.posY) < self.playerData.jumpBufferingLevel and not self.isJumpInBuffer:
                     self.isJumpInBuffer = True
