@@ -38,8 +38,8 @@ class Player:
 
         self.isJumpInBuffer : bool = False
         self.shouldBufferedJump : bool = False
-        self.inAir : bool = False
         self.isJumping = True
+        self.doubleJumped = False
 
         self.dx = 0
         self.dy = 0
@@ -84,7 +84,6 @@ class Player:
 
     def update(self, dt : float):
         self.dt = dt
-
 
         self.dx = 0
         self.dy = 0
@@ -150,6 +149,11 @@ class Player:
         if self.movingUp:
             if not self.isJumping and self.playerData.velocityY < self.playerData.jumpBufferingDropLevel:
                 self.jump()
+            # self.playerData.velocityY < self.playerData.jumpBufferingDropLevel is responsible for disabling jumping during falling
+            # eventually can be disabled for double jump
+            elif self.playerData.canDoubleJump and not self.doubleJumped and self.playerData.velocityY < self.playerData.jumpBufferingDropLevel:
+                self.jump()
+                self.doubleJumped = True
             else:
                 if self.playerData.velocityY > 0 and 0 < (self.jumpPositionY - self.playerData.posY) < self.playerData.jumpBufferingLevel and not self.isJumpInBuffer:
                     self.isJumpInBuffer = True
@@ -184,29 +188,43 @@ class Player:
 
 
     def checkCollisions(self):
-        for i in range(self.tileMap.sizeY):
-            for j in range(self.tileMap.sizeX):
-                tile = self.tileMap.tileMap[i][j]
+        mapOffsetX : int = self.tileMap.offsetX
+        mapOffsetY : int = self.tileMap.offsetY
 
-                playerColX = self.getPlayerCollisionX()
-                playerColY = self.getPlayerCollisionY()
-                tileCol = self.getTileCollision(tile)
+        tilePosX : int = int((self.playerData.posX - mapOffsetX) // Tile.size)
+        tilePosY : int = int((self.playerData.posY - mapOffsetY) // Tile.size)
 
-                if tile.isTrigger:
-                    # Scale collision to be 24x24 inside block, to give player more space to movement error
-                    tileCol.left += 4
-                    tileCol.top += 4
-                    tileCol.width -= 4
-                    tileCol.height -= 4
+        tiles = [
+            self.tileMap.tileMap[tilePosY][tilePosX],
+            self.tileMap.tileMap[tilePosY + 1][tilePosX],
+            self.tileMap.tileMap[tilePosY + 2][tilePosX],
 
-                    if playerColX.colliderect(tileCol):
-                        tile.onTrigger(self.playerData)
-                        self.enteredTriggers.append(tile)
-                    continue
+            self.tileMap.tileMap[tilePosY][tilePosX + 1],
+            self.tileMap.tileMap[tilePosY + 1][tilePosX + 1],
+            self.tileMap.tileMap[tilePosY + 2][tilePosX + 1],
+        ]
 
-                if tile.isCollision:
-                    self.checkHorizontalCollisions(playerColX, tileCol)
-                    self.checkVerticalCollisions(playerColY, tileCol)
+        for tile in tiles:
+            playerColX = self.getPlayerCollisionX()
+            playerColY = self.getPlayerCollisionY()
+            tileCol = self.getTileCollision(tile)
+
+            if tile.isTrigger:
+                # Scale collision to be 24x24 inside block, to give player more space to movement error
+                tileCol.left += 4
+                tileCol.top += 4
+                tileCol.width -= 4
+                tileCol.height -= 4
+
+                if playerColX.colliderect(tileCol):
+                    tile.onTrigger(self.playerData)
+                    self.enteredTriggers.append(tile)
+                continue
+
+            if tile.isCollision:
+                self.checkHorizontalCollisions(playerColX, tileCol)
+                self.checkVerticalCollisions(playerColY, tileCol)
+
 
     def checkHorizontalCollisions(self, playerCollision : pg.Rect, tileCollision: pg.Rect):
         if playerCollision.colliderect(tileCollision):
@@ -226,6 +244,7 @@ class Player:
                 self.dy = 0.0
                 self.playerData.velocityY = 0
                 self.isJumping = False
+                self.doubleJumped = False
                 if self.isJumpInBuffer:
                     self.isJumpInBuffer = False
                     self.shouldBufferedJump = True
