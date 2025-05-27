@@ -1,6 +1,6 @@
 import pygame as pg
 
-from src.common import Settings
+from src.config import Settings
 from src.SceneManager import SceneManager
 from src.scenes.MainMenu import MainMenu
 from src.scenes.GameScene import GameScene

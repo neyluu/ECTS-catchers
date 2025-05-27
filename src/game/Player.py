@@ -1,6 +1,6 @@
 import pygame as pg
 
-from src.common import Settings
+from src.config import Settings
 from src.game.PlayerData import PlayerData
 from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.Map import Map
