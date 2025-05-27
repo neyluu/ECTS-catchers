@@ -195,13 +195,25 @@ class Player:
         tilePosY : int = int((self.playerData.posY - mapOffsetY) // Tile.size)
 
         tiles = [
-            self.tileMap.tileMap[tilePosY][tilePosX],
-            self.tileMap.tileMap[tilePosY + 1][tilePosX],
-            self.tileMap.tileMap[tilePosY + 2][tilePosX],
+            # self.tileMap.tileMap[tilePosY - 1][tilePosX - 1],
+            self.tileMap.tileMap[tilePosY - 1][tilePosX],
+            self.tileMap.tileMap[tilePosY - 1][tilePosX + 1],
+            # self.tileMap.tileMap[tilePosY - 1][tilePosX + 2],
 
+            self.tileMap.tileMap[tilePosY][tilePosX - 1],
+            self.tileMap.tileMap[tilePosY][tilePosX],
             self.tileMap.tileMap[tilePosY][tilePosX + 1],
+            self.tileMap.tileMap[tilePosY][tilePosX + 2],
+
+            self.tileMap.tileMap[tilePosY + 1][tilePosX - 1],
+            self.tileMap.tileMap[tilePosY + 1][tilePosX],
             self.tileMap.tileMap[tilePosY + 1][tilePosX + 1],
+            self.tileMap.tileMap[tilePosY + 1][tilePosX + 2],
+
+            # self.tileMap.tileMap[tilePosY + 2][tilePosX - 1],
+            self.tileMap.tileMap[tilePosY + 2][tilePosX],
             self.tileMap.tileMap[tilePosY + 2][tilePosX + 1],
+            # self.tileMap.tileMap[tilePosY + 2][tilePosX + 2]
         ]
 
         for tile in tiles:
