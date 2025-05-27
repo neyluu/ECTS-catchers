@@ -17,11 +17,12 @@ class Player:
         self.playerData = PlayerData()
 
         self.moveAnimations = {
-            "idle": SpriteAnimation("assets/animations/playerIdle", 0.5),
-            "runLeft": SpriteAnimation("assets/animations/playerRunLeft", 0.5),
-            "runRight": SpriteAnimation("assets/animations/playerRunRight", 0.5),
-            "jump": SpriteAnimation("assets/animations/playerJump", 0.5)
+            "idle": SpriteAnimation("assets/animations/playerIdle", 0.5, (48, 48)),
+            "runLeft": SpriteAnimation("assets/animations/playerRunLeft", 0.5, (48, 48)),
+            "runRight": SpriteAnimation("assets/animations/playerRunRight", 0.5, (48, 48)),
+            "jump": SpriteAnimation("assets/animations/playerJump", 0.5, (48, 48))
         }
+
         self.currentMoveAnimation = "idle"
 
         self.deadBlinkAnimation = Blink(canvas)
