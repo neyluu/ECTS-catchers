@@ -1,6 +1,6 @@
 import pygame as pg
 
-from src.common import Settings
+from src.config import Settings
 from src.scenes.Scene import Scene
 from src.game.Game import Game
 from src.game.PlayerKeymap import PlayerKeymap
