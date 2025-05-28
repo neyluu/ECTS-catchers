@@ -2,6 +2,7 @@ import pygame as pg
 
 from src.game.PlayerData import PlayerData
 from src.game.map.tiles.Trigger import Trigger
+import src.config.PowerUpsConfig as config
 
 
 class DoubleJump(Trigger):
@@ -12,7 +13,7 @@ class DoubleJump(Trigger):
         self.color = "olivedrab1"
 
         self.playerData : PlayerData = None
-        self.boostTime : float = 30 # seconds
+        self.boostTime : float = config.DOUBLE_JUMP_TIME # seconds
         self.timer : float = 0
         self.started : bool = False
 
