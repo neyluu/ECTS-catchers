@@ -45,6 +45,6 @@ class PlayerData():
         self.maxFallingSpeed = self.startMaxFallingSpeed
 
         self.points = 0
-        self.hp = self.startHp
+        # self.hp = self.startHp
         self.gotDamaged = False
         self.canDoubleJump = False
