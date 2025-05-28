@@ -10,14 +10,15 @@ class SpeedUp(Trigger):
         super().__init__()
         self.isResettable = False
 
-        self.color = "aqua"
-
         self.playerData : PlayerData = None
 
         self.started = False
         self.boostTime : float = config.SPEED_UP_TIME # seconds
         self.boostScale : float = config.SPEED_UP_SPEED_FACTOR
         self.timer : float = 0
+
+        self.path = "assets/textures/powerups/power_up_speed.png"
+        self.loadTexture()
 
 
     def update(self, dt: float):
@@ -43,6 +44,7 @@ class SpeedUp(Trigger):
 
     def onMapReset(self):
         self.isActive = True
-        self.color = "aqua"
+        self.path = "assets/textures/powerups/power_up_speed.png"
+        self.loadTexture()
         self.started = False
         self.timer = 0
