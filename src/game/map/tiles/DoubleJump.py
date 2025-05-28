@@ -10,7 +10,6 @@ class DoubleJump(Trigger):
         super().__init__()
 
         self.isResettable = False
-        self.color = "olivedrab1"
 
         self.playerData : PlayerData = None
         self.boostTime : float = config.DOUBLE_JUMP_TIME # seconds
@@ -34,7 +33,8 @@ class DoubleJump(Trigger):
             return
 
         self.started = True
-        self.color = pg.Color(0, 0, 0, 0)
+        self.color = pg.Color(0,0,0,0)
+        self.path = None
         self.playerData : PlayerData = playerData
         self.playerData.canDoubleJump = True
 
@@ -44,4 +44,7 @@ class DoubleJump(Trigger):
         self.color = "olivedrab1"
         self.started = False
         self.timer = 0
+
+        self.path = "assets/textures/powerups/doubleJump.png"
+        self.loadTexture()
     
