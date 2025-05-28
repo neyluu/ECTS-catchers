@@ -26,6 +26,7 @@ class DoubleJump(Trigger):
             if self.timer > self.boostTime:
                 self.playerData.canDoubleJump = False
                 self.started = False
+                self.onMapReset()
 
 
     def onTrigger(self, playerData : PlayerData):

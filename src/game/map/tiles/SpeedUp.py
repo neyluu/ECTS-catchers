@@ -26,6 +26,7 @@ class SpeedUp(Trigger):
             if self.timer > self.boostTime:
                 self.playerData.speed = self.playerData.startSpeed
                 self.started = False
+                self.onMapReset()
 
 
     def onTrigger(self, playerData : PlayerData):
