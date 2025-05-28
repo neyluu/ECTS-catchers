@@ -2,6 +2,7 @@ import pygame as pg
 
 from src.game.PlayerData import PlayerData
 from src.game.map.tiles.Trigger import Trigger
+import src.config.PowerUpsConfig as config
 
 
 class SpeedUp(Trigger):
@@ -14,8 +15,8 @@ class SpeedUp(Trigger):
         self.playerData : PlayerData = None
 
         self.started = False
-        self.boostTime : float = 5 # seconds
-        self.boostScale : float = 2
+        self.boostTime : float = config.SPEED_UP_TIME # seconds
+        self.boostScale : float = config.SPEED_UP_SPEED_FACTOR
         self.timer : float = 0
 
 
