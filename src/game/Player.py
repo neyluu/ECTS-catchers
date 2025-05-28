@@ -296,6 +296,7 @@ class Player:
     def reset(self):
         self.moveToStart()
         self.playerData.reset()
+        self.tileMap.reset()
 
 
     def drawDebugCollisionBox(self, screen: pg.Surface):

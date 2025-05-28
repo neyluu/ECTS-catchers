@@ -21,3 +21,7 @@ class Tile:
     def draw(self, screen: pg.Surface):
         pg.draw.rect(screen, self.color, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
 
+
+    def onMapReset(self):
+        pass
+

@@ -46,3 +46,9 @@ class Map:
             for j in range(self.sizeX):
                 innerList.append(None)
             self.tileMap.append(innerList)
+
+
+    def reset(self):
+        for row in self.tileMap:
+            for tile in row:
+                tile.onMapReset()

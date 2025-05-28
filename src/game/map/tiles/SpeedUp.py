@@ -36,3 +36,10 @@ class SpeedUp(Trigger):
         self.started = True
         self.color = pg.Color(0, 0, 0, 0)
         playerData.speed *= self.boostScale
+
+
+    def onMapReset(self):
+        self.isActive = True
+        self.color = "aqua"
+        self.started = False
+        self.timer = 0

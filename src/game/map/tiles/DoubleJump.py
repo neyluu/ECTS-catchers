@@ -34,3 +34,11 @@ class DoubleJump(Trigger):
         self.color = pg.Color(0, 0, 0, 0)
         self.playerData : PlayerData = playerData
         self.playerData.canDoubleJump = True
+
+
+    def onMapReset(self):
+        self.isActive = True
+        self.color = "olivedrab1"
+        self.started = False
+        self.timer = 0
+    
