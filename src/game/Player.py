@@ -88,8 +88,8 @@ class Player:
         self.dx = 0
         self.dy = 0
 
-        self.handleOnDead(dt)
         self.checkHP()
+        self.handleOnDead(dt)
 
         if self.shouldBufferedJump:
             self.shouldBufferedJump = False
