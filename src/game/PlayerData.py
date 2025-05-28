@@ -34,3 +34,17 @@ class PlayerData():
 
         self.levelChanged = False
         self.currentLevel = 0
+
+
+    def reset(self):
+        self.canMove = True
+        self.posX = self.startPosX
+        self.posY = self.startPosY
+
+        self.speed = self.startSpeed
+        self.maxFallingSpeed = self.startMaxFallingSpeed
+
+        self.points = 0
+        # self.hp = self.startHp
+        self.gotDamaged = False
+        self.canDoubleJump = False

@@ -31,3 +31,4 @@ class Lava(Trigger):
             return
 
         self.playerData = playerData
+        self.playerData.hp -= 1
