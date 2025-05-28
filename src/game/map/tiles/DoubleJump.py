@@ -25,6 +25,7 @@ class DoubleJump(Trigger):
             self.timer += dt
             if self.timer > self.boostTime:
                 self.playerData.canDoubleJump = False
+                self.playerData.powerUps.doubleJump = False
                 self.started = False
                 self.onMapReset()
 
@@ -38,6 +39,7 @@ class DoubleJump(Trigger):
         self.path = None
         self.playerData : PlayerData = playerData
         self.playerData.canDoubleJump = True
+        self.playerData.powerUps.doubleJump = True
 
 
     def onMapReset(self):
