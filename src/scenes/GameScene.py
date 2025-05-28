@@ -63,9 +63,13 @@ class GameScene(Scene):
 
 
     def onPause(self):
-        pass
+        print("Game paused")
+        self.leftGame.pause()
+        self.rightGame.pause()
 
 
     def onUnPause(self):
-        pass
+        print("Game unpaused")
+        self.leftGame.unPause()
+        self.rightGame.unPause()
 

@@ -299,6 +299,13 @@ class Player:
         self.tileMap.reset()
 
 
+    def unPause(self):
+        self.movingUp = False
+        self.movingRight = False
+        self.movingDown = False
+        self.movingLeft = False
+
+
     def drawDebugCollisionBox(self, screen: pg.Surface):
         pg.draw.rect(screen, (255, 0, 0), self.getPlayerCollisionX(), 1)
         pg.draw.rect(screen, (0, 255, 0), self.getPlayerCollisionY(), 1)
