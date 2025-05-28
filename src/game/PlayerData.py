@@ -1,8 +1,8 @@
 class PlayerData():
     def __init__(self):
 
-        self.playerHeight: int = 48
-        self.playerWidth: int = 32
+        self.playerHeight: int = 64
+        self.playerWidth: int = 48
 
         self.startSpeed : float = 200
         self.speed: float = self.startSpeed

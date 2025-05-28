@@ -112,9 +112,9 @@ class Player:
     def draw(self, screen : pg.Surface):
         position = (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight)
 
-        # pg.draw.rect(screen, self.color, (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight))
-        self.moveAnimations[self.currentMoveAnimation].draw(screen, position)
-        # self.drawDebugCollisionBox(screen)
+        pg.draw.rect(screen, self.color, (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight))
+        # self.moveAnimations[self.currentMoveAnimation].draw(screen, position)
+        self.drawDebugCollisionBox(screen)
 
         if self.isDead:
             self.deadBlinkAnimation.draw(screen)
@@ -195,25 +195,35 @@ class Player:
         tilePosY : int = int((self.playerData.posY - mapOffsetY) // Tile.size)
 
         tiles = [
-            # self.tileMap.tileMap[tilePosY - 1][tilePosX - 1],
+            self.tileMap.tileMap[tilePosY - 2][tilePosX - 2],
+            self.tileMap.tileMap[tilePosY - 2][tilePosX - 1],
+            self.tileMap.tileMap[tilePosY - 2][tilePosX],
+            self.tileMap.tileMap[tilePosY - 2][tilePosX + 1],
+            self.tileMap.tileMap[tilePosY - 2][tilePosX + 2],
+
+            self.tileMap.tileMap[tilePosY - 1][tilePosX - 2],
+            self.tileMap.tileMap[tilePosY - 1][tilePosX - 1],
             self.tileMap.tileMap[tilePosY - 1][tilePosX],
             self.tileMap.tileMap[tilePosY - 1][tilePosX + 1],
-            # self.tileMap.tileMap[tilePosY - 1][tilePosX + 2],
+            self.tileMap.tileMap[tilePosY - 1][tilePosX + 2],
 
+            self.tileMap.tileMap[tilePosY][tilePosX - 2],
             self.tileMap.tileMap[tilePosY][tilePosX - 1],
             self.tileMap.tileMap[tilePosY][tilePosX],
             self.tileMap.tileMap[tilePosY][tilePosX + 1],
             self.tileMap.tileMap[tilePosY][tilePosX + 2],
 
+            self.tileMap.tileMap[tilePosY + 1][tilePosX - 2],
             self.tileMap.tileMap[tilePosY + 1][tilePosX - 1],
             self.tileMap.tileMap[tilePosY + 1][tilePosX],
             self.tileMap.tileMap[tilePosY + 1][tilePosX + 1],
             self.tileMap.tileMap[tilePosY + 1][tilePosX + 2],
 
-            # self.tileMap.tileMap[tilePosY + 2][tilePosX - 1],
+            self.tileMap.tileMap[tilePosY + 2][tilePosX - 2],
+            self.tileMap.tileMap[tilePosY + 2][tilePosX - 1],
             self.tileMap.tileMap[tilePosY + 2][tilePosX],
             self.tileMap.tileMap[tilePosY + 2][tilePosX + 1],
-            # self.tileMap.tileMap[tilePosY + 2][tilePosX + 2]
+            self.tileMap.tileMap[tilePosY + 2][tilePosX + 2],
         ]
 
         for tile in tiles:
@@ -237,13 +247,19 @@ class Player:
                 self.checkHorizontalCollisions(playerColX, tileCol)
                 self.checkVerticalCollisions(playerColY, tileCol)
 
-
-    def checkHorizontalCollisions(self, playerCollision : pg.Rect, tileCollision: pg.Rect):
+    def checkHorizontalCollisions(self, playerCollision: pg.Rect, tileCollision: pg.Rect):
         if playerCollision.colliderect(tileCollision):
+            # Only resolve if Y-overlap is significant
+            vertical_overlap = min(playerCollision.bottom, tileCollision.bottom) - max(playerCollision.top,
+                                                                                       tileCollision.top)
+            if vertical_overlap < 4:  # very small overlap; likely sliding over corner
+                return
+
             collisionOffsetX = self.playerData.playerWidth - playerCollision.width
 
             if self.dx > 0:  # moving right
-                self.playerData.posX = int(tileCollision.left - self.playerData.playerWidth + collisionOffsetX / 2 - self.canvas.left)
+                self.playerData.posX = int(
+                    tileCollision.left - self.playerData.playerWidth + collisionOffsetX / 2 - self.canvas.left)
             elif self.dx < 0:  # moving left
                 self.playerData.posX = int(tileCollision.right - collisionOffsetX / 2 - self.canvas.left)
 
@@ -285,21 +301,23 @@ class Player:
 
 
     def getPlayerCollisionX(self) -> pg.Rect:
-        offset = 2
+        # Horizontal collision bounds
+        padding = 6  # More padding for narrower horizontal bounds
         return pg.Rect(
-            self.canvas.left + self.playerData.posX + self.dx + offset * 2,
-            self.canvas.top + self.playerData.posY + offset,
-            self.playerData.playerWidth - offset * 4,
-            self.playerData.playerHeight - offset * 2
+            self.canvas.left + self.playerData.posX + self.dx + padding,
+            self.canvas.top + self.playerData.posY + 4,
+            self.playerData.playerWidth - 2 * padding,
+            self.playerData.playerHeight - 8
         )
 
     def getPlayerCollisionY(self) -> pg.Rect:
-        offset = 2
+        # Vertical collision bounds
+        paddingX = 6
         return pg.Rect(
-            self.canvas.left + self.playerData.posX + offset * 2,
-            self.canvas.top + self.playerData.newPosY + offset // 2,
-            self.playerData.playerWidth - offset * 4,
-            self.playerData.playerHeight - offset
+            self.canvas.left + self.playerData.posX + paddingX,
+            self.canvas.top + self.playerData.newPosY + 2,
+            self.playerData.playerWidth - 2 * paddingX,
+            self.playerData.playerHeight - 4
         )
 
 
