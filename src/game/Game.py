@@ -30,29 +30,24 @@ class Game:
 
         self.inGameUi = InGameUI(self.canvas, self.player.playerData)
 
-        self.game_paused = False
+        self.paused = False
 
 
     def handleEvent(self, event):
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_p:
-                self.game_paused = not self.game_paused
-                if self.game_paused:
-                    self.inGameUi.pauseTimer()
-                else:
-                    self.inGameUi.resumeTimer()
-                return
-            if self.game_paused:
-                return
+        if self.paused:
+            return
 
         self.levels[self.currentLevel].handleEvents(event)
         self.player.handleEvent(event)
 
 
     def update(self, dt : float):
+        if self.paused:
+            return
+
         self.dt = dt
 
-        if not self.game_paused:
+        if not self.paused:
             self.inGameUi.update()
 
         self.levels[self.currentLevel].update(dt)
@@ -91,11 +86,14 @@ class Game:
         if self.isLevelChanging:
             self.nextLevelAnimation.draw(screen)
 
+
     def isNextLevel(self) -> bool:
         return self.currentLevel != self.player.playerData.currentLevel
 
+
     def setBackgroundColor(self, color : pg.Color):
         self.backgroundColor = color
+
 
     def handleLevelChange(self):
         print(f"Changing level to {self.nextLevel}")
@@ -107,6 +105,18 @@ class Game:
         self.player.tileMap = self.levels[self.currentLevel].map
         self.player.reset()
 
+
     def setPlayerStartingPosition(self):
         self.player.playerData.startPosX = self.levels[self.currentLevel].startPosX
         self.player.playerData.startPosY = self.levels[self.currentLevel].startPosY
+
+
+    def pause(self):
+        self.paused = True
+        self.inGameUi.pauseTimer()
+
+
+    def unPause(self):
+        self.paused = False
+        self.inGameUi.resumeTimer()
+        self.player.unPause()
