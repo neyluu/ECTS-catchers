@@ -25,6 +25,7 @@ class SpeedUp(Trigger):
             self.timer += dt
             if self.timer > self.boostTime:
                 self.playerData.speed = self.playerData.startSpeed
+                self.playerData.powerUps.speedUp = False
                 self.started = False
                 self.onMapReset()
 
@@ -34,6 +35,7 @@ class SpeedUp(Trigger):
             return
 
         self.playerData : PlayerData = playerData
+        self.playerData.powerUps.speedUp = True
         self.started = True
         self.color = pg.Color(0, 0, 0, 0)
         playerData.speed *= self.boostScale
