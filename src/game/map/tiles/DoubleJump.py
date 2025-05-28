@@ -16,6 +16,9 @@ class DoubleJump(Trigger):
         self.timer : float = 0
         self.started : bool = False
 
+        self.path = "assets/textures/powerups/doubleJump.png"
+        self.loadTexture()
+
 
     def update(self, dt: float):
         if self.started:
