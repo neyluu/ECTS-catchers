@@ -22,3 +22,8 @@ class Coin(Trigger):
 
         playerData.points += self.points
         print(f"Points: {playerData.points}")
+
+
+    def onMapReset(self):
+        self.color = "gold"
+        self.isActive = True
