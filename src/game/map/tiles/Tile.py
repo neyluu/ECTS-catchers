@@ -31,3 +31,7 @@ class Tile:
     def loadTexture(self):
         self.texture = pg.image.load(self.path).convert_alpha()
 
+
+    def onMapReset(self):
+        pass
+
