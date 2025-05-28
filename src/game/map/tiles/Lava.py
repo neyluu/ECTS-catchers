@@ -1,5 +1,6 @@
 from src.game.PlayerData import PlayerData
 from src.game.map.tiles.Trigger import Trigger
+import src.config.PowerUpsConfig as config
 
 
 class Lava(Trigger):
@@ -8,7 +9,7 @@ class Lava(Trigger):
 
         self.color = "firebrick"
 
-        self.damageDelay : int = 1 # seconds
+        self.damageDelay : int = config.LAVA_DAMAGE_DELAY_TIME # seconds
         self.timer : float = 0
 
         self.playerData : PlayerData = None
