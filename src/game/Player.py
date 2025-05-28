@@ -194,27 +194,14 @@ class Player:
         tilePosX : int = int((self.playerData.posX - mapOffsetX) // Tile.size)
         tilePosY : int = int((self.playerData.posY - mapOffsetY) // Tile.size)
 
-        tiles = [
-            # self.tileMap.tileMap[tilePosY - 1][tilePosX - 1],
-            self.tileMap.tileMap[tilePosY - 1][tilePosX],
-            self.tileMap.tileMap[tilePosY - 1][tilePosX + 1],
-            # self.tileMap.tileMap[tilePosY - 1][tilePosX + 2],
-
-            self.tileMap.tileMap[tilePosY][tilePosX - 1],
-            self.tileMap.tileMap[tilePosY][tilePosX],
-            self.tileMap.tileMap[tilePosY][tilePosX + 1],
-            self.tileMap.tileMap[tilePosY][tilePosX + 2],
-
-            self.tileMap.tileMap[tilePosY + 1][tilePosX - 1],
-            self.tileMap.tileMap[tilePosY + 1][tilePosX],
-            self.tileMap.tileMap[tilePosY + 1][tilePosX + 1],
-            self.tileMap.tileMap[tilePosY + 1][tilePosX + 2],
-
-            # self.tileMap.tileMap[tilePosY + 2][tilePosX - 1],
-            self.tileMap.tileMap[tilePosY + 2][tilePosX],
-            self.tileMap.tileMap[tilePosY + 2][tilePosX + 1],
-            # self.tileMap.tileMap[tilePosY + 2][tilePosX + 2]
-        ]
+        tiles = []
+        for dy in range(-2, 3):
+            for dx in range(-2, 3):
+                try:
+                    tile = self.tileMap.tileMap[tilePosY + dy][tilePosX + dx]
+                    tiles.append(tile)
+                except IndexError:
+                    continue
 
         for tile in tiles:
             playerColX = self.getPlayerCollisionX()
