@@ -2,9 +2,8 @@ import pygame as pg
 
 from src.game.Player import Player
 from src.game.levels.Level import Level
-from src.gui.Timer import Timer
 from src.gui.animations.Blink import Blink
-
+from src.gui.InGameUI import InGameUI
 
 class Game:
 
@@ -29,20 +28,19 @@ class Game:
         self.levelChanged : bool = False
         self.nextLevelAnimation = Blink(self.canvas)
 
+        self.inGameUi = InGameUI(self.canvas, self.player.playerData)
 
-        self.game_timer = Timer()
-        self.timer_position = (self.canvas.x + 320, self.canvas.y + 4)
         self.game_paused = False
 
 
     def handleEvent(self, event):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_p:
-                self.game_paused = not self.game_paused  # Przełącz stan pauzy
+                self.game_paused = not self.game_paused
                 if self.game_paused:
-                    self.game_timer.pause()  # pauza
+                    self.inGameUi.pauseTimer()
                 else:
-                    self.game_timer.resume()  # wznow
+                    self.inGameUi.resumeTimer()
                 return
             if self.game_paused:
                 return
@@ -55,7 +53,7 @@ class Game:
         self.dt = dt
 
         if not self.game_paused:
-            self.game_timer.update()
+            self.inGameUi.update()
 
         self.levels[self.currentLevel].update(dt)
         self.player.update(dt)
@@ -86,23 +84,18 @@ class Game:
 
 
     def draw(self, screen : pg.Surface):
-        # pg.draw.rect(self.screen, self.backgroundColor, self.canvas)
         self.levels[self.currentLevel].draw(screen)
         self.player.draw(screen)
-
-        self.game_timer.draw(screen, self.timer_position)
+        self.inGameUi.draw(screen)
 
         if self.isLevelChanging:
             self.nextLevelAnimation.draw(screen)
 
-
     def isNextLevel(self) -> bool:
         return self.currentLevel != self.player.playerData.currentLevel
 
-
     def setBackgroundColor(self, color : pg.Color):
         self.backgroundColor = color
-
 
     def handleLevelChange(self):
         print(f"Changing level to {self.nextLevel}")
@@ -113,7 +106,6 @@ class Game:
 
         self.player.tileMap = self.levels[self.currentLevel].map
         self.player.reset()
-
 
     def setPlayerStartingPosition(self):
         self.player.playerData.startPosX = self.levels[self.currentLevel].startPosX

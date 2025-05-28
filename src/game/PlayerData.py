@@ -27,7 +27,7 @@ class PlayerData():
         self.canMove : bool = True
 
         self.points: int = 0
-        self.startHp = 3
+        self.startHp = 8
         self.hp: int = self.startHp
         self.gotDamaged : bool = False
         self.canDoubleJump : bool = False
