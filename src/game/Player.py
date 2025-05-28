@@ -124,8 +124,7 @@ class Player:
         if self.isDead:
             if self.deadBlinkAnimation.timeElapsed > self.deadBlinkAnimation.time / 2 and not self.deadHandled:
                 self.playerData.hp = self.playerData.startHp
-                self.moveToStart()
-                self.playerData.canMove = True
+                self.reset()
                 self.deadHandled = True
             if not self.deadBlinkAnimation.running:
                 self.isDead = False
@@ -296,11 +295,7 @@ class Player:
 
     def reset(self):
         self.moveToStart()
-        self.playerData.canMove = True
-        self.playerData.posX = self.playerData.startPosX
-        self.playerData.posY = self.playerData.startPosY
-        self.playerData.hp = self.playerData.startHp
-        self.playerData.points = 0
+        self.playerData.reset()
 
 
     def drawDebugCollisionBox(self, screen: pg.Surface):
