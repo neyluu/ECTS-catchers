@@ -16,7 +16,7 @@ class InGameUI:
             iconSize=(40, 40),
             iconTextPadding=10
         )
-        self.timerPosition = (self.canvas.x + self.canvas.width - 250,
+        self.timerPosition = (self.canvas.x + self.canvas.width -556,
                               self.canvas.y + 15)
 
         self.healthBar = HealthBar(
@@ -25,22 +25,23 @@ class InGameUI:
             displayHeartHeight=60,
             heartPadding=6
         )
-        self.healthBarPosition = (self.canvas.x + 120, self.canvas.y + 10)
+        self.healthBarPosition = (self.canvas.x + 20, self.canvas.y + 10)
 
         self.coinCounter = CoinCounter(
             playerData=self.playerData,
             maxPoints=30,
-            fontSize=60
+            fontSize=48,
+            iconSize=(37, 37),
         )
-        self.coinCounterPosition = (self.canvas.x + 700, self.canvas.y + 10)
+        self.coinCounterPosition = (self.canvas.x + 745, self.canvas.y + 24)
 
         self.powerUpDisplay = PowerUpDisplay(
             playerData=self.playerData,
-            iconSize=(30, 30),
+            iconSize=(28, 28),
             iconPadding=8
         )
-        self.powerUpDisplayPosition = (self.canvas.x + 750,
-                                       self.canvas.y + 10)
+        self.powerUpDisplayPosition = (self.canvas.x +25,
+                                       self.canvas.y + 70)
 
     def update(self):
         self.gameTimer.update()
