@@ -4,11 +4,11 @@ import pygame as pg
 class HealthBar:
     def __init__(self,
                  playerData,
-                 heart1ImagePath: str,
-                 heart2ImagePath: str,
-                 heart3ImagePath: str,
-                 displayHeartWidth: int,
-                 displayHeartHeight: int,
+                 heart1ImagePath: str = "assets/textures/gui/Heart_1.png",
+                 heart2ImagePath: str = "assets/textures/gui/Heart_2.png",
+                 heart3ImagePath: str = "assets/textures/gui/Heart_3.png",
+                 displayHeartWidth=0,
+                 displayHeartHeight=0,
                  numberOfPhysicalHearts: int = 4,
                  heartPadding: int = 4
                  ):

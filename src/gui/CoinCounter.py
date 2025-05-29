@@ -5,7 +5,7 @@ class CoinCounter:
     def __init__(self,
                  playerData,
                  maxPoints: int = 30,
-                 fontPath: str = "assets/fonts/first.ttf",
+                 fontPath: str = "assets/fonts/timer_and_counter_font.ttf",
                  fontSize: int = 30,
                  color: tuple = (255, 255, 255),
                  iconImagePath: str = "assets/textures/powerups/collectible_coin.png",
