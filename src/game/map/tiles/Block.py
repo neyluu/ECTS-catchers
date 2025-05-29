@@ -9,7 +9,7 @@ class Block(Tile):
         self.isCollision = True
 
         if path == '':
-            path = "assets/textures/blocks/grey_brick.png"
+            path = "assets/textures/blocks/grey_brick_1.png"
             print("ERROR: block texture path is empty!")
 
         self.loadTexture(path)
