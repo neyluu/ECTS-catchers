@@ -3,10 +3,10 @@ from src.game.map.tiles.Trigger import Trigger
 
 
 class Doors(Trigger):
-    def __init__(self):
+    def __init__(self, path):
         super().__init__()
 
-        self.color = "blueviolet"
+        self.loadTexture(path)
 
 
     def onTrigger(self, playerData : PlayerData):
