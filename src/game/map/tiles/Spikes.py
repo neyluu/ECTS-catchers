@@ -9,6 +9,7 @@ class Spikes(Trigger):
         self.loadTexture("assets/textures/traps/spikes.png")
         self.damage = config.SPIKES_DAMAGE
 
+
     def onTrigger(self, playerData : PlayerData):
         if self.wasEntered():
             return
