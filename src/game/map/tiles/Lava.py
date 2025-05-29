@@ -14,6 +14,7 @@ class Lava(Trigger):
 
         self.playerData : PlayerData = None
 
+
     def update(self, dt: float):
         if not self.isActive and self.playerData is not None:
             self.timer += dt

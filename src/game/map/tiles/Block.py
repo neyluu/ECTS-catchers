@@ -7,5 +7,5 @@ class Block(Tile):
     def __init__(self):
         super().__init__()
         self.isCollision = True
-        self.path = "assets/textures/blocks/grey_brick_1.png"
+        self.path = "assets/textures/blocks/grey_brick.png"
         self.loadTexture()

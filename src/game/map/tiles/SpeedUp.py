@@ -12,13 +12,12 @@ class SpeedUp(Trigger):
 
         self.playerData : PlayerData = None
 
-        self.started = False
+        self.started : bool = False
         self.boostTime : float = config.SPEED_UP_TIME # seconds
         self.boostScale : float = config.SPEED_UP_SPEED_FACTOR
         self.timer : float = 0
 
-        self.path = "assets/textures/powerups/power_up_speed.png"
-        self.loadTexture()
+        self.loadTexture("assets/textures/powerups/power_up_speed.png")
 
 
     def update(self, dt: float):
@@ -27,7 +26,6 @@ class SpeedUp(Trigger):
             if self.timer > self.boostTime:
                 self.playerData.speed = self.playerData.startSpeed
                 self.playerData.powerUps.speedUp = False
-                self.started = False
                 self.onMapReset()
 
 
@@ -38,14 +36,12 @@ class SpeedUp(Trigger):
         self.playerData : PlayerData = playerData
         self.playerData.powerUps.speedUp = True
         self.started = True
-        self.color = pg.Color(0, 0, 0, 0)
-        self.path = None
         playerData.speed *= self.boostScale
+        self.hide()
 
 
     def onMapReset(self):
         self.isActive = True
-        self.path = "assets/textures/powerups/power_up_speed.png"
-        self.loadTexture()
         self.started = False
         self.timer = 0
+        self.unHide()

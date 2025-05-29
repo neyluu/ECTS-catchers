@@ -16,8 +16,7 @@ class DoubleJump(Trigger):
         self.timer : float = 0
         self.started : bool = False
 
-        self.path = "assets/textures/powerups/Power_up_double_jump.png"
-        self.loadTexture()
+        self.loadTexture("assets/textures/powerups/Power_up_double_jump.png")
 
 
     def update(self, dt: float):
@@ -26,7 +25,6 @@ class DoubleJump(Trigger):
             if self.timer > self.boostTime:
                 self.playerData.canDoubleJump = False
                 self.playerData.powerUps.doubleJump = False
-                self.started = False
                 self.onMapReset()
 
 
@@ -35,16 +33,14 @@ class DoubleJump(Trigger):
             return
 
         self.started = True
-        self.color = pg.Color(0,0,0,0)
-        self.path = None
         self.playerData : PlayerData = playerData
         self.playerData.canDoubleJump = True
         self.playerData.powerUps.doubleJump = True
+        self.hide()
 
 
     def onMapReset(self):
         self.isActive = True
-        self.path = "assets/textures/powerups/Power_up_double_jump.png"
-        self.loadTexture()
         self.started = False
         self.timer = 0
+        self.unHide()
