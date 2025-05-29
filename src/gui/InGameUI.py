@@ -14,9 +14,9 @@ class InGameUI:
 
         self.healthBar = HealthBar(
             playerData=self.playerData,
-            heart1ImagePath="assets/textures/gui/Heart_1.png",
-            heart2ImagePath="assets/textures/gui/Heart_2.png",
-            heart3ImagePath="assets/textures/gui/Heart_3.png",
+            heart1ImagePath="assets/textures/gui/heart_1.png",
+            heart2ImagePath="assets/textures/gui/heart_2.png",
+            heart3ImagePath="assets/textures/gui/heart_3.png",
             displayHeartWidth=60,
             displayHeartHeight=60,
             heartPadding=6
