@@ -39,6 +39,7 @@ class SpeedUp(Trigger):
         self.playerData.powerUps.speedUp = True
         self.started = True
         self.color = pg.Color(0, 0, 0, 0)
+        self.path = None
         playerData.speed *= self.boostScale
 
 
