@@ -26,11 +26,12 @@ class LevelLoader:
                 y = int(parts[1])
                 classType = parts[2]
                 arguments = parts[3]
+                arguments = arguments.split(" ")
 
                 if classType == "Air":
                     levelMap.setTile(x, y, Air())
                 elif classType == "Block":
-                    levelMap.setTile(x, y, Block())
+                    levelMap.setTile(x, y, Block(arguments[0]))
                 elif classType == "Coin":
                     levelMap.setTile(x, y, Coin())
                 elif classType == "Spikes":
