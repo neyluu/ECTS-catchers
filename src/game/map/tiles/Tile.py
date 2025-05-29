@@ -33,7 +33,7 @@ class Tile:
 
     def loadTexture(self, path : str):
         self.path = path
-        self.texture = pg.image.load(self.path).convert_alpha()
+        self.texture = pg.transform.scale(pg.image.load(self.path).convert_alpha(), (Tile.size, Tile.size))
 
 
     def onMapReset(self):
