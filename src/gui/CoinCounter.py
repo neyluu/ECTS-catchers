@@ -8,7 +8,7 @@ class CoinCounter:
                  fontPath: str = "assets/fonts/first.ttf",
                  fontSize: int = 30,
                  color: tuple = (255, 255, 255),
-                 iconImagePath: str = "assets/textures/powerups/coin.png",
+                 iconImagePath: str = "assets/textures/powerups/collectible_coin.png",
                  iconSize: tuple = (64, 64),
                  iconTextPadding: int = 5
                  ):
