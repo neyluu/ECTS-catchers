@@ -17,8 +17,7 @@ class SpeedUp(Trigger):
         self.boostScale : float = config.SPEED_UP_SPEED_FACTOR
         self.timer : float = 0
 
-        self.path = "assets/textures/powerups/power_up_speed.png"
-        self.loadTexture()
+        self.loadTexture("assets/textures/powerups/power_up_speed.png")
 
 
     def update(self, dt: float):
@@ -45,7 +44,6 @@ class SpeedUp(Trigger):
 
     def onMapReset(self):
         self.isActive = True
-        self.path = "assets/textures/powerups/power_up_speed.png"
-        self.loadTexture()
+        self.loadTexture("assets/textures/powerups/power_up_speed.png")
         self.started = False
         self.timer = 0

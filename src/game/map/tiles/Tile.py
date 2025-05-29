@@ -28,7 +28,8 @@ class Tile:
             screen.blit(self.texture, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
 
 
-    def loadTexture(self):
+    def loadTexture(self, path : str):
+        self.path = path
         self.texture = pg.image.load(self.path).convert_alpha()
 
 

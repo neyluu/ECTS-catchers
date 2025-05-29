@@ -11,8 +11,7 @@ class Coin(Trigger):
         super().__init__()
         self.isResettable = False
         self.points = random.randint(config.COIN_MIN_POINTS, config.COIN_MAX_POINTS)
-        self.path = "assets/textures/powerups/collectible_coin.png"
-        self.loadTexture()
+        self.loadTexture("assets/textures/powerups/collectible_coin.png")
 
     def onTrigger(self, playerData : PlayerData):
         if self.wasEntered():

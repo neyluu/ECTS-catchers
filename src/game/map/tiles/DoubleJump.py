@@ -16,8 +16,7 @@ class DoubleJump(Trigger):
         self.timer : float = 0
         self.started : bool = False
 
-        self.path = "assets/textures/powerups/Power_up_double_jump.png"
-        self.loadTexture()
+        self.loadTexture("assets/textures/powerups/Power_up_double_jump.png")
 
 
     def update(self, dt: float):
@@ -44,7 +43,6 @@ class DoubleJump(Trigger):
 
     def onMapReset(self):
         self.isActive = True
-        self.path = "assets/textures/powerups/Power_up_double_jump.png"
-        self.loadTexture()
+        self.loadTexture("assets/textures/powerups/Power_up_double_jump.png")
         self.started = False
         self.timer = 0

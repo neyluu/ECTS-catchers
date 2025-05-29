@@ -5,8 +5,7 @@ import src.config.PowerUpsConfig as config
 class Cobweb(Trigger):
     def __init__(self):
         super().__init__()
-        self.path = "assets/textures/traps/cobweb.png"
-        self.loadTexture()
+        self.loadTexture("assets/textures/traps/cobweb.png")
         self.playerData = None
 
 
