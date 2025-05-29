@@ -18,8 +18,8 @@ class Player:
 
         self.moveAnimations = {
             "idle": SpriteAnimation("assets/animations/playerIdle", 0.5),
-            "runLeft": SpriteAnimation("assets/animations/playerRunLeft", 0.5),
-            "runRight": SpriteAnimation("assets/animations/playerRunRight", 0.5),
+            "runLeft": SpriteAnimation("assets/animations/playerRunLeft", 0.4),
+            "runRight": SpriteAnimation("assets/animations/playerRunRight", 0.4),
             "jump": SpriteAnimation("assets/animations/playerJump", 0.5)
         }
         self.currentMoveAnimation = "idle"
