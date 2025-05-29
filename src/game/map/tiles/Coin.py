@@ -19,7 +19,7 @@ class Coin(Trigger):
             return
 
         self.color = pg.Color(0,0,0,0)
-
+        self.path = None
         playerData.points += self.points
         print(f"Points: {playerData.points}")
 
