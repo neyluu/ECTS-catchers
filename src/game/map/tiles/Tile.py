@@ -39,9 +39,9 @@ class Tile:
 
 
         # DEBUG
-        if self.isTrigger:
-            pg.draw.rect(screen, "green", (self.leftTop.x, self.leftTop.y, Tile.size, Tile.size), width=1)
-            pg.draw.rect(screen, "red", self.collision, width=1)
+        # if self.isTrigger:
+        #     pg.draw.rect(screen, "green", (self.leftTop.x, self.leftTop.y, Tile.size, Tile.size), width=1)
+        #     pg.draw.rect(screen, "red", self.collision, width=1)
 
 
     def loadTexture(self, path : str):

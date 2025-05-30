@@ -35,7 +35,7 @@ class LevelLoader:
                 elif classType == "Coin":
                     levelMap.setTile(x, y, Coin())
                 elif classType == "Spikes":
-                    levelMap.setTile(x, y, Spikes())
+                    levelMap.setTile(x, y, Spikes(int(arguments[0])))
                 elif classType == "Cobweb":
                     levelMap.setTile(x, y, Cobweb())
                 elif classType == "Doors":
