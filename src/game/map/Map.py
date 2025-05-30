@@ -36,7 +36,7 @@ class Map:
     def setTile(self, x : int, y : int,  tile : Tile):
         left = self.canvas.left + (y * Tile.size) + self.offsetX
         top = self.canvas.top + (x * Tile.size) + self.offsetY
-        tile.leftTop = pg.Vector2(left, top)
+        tile.setLeftTop(pg.Vector2(left, top))
         self.tileMap[x][y] = tile
 
 

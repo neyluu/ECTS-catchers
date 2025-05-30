@@ -10,6 +10,13 @@ class Tile:
         self.isTrigger : bool = False
         self.isHidden : bool = False
 
+        self.collisionSizeX : int = Tile.size
+        self.collisionSizeY : int = Tile.size
+        self.collisionOffsetX : int = 0
+        self.collisionOffsetY : int = 0
+        self.collision : pg.Rect = None
+        self.updateCollisionBox()
+
         self.path : str = None
         self.texture = None
 
@@ -31,6 +38,12 @@ class Tile:
             screen.blit(self.texture, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
 
 
+        # DEBUG
+        if self.isTrigger:
+            pg.draw.rect(screen, "green", (self.leftTop.x, self.leftTop.y, Tile.size, Tile.size), width=1)
+            pg.draw.rect(screen, "red", self.collision, width=1)
+
+
     def loadTexture(self, path : str):
         self.path = path
         self.texture = pg.transform.scale(pg.image.load(self.path).convert_alpha(), (Tile.size, Tile.size))
@@ -47,3 +60,14 @@ class Tile:
     def unHide(self):
         self.isHidden = False
 
+
+    def setLeftTop(self, leftTop):
+        self.leftTop = leftTop
+        self.updateCollisionBox()
+
+
+    def updateCollisionBox(self):
+        self.collision = pg.Rect(self.leftTop.x + self.collisionOffsetX,
+                          self.leftTop.y + self.collisionOffsetY,
+                          self.collisionSizeX,
+                          self.collisionSizeY)
