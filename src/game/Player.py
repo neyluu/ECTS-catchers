@@ -203,17 +203,14 @@ class Player:
                     continue
 
         for tile in tiles:
+            if not tile.isTrigger and not tile.isCollision:
+                continue
+
             playerColX = self.getPlayerCollisionX()
             playerColY = self.getPlayerCollisionY()
-            tileCol = self.getTileCollision(tile)
+            tileCol = tile.collision
 
             if tile.isTrigger:
-                # Scale collision to be 24x24 inside block, to give player more space to movement error
-                tileCol.left += 4
-                tileCol.top += 4
-                tileCol.width -= 4
-                tileCol.height -= 4
-
                 if playerColX.colliderect(tileCol):
                     tile.onTrigger(self.playerData)
                     self.enteredTriggers.append(tile)
