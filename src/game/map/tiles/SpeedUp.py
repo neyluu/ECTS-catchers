@@ -1,6 +1,8 @@
 import pygame as pg
 
+from src.game.map.tiles.Tile import Tile
 from src.game.PlayerData import PlayerData
+from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.tiles.Trigger import Trigger
 import src.config.PowerUpsConfig as config
 
@@ -17,16 +19,22 @@ class SpeedUp(Trigger):
         self.boostScale : float = config.SPEED_UP_SPEED_FACTOR
         self.timer : float = 0
 
-        self.loadTexture("assets/textures/powerups/power_up_speed.png")
+        self.animation = SpriteAnimation("assets/animations/speedUp", 0.4)
 
 
     def update(self, dt: float):
+        self.animation.update(dt)
+
         if self.started:
             self.timer += dt
             if self.timer > self.boostTime:
                 self.playerData.speed = self.playerData.startSpeed
                 self.playerData.powerUps.speedUp = False
                 self.onMapReset()
+
+
+    def draw(self, screen: pg.Surface):
+        self.animation.draw(screen, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
 
 
     def onTrigger(self, playerData : PlayerData):
