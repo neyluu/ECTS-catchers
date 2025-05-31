@@ -1,6 +1,8 @@
 import pygame as pg
 
 from src.game.PlayerData import PlayerData
+from src.game.SpriteAnimation import SpriteAnimation
+from src.game.map.tiles.Tile import Tile
 from src.game.map.tiles.Trigger import Trigger
 import src.config.PowerUpsConfig as config
 
@@ -16,16 +18,22 @@ class DoubleJump(Trigger):
         self.timer : float = 0
         self.started : bool = False
 
-        self.loadTexture("assets/textures/powerups/Power_up_double_jump.png")
+        self.animation = SpriteAnimation("assets/animations/doubleJump", 0.6)
 
 
     def update(self, dt: float):
+        self.animation.update(dt)
+
         if self.started:
             self.timer += dt
             if self.timer > self.boostTime:
                 self.playerData.canDoubleJump = False
                 self.playerData.powerUps.doubleJump = False
                 self.onMapReset()
+
+
+    def draw(self, screen: pg.Surface):
+        self.animation.draw(screen, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
 
 
     def onTrigger(self, playerData : PlayerData):

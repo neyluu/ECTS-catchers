@@ -19,7 +19,7 @@ class SpeedUp(Trigger):
         self.boostScale : float = config.SPEED_UP_SPEED_FACTOR
         self.timer : float = 0
 
-        self.animation = SpriteAnimation("assets/animations/speedUp", 0.4)
+        self.animation = SpriteAnimation("assets/animations/speedUp", 0.6)
 
 
     def update(self, dt: float):

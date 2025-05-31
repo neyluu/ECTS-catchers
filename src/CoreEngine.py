@@ -61,7 +61,7 @@ class CoreEngine():
         self.scenes[self.sceneManager.getCurrentScene()].draw(self.screen)
 
         fps = self.clock.get_fps()
-        fps_text = self.font.render(f"FPS: {int(fps)}", True, pg.Color('white'))
+        fps_text = self.font.render(f"FPS: {int(fps)}", True, pg.Color('lime'))
         self.screen.blit(fps_text, (10, 10))
 
         scaledScreen = pg.transform.scale(self.screen, (screenWidth, screenHeight))
