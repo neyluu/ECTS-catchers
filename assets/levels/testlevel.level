@@ -495,7 +495,7 @@
 17;1;Air;;
 17;2;Air;;
 17;3;Air;;
-17;4;Doors;assets/textures/core/door_top.png;
+17;4;Doors;True;
 17;5;Air;;
 17;6;Air;;
 17;7;Air;;
@@ -524,7 +524,7 @@
 18;1;Air;;
 18;2;Air;;
 18;3;Air;;
-18;4;Doors;assets/textures/core/door_bottom.png;
+18;4;Doors;False;
 18;5;Air;;
 18;6;Air;;
 18;7;Block;assets/textures/blocks/grey_brick_1.png;
@@ -893,7 +893,7 @@
 30;22;DoubleJump;;
 30;23;Air;;
 30;24;Air;;
-30;25;Doors;assets/textures/core/door_top.png;
+30;25;Doors;True;
 30;26;Air;;
 30;27;Air;;
 30;28;Block;assets/textures/blocks/grey_brick_1.png;
@@ -922,7 +922,7 @@
 31;22;Air;;
 31;23;Air;;
 31;24;Air;;
-31;25;Doors;assets/textures/core/door_bottom.png;
+31;25;Doors;False;
 31;26;Air;;
 31;27;Air;;
 31;28;Block;assets/textures/blocks/grey_brick_1.png;
