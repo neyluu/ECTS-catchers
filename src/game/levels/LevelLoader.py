@@ -41,7 +41,7 @@ class LevelLoader:
                 elif classType == "Doors":
                     levelMap.setTile(x, y, Doors(arguments[0]))
                 elif classType == "Lava":
-                    levelMap.setTile(x, y, Lava())
+                    levelMap.setTile(x, y, Lava(arguments[0]))
                 elif classType == "SpeedUp":
                     levelMap.setTile(x, y, SpeedUp())
                 elif classType == "DoubleJump":

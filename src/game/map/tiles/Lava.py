@@ -9,11 +9,15 @@ class Lava(Trigger):
     inLava : bool = False
     timer : float = 0
 
-
-    def __init__(self):
+    def __init__(self, path : str):
         super().__init__()
 
-        self.color = "firebrick"
+        if path == '':
+            path = "assets/textures/traps/lava_1.png"
+            print("ERROR: lava texture path is empty!")
+
+        self.loadTexture(path)
+
         self.damageDelay : int = config.LAVA_DAMAGE_DELAY_TIME # seconds
         self.playerData : PlayerData = None
 
@@ -34,7 +38,6 @@ class Lava(Trigger):
     def onTrigger(self, playerData : PlayerData):
         if self.wasEntered():
             return
-
 
         Lava.inLava = True
         self.playerData = playerData
