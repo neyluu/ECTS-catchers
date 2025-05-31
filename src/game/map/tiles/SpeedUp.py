@@ -23,7 +23,8 @@ class SpeedUp(Trigger):
 
 
     def update(self, dt: float):
-        self.animation.update(dt)
+        if not self.isHidden:
+            self.animation.update(dt)
 
         if self.started:
             self.timer += dt
@@ -34,7 +35,8 @@ class SpeedUp(Trigger):
 
 
     def draw(self, screen: pg.Surface):
-        self.animation.draw(screen, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
+        if not self.isHidden:
+            self.animation.draw(screen, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
 
 
     def onTrigger(self, playerData : PlayerData):
