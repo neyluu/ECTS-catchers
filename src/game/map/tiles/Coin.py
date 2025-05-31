@@ -1,7 +1,9 @@
 import pygame as pg
 import random
 
+from src.game.map.tiles.Tile import Tile
 from src.game.PlayerData import PlayerData
+from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.tiles.Trigger import Trigger
 import src.config.PowerUpsConfig as config
 
@@ -11,7 +13,15 @@ class Coin(Trigger):
         super().__init__()
         self.isResettable = False
         self.points = random.randint(config.COIN_MIN_POINTS, config.COIN_MAX_POINTS)
-        self.loadTexture("assets/textures/powerups/collectible_coin.png")
+        self.animation = SpriteAnimation("assets/animations/coin", 0.55)
+
+
+    def update(self, dt: float):
+        self.animation.update(dt)
+
+
+    def draw(self, screen: pg.Surface):
+        self.animation.draw(screen, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
 
 
     def onTrigger(self, playerData : PlayerData):
