@@ -39,9 +39,10 @@ class LevelLoader:
                 elif classType == "Cobweb":
                     levelMap.setTile(x, y, Cobweb())
                 elif classType == "Doors":
-                    levelMap.setTile(x, y, Doors(arguments[0]))
+                    arg = True if arguments[0] == "True" else False
+                    levelMap.setTile(x, y, Doors(arg))
                 elif classType == "Lava":
-                    levelMap.setTile(x, y, Lava())
+                    levelMap.setTile(x, y, Lava(arguments[0]))
                 elif classType == "SpeedUp":
                     levelMap.setTile(x, y, SpeedUp())
                 elif classType == "DoubleJump":

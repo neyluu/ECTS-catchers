@@ -11,6 +11,10 @@ pg.init()
 BASE_RESOLUTION = (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT)
 
 pg.display.set_caption(Settings.TITLE)
+
+programIcon = pg.image.load("assets/textures/logo/icon.png")
+pg.display.set_icon(programIcon)
+
 # pg.display.set_mode((Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT))
 
 pg.display.set_mode(BASE_RESOLUTION, pg.FULLSCREEN)
@@ -61,7 +65,7 @@ class CoreEngine():
         self.scenes[self.sceneManager.getCurrentScene()].draw(self.screen)
 
         fps = self.clock.get_fps()
-        fps_text = self.font.render(f"FPS: {int(fps)}", True, pg.Color('white'))
+        fps_text = self.font.render(f"FPS: {int(fps)}", True, pg.Color('lime'))
         self.screen.blit(fps_text, (10, 10))
 
         scaledScreen = pg.transform.scale(self.screen, (screenWidth, screenHeight))
