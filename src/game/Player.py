@@ -20,7 +20,9 @@ class Player:
             "idle": SpriteAnimation("assets/animations/playerIdle", 0.5),
             "runLeft": SpriteAnimation("assets/animations/playerRunLeft", 0.4),
             "runRight": SpriteAnimation("assets/animations/playerRunRight", 0.4),
-            "jump": SpriteAnimation("assets/animations/playerJump", 0.5)
+            "jump": SpriteAnimation("assets/animations/playerJump", 0.5),
+            "jumpRight" : SpriteAnimation("assets/animations/playerJumpRight", 1),
+            "jumpLeft" : SpriteAnimation("assets/animations/playerJumpLeft", 1),
         }
         self.currentMoveAnimation = "idle"
 
@@ -161,11 +163,17 @@ class Player:
 
         if self.movingRight:
             self.dx += self.playerData.speed * self.dt
-            self.currentMoveAnimation = "runRight"
+            if self.isJumping:
+                self.currentMoveAnimation = "jumpRight"
+            else:
+                self.currentMoveAnimation = "runRight"
 
         if self.movingLeft:
             self.dx -= self.playerData.speed * self.dt
-            self.currentMoveAnimation = "runLeft"
+            if self.isJumping:
+                self.currentMoveAnimation = "jumpLeft"
+            else:
+                self.currentMoveAnimation = "runLeft"
 
         self.playerData.velocityY += self.playerData.gravityForce * self.dt
         if self.playerData.velocityY > self.playerData.maxFallingSpeed:
