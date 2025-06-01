@@ -10,7 +10,6 @@ class Game:
     def __init__(self, isLeft : bool, canvas : pg.Rect):
         self.canvas = canvas
         self.isLeft = isLeft
-        self.backgroundColor = "black"
         self.currentLevel = 0
 
         self.levels = [
@@ -89,10 +88,6 @@ class Game:
 
     def isNextLevel(self) -> bool:
         return self.currentLevel != self.player.playerData.currentLevel
-
-
-    def setBackgroundColor(self, color : pg.Color):
-        self.backgroundColor = color
 
 
     def handleLevelChange(self):

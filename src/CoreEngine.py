@@ -5,25 +5,25 @@ from src.SceneManager import SceneManager
 from src.scenes.MainMenu import MainMenu
 from src.scenes.GameScene import GameScene
 from src.scenes.EndScene import EndScene
+import ctypes
+
+ctypes.windll.user32.SetProcessDPIAware()
 
 pg.init()
 
 BASE_RESOLUTION = (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT)
 
 pg.display.set_caption(Settings.TITLE)
-
 programIcon = pg.image.load("assets/textures/logo/icon.png")
 pg.display.set_icon(programIcon)
 
-# pg.display.set_mode((Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT))
-
-pg.display.set_mode(BASE_RESOLUTION, pg.FULLSCREEN)
 screenWidth = pg.display.Info().current_w
 screenHeight = pg.display.Info().current_h
 
 print(screenWidth, screenHeight)
+
 # Final screen to draw content on
-screen = pg.display.set_mode((screenWidth, screenHeight), pg.FULLSCREEN)
+screen = pg.display.set_mode((screenWidth, screenHeight), pg.NOFRAME)
 
 # Temporary screen to draw content to be later scaled
 surface = pg.Surface(BASE_RESOLUTION)
@@ -33,7 +33,7 @@ class CoreEngine():
     def __init__(self):
         super().__init__()
 
-        self.font = pg.font.SysFont("Arial", 24)
+        self.font = pg.font.SysFont("Arial", 18)
 
         self.sceneManager = SceneManager()
         self.running = True
@@ -62,14 +62,15 @@ class CoreEngine():
 
 
     def draw(self):
-        self.scenes[self.sceneManager.getCurrentScene()].draw(self.screen)
+        self.scenes[self.sceneManager.getCurrentScene()].draw(surface)
 
         fps = self.clock.get_fps()
         fps_text = self.font.render(f"FPS: {int(fps)}", True, pg.Color('lime'))
-        self.screen.blit(fps_text, (10, 10))
+        surface.blit(fps_text, (0, 0))
 
-        scaledScreen = pg.transform.scale(self.screen, (screenWidth, screenHeight))
-        screen.blit(scaledScreen, (0, 0))
+        offsetX = 0
+        offsetY = (screenHeight - Settings.SCREEN_HEIGHT) / 2
+        screen.blit(surface, (offsetX, offsetY))
         pg.display.update()
         # pg.display.flip()
 
