@@ -1,5 +1,6 @@
 import pygame as pg
 
+import src.config.DebugConfig as Debug
 from src.config import Settings
 from src.game.PlayerData import PlayerData
 from src.game.SpriteAnimation import SpriteAnimation
@@ -116,7 +117,8 @@ class Player:
 
         # pg.draw.rect(screen, self.color, (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight))
         self.moveAnimations[self.currentMoveAnimation].draw(screen, position)
-        # self.drawDebugCollisionBox(screen)
+        if Debug.DEBUG_PLAYER_COLLISION_VISIBLE:
+            self.DEBUG_drawCollisionBox(screen)
 
         if self.isDead:
             self.deadBlinkAnimation.draw(screen)
@@ -311,6 +313,6 @@ class Player:
         self.movingLeft = False
 
 
-    def drawDebugCollisionBox(self, screen: pg.Surface):
+    def DEBUG_drawCollisionBox(self, screen: pg.Surface):
         pg.draw.rect(screen, (255, 0, 0), self.getPlayerCollisionX(), 1)
         pg.draw.rect(screen, (0, 255, 0), self.getPlayerCollisionY(), 1)
