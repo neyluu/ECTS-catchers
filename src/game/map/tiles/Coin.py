@@ -31,8 +31,8 @@ class Coin(Trigger):
             return
 
         self.hide()
-        playerData.points += self.points
-        print(f"Points: {playerData.points}")
+        playerData.coins += self.points
+        print(f"Points: {playerData.coins}")
 
 
     def onMapReset(self):

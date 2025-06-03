@@ -1,5 +1,6 @@
 import pygame as pg
 
+import src.config.DebugConfig as Debug
 from src.game.PlayerData import PlayerData
 from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.tiles.Tile import Tile
@@ -30,5 +31,6 @@ class Doors(Trigger):
         if self.wasEntered() or playerData.levelChanged:
             return
 
-        playerData.currentLevel += 1
-        playerData.levelChanged = True
+        if playerData.coins >= 30 or Debug.DEBUG_LEVEL_CHANGE_WITHOUT_COINS_COLLECTING:
+            playerData.currentLevel += 1
+            playerData.levelChanged = True

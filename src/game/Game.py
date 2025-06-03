@@ -25,8 +25,6 @@ class Game:
         if Debug.DEBUG_LEVELS:
             self.levels.insert(0, Level(self.isLeft, self.canvas, "testlevel.level", 550, 950))
             self.levels.insert(1, Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950))
-            print(self.levels)
-            print(len(self.levels))
 
         self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
         self.setPlayerStartingPosition()
@@ -41,6 +39,9 @@ class Game:
         self.inGameUi = InGameUI(self.canvas, self.player.playerData)
 
         self.paused = False
+
+
+        self.DEBUG_changeLevel = False
 
 
     def handleEvent(self, event):
@@ -78,8 +79,9 @@ class Game:
             else:
                 self.nextLevelAnimation.update(dt)
 
-        if self.isNextLevel():
+        if self.isNextLevel() or self.DEBUG_changeLevel :
             self.prepareForLevelChange()
+            self.DEBUG_changeLevel = False
 
 
     def draw(self, screen : pg.Surface):
@@ -151,6 +153,9 @@ class Game:
         if event.type == pg.KEYDOWN:
             if event.key == prevKey:
                 self.player.playerData.currentLevel -= 1
+                self.DEBUG_changeLevel = True
             elif event.key == nextKey:
                 self.player.playerData.currentLevel += 1
+                self.DEBUG_changeLevel = True
+
 
