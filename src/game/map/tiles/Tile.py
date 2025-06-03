@@ -1,5 +1,7 @@
 import pygame as pg
 
+import src.config.DebugConfig as Debug
+
 class Tile:
     size = 32
 
@@ -37,11 +39,7 @@ class Tile:
         else:
             screen.blit(self.texture, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
 
-
-        # DEBUG
-        # if self.isTrigger:
-        #     pg.draw.rect(screen, "green", (self.leftTop.x, self.leftTop.y, Tile.size, Tile.size), width=1)
-        #     pg.draw.rect(screen, "red", self.collision, width=1)
+        self.DEBUG_drawCollideBoxes(screen)
 
 
     def loadTexture(self, path : str):
@@ -71,3 +69,10 @@ class Tile:
                           self.leftTop.y + self.collisionOffsetY,
                           self.collisionSizeX,
                           self.collisionSizeY)
+
+
+    def DEBUG_drawCollideBoxes(self, screen : pg.Surface):
+        if Debug.DEBUG_TILES_VISUAL_TRIGGER and self.isTrigger:
+            pg.draw.rect(screen, "green", (self.leftTop.x, self.leftTop.y, Tile.size, Tile.size), width=1)
+        if Debug.DEBUG_TILES_VISUAL_COLLISION and self.isCollision:
+            pg.draw.rect(screen, "red", self.collision, width=1)

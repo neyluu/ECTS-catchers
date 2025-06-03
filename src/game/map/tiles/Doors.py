@@ -26,6 +26,8 @@ class Doors(Trigger):
     def draw(self, screen: pg.Surface):
         self.animation.draw(screen, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
 
+        self.DEBUG_drawCollideBoxes(screen)
+
 
     def onTrigger(self, playerData : PlayerData):
         if self.wasEntered() or playerData.levelChanged:
