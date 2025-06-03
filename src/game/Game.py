@@ -39,6 +39,7 @@ class Game:
         self.inGameUi = InGameUI(self.canvas, self.player.playerData)
 
         self.paused = False
+        self.playerPaused = False
 
 
         self.DEBUG_changeLevel = False
@@ -65,7 +66,8 @@ class Game:
             self.inGameUi.update()
 
         self.levels[self.currentLevel].update(dt)
-        self.player.update(dt)
+        if not self.playerPaused:
+            self.player.update(dt)
 
         if self.isLevelChanging:
             if self.nextLevelAnimation.timeElapsed > self.nextLevelAnimation.time / 2 and not self.levelChanged:
@@ -76,6 +78,8 @@ class Game:
                 self.isLevelChanging = False
                 self.levelChanged = False
                 self.nextLevelAnimation.reset()
+                self.playerPaused = False
+                self.inGameUi.resumeTimer()
             else:
                 self.nextLevelAnimation.update(dt)
 
@@ -109,6 +113,8 @@ class Game:
 
 
     def prepareForLevelChange(self):
+        self.playerPaused = True
+        self.inGameUi.pauseTimer()
         self.nextLevel = self.player.playerData.currentLevel
 
         if self.nextLevel >= len(self.levels):
