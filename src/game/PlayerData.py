@@ -53,3 +53,5 @@ class PlayerData():
         # self.hp = self.startHp
         self.gotDamaged = False
         self.canDoubleJump = False
+
+        self.powerUps.reset()
