@@ -13,6 +13,11 @@ class Doors(Trigger):
 
         self.animationTime : float = 0.8
 
+        self.collisionSizeX = Tile.size - 24
+        self.collisionSizeY = Tile.size - 4
+        self.collisionOffsetX = 12
+        self.collisionOffsetY = 2
+
         if isTop:
             self.animation = SpriteAnimation("assets/animations/doorTop", self.animationTime)
         else:

@@ -73,6 +73,6 @@ class Tile:
 
     def DEBUG_drawCollideBoxes(self, screen : pg.Surface):
         if Debug.DEBUG_TILES_VISUAL_TRIGGER and self.isTrigger:
-            pg.draw.rect(screen, "green", (self.leftTop.x, self.leftTop.y, Tile.size, Tile.size), width=1)
+            pg.draw.rect(screen, "green", self.collision, width=1)
         if Debug.DEBUG_TILES_VISUAL_COLLISION and self.isCollision:
             pg.draw.rect(screen, "red", self.collision, width=1)
