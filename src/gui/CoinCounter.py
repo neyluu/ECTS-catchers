@@ -34,7 +34,7 @@ class CoinCounter:
         self.currentPointsStr = f"0/{self.maxPoints}"
 
     def update(self):
-        currentPoints = min(self.playerData.points, self.maxPoints)
+        currentPoints = min(self.playerData.coins, self.maxPoints)
         self.currentPointsStr = f"{currentPoints}/{self.maxPoints}"
 
     def draw(self, screen: pg.Surface, position: tuple):

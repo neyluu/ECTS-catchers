@@ -29,7 +29,7 @@ class PlayerData():
 
         self.canMove : bool = True
 
-        self.points: int = 0
+        self.coins: int = 0
         self.startHp = 8
         self.hp: int = self.startHp
         self.gotDamaged : bool = False
@@ -49,7 +49,9 @@ class PlayerData():
         self.speed = self.startSpeed
         self.maxFallingSpeed = self.startMaxFallingSpeed
 
-        self.points = 0
+        self.coins = 0
         # self.hp = self.startHp
         self.gotDamaged = False
         self.canDoubleJump = False
+
+        self.powerUps.reset()

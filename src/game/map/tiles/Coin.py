@@ -24,6 +24,8 @@ class Coin(Trigger):
     def draw(self, screen: pg.Surface):
         if not self.isHidden:
             self.animation.draw(screen, pg.Rect(self.leftTop.x, self.leftTop.y, Tile.size, Tile.size))
+            
+        self.DEBUG_drawCollideBoxes(screen)
 
 
     def onTrigger(self, playerData : PlayerData):
@@ -31,8 +33,8 @@ class Coin(Trigger):
             return
 
         self.hide()
-        playerData.points += self.points
-        print(f"Points: {playerData.points}")
+        playerData.coins += self.points
+        print(f"Points: {playerData.coins}")
 
 
     def onMapReset(self):

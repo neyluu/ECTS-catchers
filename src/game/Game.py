@@ -4,6 +4,7 @@ from src.game.Player import Player
 from src.game.levels.Level import Level
 from src.gui.animations.Blink import Blink
 from src.gui.InGameUI import InGameUI
+import src.config.DebugConfig as Debug
 
 class Game:
 
@@ -13,14 +14,17 @@ class Game:
         self.currentLevel = 0
 
         self.levels = [
-            # Level(self.isLeft, self.canvas, "testlevel.level", 550, 950),
-            # Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950),
             Level(self.isLeft, self.canvas, "level01.level", 450, 950),
             Level(self.isLeft, self.canvas, "level02.level", 450, 950),
             Level(self.isLeft, self.canvas, "level03.level", 450, 950),
             Level(self.isLeft, self.canvas, "level04.level", 450, 950),
-            Level(self.isLeft, self.canvas, "level05.level", 450, 950)
+            Level(self.isLeft, self.canvas, "level05.level", 450, 950),
+            Level(self.isLeft, self.canvas, "level06.level", 450, 950)
         ]
+
+        if Debug.DEBUG_LEVELS:
+            self.levels.insert(0, Level(self.isLeft, self.canvas, "testlevel.level", 550, 950))
+            self.levels.insert(1, Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950))
 
         self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
         self.setPlayerStartingPosition()
@@ -35,11 +39,18 @@ class Game:
         self.inGameUi = InGameUI(self.canvas, self.player.playerData)
 
         self.paused = False
+        self.playerPaused = False
+
+
+        self.DEBUG_changeLevel = False
 
 
     def handleEvent(self, event):
         if self.paused:
             return
+
+        if Debug.DEBUG_LEVEL_CHANGE_SHORTCUTS:
+            self.DEBUG_checkLevelChange(event)
 
         self.levels[self.currentLevel].handleEvents(event)
         self.player.handleEvent(event)
@@ -55,31 +66,26 @@ class Game:
             self.inGameUi.update()
 
         self.levels[self.currentLevel].update(dt)
-        self.player.update(dt)
+        if not self.playerPaused:
+            self.player.update(dt)
 
         if self.isLevelChanging:
             if self.nextLevelAnimation.timeElapsed > self.nextLevelAnimation.time / 2 and not self.levelChanged:
-                self.handleLevelChange()
+                self.changeLevel()
                 self.levelChanged = True
 
             if not self.nextLevelAnimation.running:
                 self.isLevelChanging = False
                 self.levelChanged = False
                 self.nextLevelAnimation.reset()
+                self.playerPaused = False
+                self.inGameUi.resumeTimer()
             else:
                 self.nextLevelAnimation.update(dt)
 
-        if self.isNextLevel():
-            self.nextLevel = self.player.playerData.currentLevel
-
-            if self.nextLevel >= len(self.levels):
-                print("Game over!")
-                self.player.playerData.currentLevel = self.currentLevel
-                return
-
-            self.isLevelChanging = True
-            self.player.playerData.canMove = False
-            self.nextLevelAnimation.start()
+        if self.isNextLevel() or self.DEBUG_changeLevel :
+            self.prepareForLevelChange()
+            self.DEBUG_changeLevel = False
 
 
     def draw(self, screen : pg.Surface):
@@ -95,7 +101,7 @@ class Game:
         return self.currentLevel != self.player.playerData.currentLevel
 
 
-    def handleLevelChange(self):
+    def changeLevel(self):
         print(f"Changing level to {self.nextLevel}")
         self.currentLevel = self.nextLevel
         self.player.playerData.levelChanged = False
@@ -104,6 +110,25 @@ class Game:
 
         self.player.tileMap = self.levels[self.currentLevel].map
         self.player.reset()
+
+
+    def prepareForLevelChange(self):
+        self.playerPaused = True
+        self.inGameUi.pauseTimer()
+        self.nextLevel = self.player.playerData.currentLevel
+
+        if self.nextLevel >= len(self.levels):
+            print("Game over!")
+            self.player.playerData.currentLevel = self.currentLevel
+            return
+        if self.nextLevel < 0:
+            print("Theres no more previous levels! Setting level to 0")
+            self.player.playerData.currentLevel = 0
+            return
+
+        self.isLevelChanging = True
+        self.player.playerData.canMove = False
+        self.nextLevelAnimation.start()
 
 
     def setPlayerStartingPosition(self):
@@ -120,3 +145,23 @@ class Game:
         self.paused = False
         self.inGameUi.resumeTimer()
         self.player.unPause()
+
+
+
+    def DEBUG_checkLevelChange(self, event):
+        if self.isLeft:
+            prevKey = pg.K_4
+            nextKey = pg.K_5
+        else:
+            prevKey = pg.K_6
+            nextKey = pg.K_7
+
+        if event.type == pg.KEYDOWN:
+            if event.key == prevKey:
+                self.player.playerData.currentLevel -= 1
+                self.DEBUG_changeLevel = True
+            elif event.key == nextKey:
+                self.player.playerData.currentLevel += 1
+                self.DEBUG_changeLevel = True
+
+

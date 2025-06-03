@@ -1,5 +1,6 @@
 import pygame as pg
 
+import src.config.DebugConfig as Debug
 from src.config import Settings
 from src.game.PlayerData import PlayerData
 from src.game.SpriteAnimation import SpriteAnimation
@@ -116,7 +117,8 @@ class Player:
 
         # pg.draw.rect(screen, self.color, (self.canvas.left + self.playerData.posX, self.canvas.top + self.playerData.posY, self.playerData.playerWidth, self.playerData.playerHeight))
         self.moveAnimations[self.currentMoveAnimation].draw(screen, position)
-        # self.drawDebugCollisionBox(screen)
+        if Debug.DEBUG_PLAYER_COLLISION_VISIBLE:
+            self.DEBUG_drawCollisionBox(screen)
 
         if self.isDead:
             self.deadBlinkAnimation.draw(screen)
@@ -216,6 +218,7 @@ class Player:
 
             playerColX = self.getPlayerCollisionX()
             playerColY = self.getPlayerCollisionY()
+
             tileCol = tile.collision
 
             if tile.isTrigger:
@@ -242,7 +245,7 @@ class Player:
 
     def checkVerticalCollisions(self, playerCollision : pg.Rect, tileCollision : pg.Rect):
         if playerCollision.colliderect(tileCollision):
-            if self.playerData.velocityY > 0.0: # falling
+            if self.playerData.velocityY > 0.0 and playerCollision.top < tileCollision.top: # falling
                 self.playerData.posY = tileCollision.top - playerCollision.height
                 self.dy = 0.0
                 self.playerData.velocityY = 0
@@ -267,7 +270,7 @@ class Player:
         toPop = []
 
         for trigger in self.enteredTriggers:
-            if not self.getPlayerCollisionX().colliderect(self.getTileCollision(trigger)):
+            if not self.getPlayerCollisionX().colliderect(trigger.collision):
                 trigger.reset()
                 toPop.append(trigger)
 
@@ -294,10 +297,6 @@ class Player:
         )
 
 
-    def getTileCollision(self, tile : Tile) -> pg.Rect:
-        return pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
-
-
     def reset(self):
         self.moveToStart()
         self.playerData.reset()
@@ -311,6 +310,6 @@ class Player:
         self.movingLeft = False
 
 
-    def drawDebugCollisionBox(self, screen: pg.Surface):
+    def DEBUG_drawCollisionBox(self, screen: pg.Surface):
         pg.draw.rect(screen, (255, 0, 0), self.getPlayerCollisionX(), 1)
         pg.draw.rect(screen, (0, 255, 0), self.getPlayerCollisionY(), 1)
