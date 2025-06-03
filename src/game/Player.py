@@ -218,6 +218,7 @@ class Player:
 
             playerColX = self.getPlayerCollisionX()
             playerColY = self.getPlayerCollisionY()
+
             tileCol = tile.collision
 
             if tile.isTrigger:
@@ -244,7 +245,7 @@ class Player:
 
     def checkVerticalCollisions(self, playerCollision : pg.Rect, tileCollision : pg.Rect):
         if playerCollision.colliderect(tileCollision):
-            if self.playerData.velocityY > 0.0: # falling
+            if self.playerData.velocityY > 0.0 and playerCollision.top < tileCollision.top: # falling
                 self.playerData.posY = tileCollision.top - playerCollision.height
                 self.dy = 0.0
                 self.playerData.velocityY = 0
@@ -269,7 +270,7 @@ class Player:
         toPop = []
 
         for trigger in self.enteredTriggers:
-            if not self.getPlayerCollisionX().colliderect(self.getTileCollision(trigger)):
+            if not self.getPlayerCollisionX().colliderect(trigger.collision):
                 trigger.reset()
                 toPop.append(trigger)
 
@@ -294,10 +295,6 @@ class Player:
             self.playerData.playerWidth - offset * 4,
             self.playerData.playerHeight - offset
         )
-
-
-    def getTileCollision(self, tile : Tile) -> pg.Rect:
-        return pg.Rect(tile.leftTop.x, tile.leftTop.y, Tile.size, Tile.size)
 
 
     def reset(self):
