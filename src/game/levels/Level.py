@@ -26,7 +26,7 @@ class Level:
         self.backgroundY = (self.canvas.h - self.map.sizeY * Tile.size) / 2
         self.backgroundWidth = self.map.sizeX * Tile.size
         self.backgroundHeight = self.map.sizeY * Tile.size
-        self.backgroundTextureSize = (256, 256)
+        self.backgroundTextureSize = (400, 400)
         self.backgroundTextures = [
             pg.transform.scale(pg.image.load("assets/textures/background/red_brick_wall_1.png"), self.backgroundTextureSize),
             pg.transform.scale(pg.image.load("assets/textures/background/red_brick_wall_2.png"), self.backgroundTextureSize),
@@ -58,7 +58,7 @@ class Level:
 
         for row in range(tilesY):
             for col in range(tilesX):
-                index = random.randint(0, 3)
+                index = random.randint(0, len(self.backgroundTextures) - 1)
                 background.blit(self.backgroundTextures[index], (row * self.backgroundTextureSize[0], col * self.backgroundTextureSize[0]))
 
         return background

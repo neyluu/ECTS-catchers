@@ -13,8 +13,13 @@ class Game:
         self.currentLevel = 0
 
         self.levels = [
-            Level(self.isLeft, self.canvas, "testlevel.level", 550, 950),
-            Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950)
+            # Level(self.isLeft, self.canvas, "testlevel.level", 550, 950),
+            # Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950),
+            Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            Level(self.isLeft, self.canvas, "level02.level", 450, 950),
+            Level(self.isLeft, self.canvas, "level03.level", 450, 950),
+            Level(self.isLeft, self.canvas, "level04.level", 450, 950),
+            Level(self.isLeft, self.canvas, "level05.level", 450, 950)
         ]
 
         self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
