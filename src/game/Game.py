@@ -4,6 +4,7 @@ from src.game.Player import Player
 from src.game.levels.Level import Level
 from src.gui.animations.Blink import Blink
 from src.gui.InGameUI import InGameUI
+import src.config.DebugConfig as Debug
 
 class Game:
 
@@ -13,14 +14,19 @@ class Game:
         self.currentLevel = 0
 
         self.levels = [
-            # Level(self.isLeft, self.canvas, "testlevel.level", 550, 950),
-            # Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950),
             Level(self.isLeft, self.canvas, "level01.level", 450, 950),
             Level(self.isLeft, self.canvas, "level02.level", 450, 950),
             Level(self.isLeft, self.canvas, "level03.level", 450, 950),
             Level(self.isLeft, self.canvas, "level04.level", 450, 950),
-            Level(self.isLeft, self.canvas, "level05.level", 450, 950)
+            Level(self.isLeft, self.canvas, "level05.level", 450, 950),
+            Level(self.isLeft, self.canvas, "level06.level", 450, 950)
         ]
+
+        if Debug.DEBUG_LEVELS:
+            self.levels.insert(0, Level(self.isLeft, self.canvas, "testlevel.level", 550, 950))
+            self.levels.insert(1, Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950))
+            print(self.levels)
+            print(len(self.levels))
 
         self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
         self.setPlayerStartingPosition()
