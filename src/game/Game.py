@@ -15,6 +15,25 @@ class Game:
 
         self.levels = [
             Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
+            # Level(self.isLeft, self.canvas, "level01.level", 450, 950),
             Level(self.isLeft, self.canvas, "level02.level", 450, 950),
             Level(self.isLeft, self.canvas, "level03.level", 450, 950),
             Level(self.isLeft, self.canvas, "level04.level", 450, 950),
@@ -23,8 +42,9 @@ class Game:
         ]
 
         if Debug.DEBUG_LEVELS:
-            self.levels.insert(0, Level(self.isLeft, self.canvas, "testlevel.level", 550, 950))
-            self.levels.insert(1, Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950))
+            pass
+            # self.levels.insert(0, Level(self.isLeft, self.canvas, "testlevel.level", 550, 950))
+            # self.levels.insert(1, Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950))
 
         self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
         self.setPlayerStartingPosition()
