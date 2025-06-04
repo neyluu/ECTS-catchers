@@ -12,6 +12,8 @@ class Spikes(Trigger):
         self.loadTexture("assets/textures/traps/spikes.png")
         self.damage = config.SPIKES_DAMAGE
 
+        self.sound = pg.mixer.Sound("assets/audio/damage.wav")
+
         # bottom
         if direction == 0:
             self.collisionSizeX = Tile.size - 8
@@ -47,4 +49,5 @@ class Spikes(Trigger):
             return
 
         playerData.hp -= self.damage
+        self.sound.play()
         print(f"HP: {playerData.hp}")
