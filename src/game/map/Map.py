@@ -3,6 +3,7 @@ import time
 
 import pygame as pg
 
+import src.config.PowerUpsConfig as Config
 from src.game.map.tiles.Coin import Coin
 from src.game.map.tiles.Tile import Tile
 
@@ -62,81 +63,32 @@ class Map:
 
 
     def checkCoins(self):
-        print("\nChecking coins...")
-
-        startSum : int = 0
+        coinsSum : int = 0
         coinsCount : int = 0
         coinTiles = []
+
         for i in range(self.sizeY):
             for j in range(self.sizeX):
                 tile = self.tileMap[i][j]
                 if isinstance(tile, Coin):
-                    startSum += tile.points
+                    coinsSum += tile.points
                     coinsCount += 1
                     coinTiles.append(tile)
 
-        print(f"Start sum: {startSum} coins count: {coinsCount}")
-
-        for tile in coinTiles:
-            print(f"{tile.points} ", end="")
-        print("")
-
-        difference : int = 30 - startSum
-
-        if difference == 0:
+        if coinsCount < 7 or coinsCount > 12:
+            print("ERROR: invalid number of coins on level!")
             return
-        elif difference < 0:
-            if difference == -1:
-                index = random.randint(0, len(coinTiles) - 1)
-                coinTiles[index].points -= 1
-                return
 
-            pointsToReduce = []
-            pointsSum : int = 0
-            # while pointsSum != abs(difference):
-            MAX_ATTEMPTS = 1000  # prevent infinite loops
+        iterations = 0
+        MAX_ITERATIONS = 1000
 
-            attempts = 0
-            while attempts < MAX_ATTEMPTS:
-                attempts += 1
-                pointsToReduce = []
-                pointsSum = 0
-                for i in range(len(coinTiles)):
-                    maxPoint = min(abs(difference) - pointsSum, coinTiles[i].points - 1)
-                    if maxPoint <= 0:
-                        pointsToReduce.append(0)
-                    else:
-                        randPoint = random.randint(0, maxPoint)
-                        pointsToReduce.append(randPoint)
-                        pointsSum += randPoint
-                    if pointsSum == abs(difference):
-                        break
-                if pointsSum == abs(difference):
-                    break
-            else:
-                print("Couldn't find a valid combination within max attempts.")
+        while coinsSum != 30 and iterations < MAX_ITERATIONS:
+            coinsSum = 0
+            iterations += 1
 
-            print(pointsToReduce)
-
-            for i in range(len(pointsToReduce)):
-                coinTiles[i].points -= pointsToReduce[i]
-
-            print("FINAL:")
             for tile in coinTiles:
-                print(f"{tile.points} ", end="")
-            print("")
+                tile.points = random.randint(Config.COIN_MIN_POINTS, Config.COIN_MAX_POINTS)
+                coinsSum += tile.points
 
-            sum = 0
-            for tile in coinTiles:
-                sum += tile.points
-            print(f"FINAL SUM: {sum}")
-            if sum != 30:
-                print("ERROR: sum is not 30")
-
-
-
-
-
-
-
-
+        if iterations >= MAX_ITERATIONS:
+            print("ERROR, max iterations reached")
