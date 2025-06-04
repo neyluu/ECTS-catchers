@@ -16,6 +16,8 @@ class LevelLoader:
     def load(self, filename : str, levelMap : Map):
         path = "assets/levels/" + filename
 
+        print(f"Loading level: {filename}")
+
         with open(path, 'r') as f:
             for line in f.readlines():
 
