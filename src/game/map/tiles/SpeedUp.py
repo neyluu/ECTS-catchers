@@ -20,6 +20,7 @@ class SpeedUp(Trigger):
         self.timer : float = 0
 
         self.animation = SpriteAnimation("assets/animations/speedUp", 0.6)
+        self.sound = pg.mixer.Sound("assets/audio/speed_up.wav")
 
 
     def update(self, dt: float):
@@ -45,6 +46,7 @@ class SpeedUp(Trigger):
         if self.wasEntered():
             return
 
+        self.sound.play()
         self.playerData : PlayerData = playerData
         self.playerData.powerUps.speedUp = True
         self.started = True
