@@ -27,6 +27,8 @@ class Player:
         }
         self.currentMoveAnimation = "idle"
 
+        self.deathSound = pg.mixer.Sound("assets/audio/death.wav")
+
         self.deadBlinkAnimation = Blink(canvas)
         self.deadBlinkAnimation.color = pg.Color(100, 20, 20)
         self.deadBlinkAnimation.time = 1
@@ -126,6 +128,7 @@ class Player:
 
     def handleOnDead(self, dt):
         if self.isDead:
+            self.deathSound.play()
             if self.deadBlinkAnimation.timeElapsed > self.deadBlinkAnimation.time / 2 and not self.deadHandled:
                 self.playerData.hp = self.playerData.startHp
                 self.reset()
