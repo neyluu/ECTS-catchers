@@ -18,7 +18,6 @@ class LoopSound:
 
         self.timer += dt
         if self.timer >= self.delay:
-            print(self.timer)
             self.sound.play()
             self.timer -= self.delay
 
