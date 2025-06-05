@@ -2,6 +2,7 @@ import pygame as pg
 
 import src.config.DebugConfig as Debug
 from src.config import Settings
+from src.game.LoopSound import LoopSound
 from src.game.PlayerData import PlayerData
 from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.Map import Map
@@ -26,6 +27,10 @@ class Player:
             "jumpLeft" : SpriteAnimation("assets/animations/playerJumpLeft", 1),
         }
         self.currentMoveAnimation = "idle"
+
+        self.deathSound = pg.mixer.Sound("assets/audio/death.wav")
+        self.movingSound = LoopSound("assets/audio/step_1.wav", 0.2)
+        self.movingSoundPlaying = False
 
         self.deadBlinkAnimation = Blink(canvas)
         self.deadBlinkAnimation.color = pg.Color(100, 20, 20)
@@ -108,6 +113,7 @@ class Player:
         self.checkCollisions()
         self.updatePosition()
         self.moveAnimations[self.currentMoveAnimation].update(dt)
+        self.checkMovementSounds(dt)
 
         self.playerData.gotDamaged = False
 
@@ -126,6 +132,7 @@ class Player:
 
     def handleOnDead(self, dt):
         if self.isDead:
+            self.deathSound.play()
             if self.deadBlinkAnimation.timeElapsed > self.deadBlinkAnimation.time / 2 and not self.deadHandled:
                 self.playerData.hp = self.playerData.startHp
                 self.reset()
@@ -295,6 +302,17 @@ class Player:
             self.playerData.playerWidth - offset * 4,
             self.playerData.playerHeight - offset
         )
+
+
+    def checkMovementSounds(self, dt : float):
+        isMovingOnGround = self.dx != 0 and not self.isJumping
+        if isMovingOnGround:
+            if not self.movingSoundPlaying:
+                self.movingSoundPlaying = True
+            self.movingSound.update(dt)
+        else:
+            if self.movingSoundPlaying:
+                self.movingSoundPlaying = False
 
 
     def reset(self):

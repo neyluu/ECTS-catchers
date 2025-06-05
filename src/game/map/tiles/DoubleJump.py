@@ -19,6 +19,7 @@ class DoubleJump(Trigger):
         self.started : bool = False
 
         self.animation = SpriteAnimation("assets/animations/doubleJump", 0.6)
+        self.sound = pg.mixer.Sound("assets/audio/double_jump.wav")
 
 
     def update(self, dt: float):
@@ -44,6 +45,7 @@ class DoubleJump(Trigger):
         if self.wasEntered():
             return
 
+        self.sound.play()
         self.started = True
         self.playerData : PlayerData = playerData
         self.playerData.canDoubleJump = True

@@ -19,3 +19,7 @@ class Scene:
 
     def draw(self, screen : pg.Surface):
         pass
+
+
+    def stop(self):
+        pass

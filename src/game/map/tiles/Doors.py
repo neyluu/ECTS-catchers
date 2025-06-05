@@ -23,6 +23,8 @@ class Doors(Trigger):
         else:
             self.animation = SpriteAnimation("assets/animations/doorBottom", self.animationTime)
 
+        self.sound = pg.mixer.Sound("assets/audio/teleport.wav")
+
 
     def update(self, dt: float):
         self.animation.update(dt)
@@ -39,5 +41,6 @@ class Doors(Trigger):
             return
 
         if playerData.coins >= 30 or Debug.DEBUG_LEVEL_CHANGE_WITHOUT_COINS_COLLECTING:
+            self.sound.play()
             playerData.currentLevel += 1
             playerData.levelChanged = True
