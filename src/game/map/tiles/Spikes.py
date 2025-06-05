@@ -14,31 +14,31 @@ class Spikes(Trigger):
 
         # bottom
         if direction == 0:
-            self.collisionSizeX = Tile.size - 8
-            self.collisionSizeY = Tile.size - 20
-            self.collisionOffsetX = 4
-            self.collisionOffsetY = 20
+            self.collisionSizeX = Tile.size - 10
+            self.collisionSizeY = Tile.size - 22
+            self.collisionOffsetX = 5
+            self.collisionOffsetY = 22
         # right
         elif direction == 1:
             self.texture = pg.transform.rotate(self.texture, 90)
-            self.collisionSizeX = Tile.size - 20
-            self.collisionSizeY = Tile.size - 8
-            self.collisionOffsetX = 20
-            self.collisionOffsetY = 4
+            self.collisionSizeX = Tile.size - 22
+            self.collisionSizeY = Tile.size - 10
+            self.collisionOffsetX = 22
+            self.collisionOffsetY = 5
         # top
         elif direction == 2:
             self.texture = pg.transform.rotate(self.texture, 180)
-            self.collisionSizeX = Tile.size - 8
-            self.collisionSizeY = Tile.size - 20
-            self.collisionOffsetX = 4
-            self.collisionOffsetY = 4
+            self.collisionSizeX = Tile.size - 10
+            self.collisionSizeY = Tile.size - 22
+            self.collisionOffsetX = 5
+            self.collisionOffsetY = 0
         # left
         elif direction == 3:
             self.texture = pg.transform.rotate(self.texture, 270)
-            self.collisionSizeX = Tile.size - 20
-            self.collisionSizeY = Tile.size - 8
-            self.collisionOffsetX = 4
-            self.collisionOffsetY = 4
+            self.collisionSizeX = Tile.size - 22
+            self.collisionSizeY = Tile.size - 10
+            self.collisionOffsetX = 0
+            self.collisionOffsetY = 5
 
 
 
