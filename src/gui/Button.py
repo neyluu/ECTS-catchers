@@ -1,4 +1,3 @@
-# src/gui/Button.py
 import pygame as pg
 
 
@@ -50,6 +49,7 @@ class Button:
         else:
             self.hoverSurface = None
 
+
     def _rebuildTexture(self):
         imageToTransform = self.baseScaledImage.copy()
 
@@ -75,6 +75,7 @@ class Button:
 
         self.mask = pg.mask.from_surface(self.texture)
 
+
     def _checkCollision(self, pos):
         if self.rect.collidepoint(pos):
             local_x = pos[0] - self.rect.x
@@ -85,11 +86,13 @@ class Button:
                     return True
         return False
 
+
     def draw(self, screen: pg.Surface):
         screen.blit(self.texture, self.rect.topleft)
 
         if self.isHovered and self.hoverSurface:
             screen.blit(self.hoverSurface, self.rect.topleft)
+
 
     def handleEvent(self, event: pg.event.Event):
         if event.type == pg.MOUSEMOTION:
@@ -98,25 +101,3 @@ class Button:
             if event.button == 1 and self._checkCollision(event.pos):
                 if self.action:
                     self.action()
-                return True
-        return False
-
-    def updateText(self, newText):
-        if self.text != newText:
-            self.text = newText
-            self._rebuildTexture()
-            if self.hoverSurface and self.hoverEffectColor and len(self.hoverEffectColor) == 4 and \
-                    self.hoverEffectColor[3] > 0:
-                if self.hoverSurface.get_size() != self.rect.size:
-                    self.hoverSurface = pg.Surface(self.rect.size, pg.SRCALPHA)
-                    self.hoverSurface.fill(self.hoverEffectColor)
-
-    def setRotationAngle(self, newRotationAngle):
-        if self.rotationAngle != newRotationAngle:
-            self.rotationAngle = newRotationAngle
-            self._rebuildTexture()
-            if self.hoverSurface and self.hoverEffectColor and len(self.hoverEffectColor) == 4 and \
-                    self.hoverEffectColor[3] > 0:
-                if self.hoverSurface.get_size() != self.rect.size:
-                    self.hoverSurface = pg.Surface(self.rect.size, pg.SRCALPHA)
-                    self.hoverSurface.fill(self.hoverEffectColor)

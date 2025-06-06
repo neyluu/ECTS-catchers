@@ -1,9 +1,9 @@
-# src/scenes/main_menu.py
 import pygame as pg
 import sys
 
 from src.scenes.Scene import Scene
 from src.gui.Button import Button
+
 
 class MainMenu(Scene):
     def __init__(self, screenWidth=1920, screenHeight=1080,
@@ -34,29 +34,22 @@ class MainMenu(Scene):
         firstButtonTopY = int(self.screenHeight - 1125)
         buttonVerticalSpacing = -400
 
-        defaultButtonRotation = 0
+        defaultButtonPositionX = self.screenWidth - 950
         defaultButtonTextColor = (250, 250, 250)
         defaultButtonOutlineColor = (0, 0, 0)
         defaultButtonOutlineThickness = 2
         defaultButtonHoverColor = None
-
-        playButtonText = "play"
-        playButtonWidth = 850
-        playButtonHeight = 650
-        playButtonRotationAngle = 3
-        playButtonFontSize =70
-        playButtonTexture = defaultButtonTexturePath
-        playButtonFont = defaultButtonFontPath
-        playButtonTopLeftX = (self.screenWidth - 950)
-        playButtonTopLeftY = firstButtonTopY
+        defaultButtonWidth = 850
+        defaultButtonHeight = 650
+        defaultButtonFontSize = 70
 
         self.playButton = Button(
-            x=playButtonTopLeftX, y=playButtonTopLeftY,
-            width=playButtonWidth, height=playButtonHeight,
-            texturePath=playButtonTexture,
-            text=playButtonText,
-            rotationAngle=playButtonRotationAngle,
-            fontPath=playButtonFont, fontSize=playButtonFontSize,
+            x=defaultButtonPositionX, y=firstButtonTopY,
+            width=defaultButtonWidth, height=defaultButtonHeight,
+            texturePath=defaultButtonTexturePath,
+            text="play",
+            rotationAngle=3,
+            fontPath=defaultButtonFontPath, fontSize=defaultButtonFontSize,
             textColor=defaultButtonTextColor,
             outlineColor=defaultButtonOutlineColor,
             outlineThickness=defaultButtonOutlineThickness,
@@ -64,23 +57,15 @@ class MainMenu(Scene):
             action=self.goToGameScene
         )
 
-        settingsButtonText = "settings"
-        settingsButtonWidth = 850
-        settingsButtonHeight = 650
-        settingsButtonRotationAngle = -2
-        settingsButtonFontSize = 70
-        settingsButtonTexture = defaultButtonTexturePath
-        settingsButtonFont = defaultButtonFontPath
-        settingsButtonTopLeftX = (self.screenWidth - 950)
-        settingsButtonTopLeftY = playButtonTopLeftY + playButtonHeight + buttonVerticalSpacing
+        settingsButtonTopLeftY = firstButtonTopY + defaultButtonHeight + buttonVerticalSpacing
 
         self.settingsButton = Button(
-            x=settingsButtonTopLeftX, y=settingsButtonTopLeftY,
-            width=settingsButtonWidth, height=settingsButtonHeight,
-            texturePath=settingsButtonTexture,
-            text=settingsButtonText,
-            rotationAngle=settingsButtonRotationAngle,
-            fontPath=settingsButtonFont, fontSize=settingsButtonFontSize,
+            x=defaultButtonPositionX, y=settingsButtonTopLeftY,
+            width=defaultButtonWidth, height=defaultButtonHeight,
+            texturePath=defaultButtonTexturePath,
+            text="settings",
+            rotationAngle=-2,
+            fontPath=defaultButtonFontPath, fontSize=defaultButtonFontSize,
             textColor=defaultButtonTextColor,
             outlineColor=defaultButtonOutlineColor,
             outlineThickness=defaultButtonOutlineThickness,
@@ -88,23 +73,15 @@ class MainMenu(Scene):
             action=self.goToSettingsScene
         )
 
-        exitButtonText = "exit"
-        exitButtonWidth = 850
-        exitButtonHeight = 650
-        exitButtonRotationAngle = -1
-        exitButtonFontSize = 70
-        exitButtonTexture = defaultButtonTexturePath
-        exitButtonFont = defaultButtonFontPath
-        exitButtonTopLeftX = (self.screenWidth - 950)
-        exitButtonTopLeftY = settingsButtonTopLeftY + settingsButtonHeight + buttonVerticalSpacing
+        exitButtonTopLeftY = settingsButtonTopLeftY + defaultButtonHeight + buttonVerticalSpacing
 
         self.exitButton = Button(
-            x=exitButtonTopLeftX, y=exitButtonTopLeftY,
-            width=exitButtonWidth, height=exitButtonHeight,
-            texturePath=exitButtonTexture,
-            text=exitButtonText,
-            rotationAngle=exitButtonRotationAngle,
-            fontPath=exitButtonFont, fontSize=exitButtonFontSize,
+            x=defaultButtonPositionX, y=exitButtonTopLeftY,
+            width=defaultButtonWidth, height=defaultButtonHeight,
+            texturePath=defaultButtonTexturePath,
+            text="exit",
+            rotationAngle=-1,
+            fontPath=defaultButtonFontPath, fontSize=defaultButtonFontSize,
             textColor=defaultButtonTextColor,
             outlineColor=defaultButtonOutlineColor,
             outlineThickness=defaultButtonOutlineThickness,
@@ -114,20 +91,24 @@ class MainMenu(Scene):
 
         self.buttons = [self.playButton, self.settingsButton, self.exitButton]
 
+
     def goToGameScene(self):
-        print("Przechodzenie do sceny gry (indeks 1)")
+        print("Switching to Game Scene")
         if self.sceneManager:
             self.sceneManager.setCurrentScene(1)
 
+
     def goToSettingsScene(self):
-        print("Przechodzenie do sceny ustawień (indeks 2)")
+        print("Switching to Settings Scene")
         if self.sceneManager:
             self.sceneManager.setCurrentScene(2)
 
+
     def quitGame(self):
-        print("Wyjście z gry")
+        print("Exiting game")
         pg.quit()
         sys.exit()
+
 
     def handleEvent(self, event: pg.event.Event):
         for button in self.buttons:
@@ -137,8 +118,10 @@ class MainMenu(Scene):
             if event.key == pg.K_ESCAPE:
                 self.quitGame()
 
+
     def update(self, dt: float):
         pass
+
 
     def draw(self, screen: pg.Surface):
         if self.backgroundSurf:
