@@ -23,6 +23,7 @@ class Game:
         ]
 
         if Debug.DEBUG_LEVELS:
+            pass
             self.levels.insert(0, Level(self.isLeft, self.canvas, "testlevel.level", 550, 950))
             self.levels.insert(1, Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950))
 

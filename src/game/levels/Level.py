@@ -19,6 +19,7 @@ class Level:
         self.levelLoader = LevelLoader()
         self.map = Map(self.canvas)
         self.map = self.levelLoader.load(filename, self.map)
+        self.map.checkCoins()
 
         random.seed(filename)
 

@@ -20,6 +20,7 @@ class Lava(Trigger):
 
         self.damageDelay : int = config.LAVA_DAMAGE_DELAY_TIME # seconds
         self.playerData : PlayerData = None
+        self.sound = pg.mixer.Sound("assets/audio/damage.wav")
 
 
     def update(self, dt: float):
@@ -27,6 +28,7 @@ class Lava(Trigger):
             now = pg.time.get_ticks() / 1000
             if now - Lava.timer > self.damageDelay:
                 self.playerData.gotDamaged = True
+                self.sound.play()
                 Lava.timer = now
 
 
@@ -45,3 +47,4 @@ class Lava(Trigger):
         if not Lava.inLava:
             Lava.timer = pg.time.get_ticks() / 1000
             self.playerData.hp -= 1
+            self.sound.play()

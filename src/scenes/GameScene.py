@@ -4,7 +4,6 @@ from src.config import Settings
 from src.gui.PauseMenu import PauseMenu
 from src.scenes.Scene import Scene
 from src.game.Game import Game
-from src.game.PlayerKeymap import PlayerKeymap
 
 class GameScene(Scene):
 
@@ -15,6 +14,10 @@ class GameScene(Scene):
 
         self.paused : bool = False
         self.pauseMenu = PauseMenu()
+
+        self.running = False
+        self.soundtrack = pg.mixer.Sound("assets/audio/soundtrack02.mp3")
+        self.soundtrack.set_volume(0.05)
 
 
     def handleEvent(self, event):
@@ -38,6 +41,10 @@ class GameScene(Scene):
 
 
     def update(self, dt : float):
+        if not self.running:
+            self.running = True
+            self.soundtrack.play(-1)
+
         self.leftGame.update(dt)
         self.rightGame.update(dt)
 
@@ -66,3 +73,8 @@ class GameScene(Scene):
         self.leftGame.unPause()
         self.rightGame.unPause()
 
+
+    def stop(self):
+        self.running = False
+        self.soundtrack.stop()
+        

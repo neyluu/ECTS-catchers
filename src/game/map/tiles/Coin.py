@@ -14,6 +14,7 @@ class Coin(Trigger):
         self.isResettable = False
         self.points = random.randint(config.COIN_MIN_POINTS, config.COIN_MAX_POINTS)
         self.animation = SpriteAnimation("assets/animations/coin", 0.55)
+        self.sound = pg.mixer.Sound("assets/audio/coin.wav")
 
 
     def update(self, dt: float):
@@ -32,6 +33,7 @@ class Coin(Trigger):
         if self.wasEntered():
             return
 
+        self.sound.play()
         self.hide()
         playerData.coins += self.points
         print(f"Points: {playerData.coins}")

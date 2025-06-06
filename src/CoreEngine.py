@@ -45,6 +45,7 @@ class CoreEngine():
             EndScene()
         ]
         self.dt = 0
+        self.previousSceneIndex = self.sceneManager.getCurrentScene()
 
 
     def handleEvent(self):
@@ -58,6 +59,10 @@ class CoreEngine():
 
 
     def update(self):
+        if self.previousSceneIndex != self.sceneManager.getCurrentScene():
+            self.scenes[self.previousSceneIndex].stop()
+            self.previousSceneIndex = self.sceneManager.getCurrentScene()
+
         self.scenes[self.sceneManager.getCurrentScene()].update(self.dt)
 
 
