@@ -32,8 +32,10 @@ class Player:
         self.deathSound = pg.mixer.Sound("assets/audio/death.wav")
         self.deathSoundPlayed : bool = False
         self.deathSound.set_volume(SOUND_SFX)
-        # self.movingSound = LoopSound("assets/audio/step_1.wav", 0.2)
-        # self.movingSoundPlaying = False
+
+        self.movingSound = LoopSound("assets/audio/step_1.wav", 0.2)
+        self.movingSoundPlaying = False
+        self.movingSound.start()
 
         self.deadBlinkAnimation = Blink(canvas)
         self.deadBlinkAnimation.color = pg.Color(100, 20, 20)
@@ -313,13 +315,13 @@ class Player:
 
     def checkMovementSounds(self, dt : float):
         isMovingOnGround = self.dx != 0 and not self.isJumping
-        # if isMovingOnGround:
-        #     if not self.movingSoundPlaying:
-        #         self.movingSoundPlaying = True
-        #     self.movingSound.update(dt)
-        # else:
-        #     if self.movingSoundPlaying:
-        #         self.movingSoundPlaying = False
+        if isMovingOnGround:
+            if not self.movingSoundPlaying:
+                self.movingSoundPlaying = True
+            self.movingSound.update(dt)
+        else:
+            if self.movingSoundPlaying:
+                self.movingSoundPlaying = False
 
 
     def reset(self):
