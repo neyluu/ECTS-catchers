@@ -1,5 +1,6 @@
 import pygame as pg
 
+from src.config.Settings import SOUND_SFX
 from src.game.PlayerData import PlayerData
 from src.game.map.tiles.Trigger import Trigger
 import src.config.PowerUpsConfig as config
@@ -21,6 +22,7 @@ class Lava(Trigger):
         self.damageDelay : int = config.LAVA_DAMAGE_DELAY_TIME # seconds
         self.playerData : PlayerData = None
         self.sound = pg.mixer.Sound("assets/audio/damage.wav")
+        self.sound.set_volume(SOUND_SFX)
 
 
     def update(self, dt: float):

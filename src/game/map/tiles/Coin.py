@@ -1,6 +1,7 @@
 import pygame as pg
 import random
 
+from src.config.Settings import SOUND_SFX
 from src.game.map.tiles.Tile import Tile
 from src.game.PlayerData import PlayerData
 from src.game.SpriteAnimation import SpriteAnimation
@@ -15,6 +16,7 @@ class Coin(Trigger):
         self.points = random.randint(config.COIN_MIN_POINTS, config.COIN_MAX_POINTS)
         self.animation = SpriteAnimation("assets/animations/coin", 0.55)
         self.sound = pg.mixer.Sound("assets/audio/coin.wav")
+        self.sound.set_volume(SOUND_SFX)
 
 
     def update(self, dt: float):

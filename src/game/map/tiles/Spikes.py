@@ -1,5 +1,6 @@
 import pygame as pg
 
+from src.config.Settings import SOUND_SFX
 from src.game.PlayerData import PlayerData
 from src.game.map.tiles.Tile import Tile
 from src.game.map.tiles.Trigger import Trigger
@@ -13,6 +14,7 @@ class Spikes(Trigger):
         self.damage = config.SPIKES_DAMAGE
 
         self.sound = pg.mixer.Sound("assets/audio/damage.wav")
+        self.sound.set_volume(SOUND_SFX)
 
         # bottom
         if direction == 0:
