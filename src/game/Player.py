@@ -1,6 +1,7 @@
 import pygame as pg
 
 import src.config.DebugConfig as Debug
+from src.config.Settings import SOUND_SFX
 from src.config import Settings
 from src.game.LoopSound import LoopSound
 from src.game.PlayerData import PlayerData
@@ -29,8 +30,12 @@ class Player:
         self.currentMoveAnimation = "idle"
 
         self.deathSound = pg.mixer.Sound("assets/audio/death.wav")
+        self.deathSoundPlayed : bool = False
+        self.deathSound.set_volume(SOUND_SFX)
+
         self.movingSound = LoopSound("assets/audio/step_1.wav", 0.2)
         self.movingSoundPlaying = False
+        self.movingSound.start()
 
         self.deadBlinkAnimation = Blink(canvas)
         self.deadBlinkAnimation.color = pg.Color(100, 20, 20)
@@ -132,7 +137,10 @@ class Player:
 
     def handleOnDead(self, dt):
         if self.isDead:
-            self.deathSound.play()
+            if not self.deathSoundPlayed:
+                self.deathSound.play()
+                self.deathSoundPlayed = True
+
             if self.deadBlinkAnimation.timeElapsed > self.deadBlinkAnimation.time / 2 and not self.deadHandled:
                 self.playerData.hp = self.playerData.startHp
                 self.reset()
@@ -141,6 +149,7 @@ class Player:
                 self.isDead = False
                 self.deadHandled = False
                 self.deadBlinkAnimation.reset()
+                self.deathSoundPlayed = False
             else:
                 self.deadBlinkAnimation.update(dt)
 

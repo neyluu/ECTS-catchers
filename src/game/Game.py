@@ -2,6 +2,7 @@ import pygame as pg
 
 from src.game.Player import Player
 from src.game.levels.Level import Level
+from src.gui.GameOver import GameOver
 from src.gui.animations.Blink import Blink
 from src.gui.InGameUI import InGameUI
 import src.config.DebugConfig as Debug
@@ -19,7 +20,8 @@ class Game:
             Level(self.isLeft, self.canvas, "level03.level", 450, 950),
             Level(self.isLeft, self.canvas, "level04.level", 450, 950),
             Level(self.isLeft, self.canvas, "level05.level", 450, 950),
-            Level(self.isLeft, self.canvas, "level06.level", 450, 950)
+            Level(self.isLeft, self.canvas, "level06.level", 450, 950),
+            Level(self.isLeft, self.canvas, "level07.level", 450, 950)
         ]
 
         if Debug.DEBUG_LEVELS:
@@ -29,6 +31,9 @@ class Game:
 
         self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
         self.setPlayerStartingPosition()
+
+        self.gameOver = GameOver(self.canvas)
+        self.isGameOver = False
 
         self.dt : float = 0
 
@@ -53,8 +58,11 @@ class Game:
         if Debug.DEBUG_LEVEL_CHANGE_SHORTCUTS:
             self.DEBUG_checkLevelChange(event)
 
-        self.levels[self.currentLevel].handleEvents(event)
-        self.player.handleEvent(event)
+        if self.isGameOver:
+            self.gameOver.handleEvents(event)
+        else:
+            self.levels[self.currentLevel].handleEvents(event)
+            self.player.handleEvent(event)
 
 
     def update(self, dt : float):
@@ -66,36 +74,43 @@ class Game:
         if not self.paused:
             self.inGameUi.update()
 
-        self.levels[self.currentLevel].update(dt)
-        if not self.playerPaused:
-            self.player.update(dt)
+        if self.isGameOver:
+            self.gameOver.update(dt)
+        else:
+            self.levels[self.currentLevel].update(dt)
 
-        if self.isLevelChanging:
-            if self.nextLevelAnimation.timeElapsed > self.nextLevelAnimation.time / 2 and not self.levelChanged:
-                self.changeLevel()
-                self.levelChanged = True
+            if not self.playerPaused:
+                self.player.update(dt)
 
-            if not self.nextLevelAnimation.running:
-                self.isLevelChanging = False
-                self.levelChanged = False
-                self.nextLevelAnimation.reset()
-                self.playerPaused = False
-                self.inGameUi.resumeTimer()
-            else:
-                self.nextLevelAnimation.update(dt)
+            if self.isLevelChanging:
+                if self.nextLevelAnimation.timeElapsed > self.nextLevelAnimation.time / 2 and not self.levelChanged:
+                    self.changeLevel()
+                    self.levelChanged = True
 
-        if self.isNextLevel() or self.DEBUG_changeLevel :
-            self.prepareForLevelChange()
+                if not self.nextLevelAnimation.running:
+                    self.isLevelChanging = False
+                    self.levelChanged = False
+                    self.nextLevelAnimation.reset()
+                    self.playerPaused = False
+                    self.inGameUi.resumeTimer()
+                else:
+                    self.nextLevelAnimation.update(dt)
+
+            if self.isNextLevel() or self.DEBUG_changeLevel :
+                self.prepareForLevelChange()
             self.DEBUG_changeLevel = False
 
 
     def draw(self, screen : pg.Surface):
-        self.levels[self.currentLevel].draw(screen)
-        self.player.draw(screen)
-        self.inGameUi.draw(screen)
+        if self.isGameOver:
+            self.gameOver.draw(screen)
+        else:
+            self.levels[self.currentLevel].draw(screen)
+            self.player.draw(screen)
+            self.inGameUi.draw(screen)
 
-        if self.isLevelChanging:
-            self.nextLevelAnimation.draw(screen)
+            if self.isLevelChanging:
+                self.nextLevelAnimation.draw(screen)
 
 
     def isNextLevel(self) -> bool:
@@ -120,6 +135,7 @@ class Game:
 
         if self.nextLevel >= len(self.levels):
             print("Game over!")
+            self.isGameOver = True
             self.player.playerData.currentLevel = self.currentLevel
             return
         if self.nextLevel < 0:

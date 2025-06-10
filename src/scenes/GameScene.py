@@ -17,7 +17,7 @@ class GameScene(Scene):
 
         self.running = False
         self.soundtrack = pg.mixer.Sound("assets/audio/soundtrack02.mp3")
-        self.soundtrack.set_volume(0.05)
+        self.soundtrack.set_volume(Settings.SOUND_MUSIC * 0.75)
 
 
     def handleEvent(self, event):

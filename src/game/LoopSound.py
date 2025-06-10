@@ -5,7 +5,7 @@ class LoopSound:
         self.path = path
         self.delay = delay
 
-        self.timer : delay = 0
+        self.timer : float = delay
         self.playing : bool = False
         self.sound = pg.mixer.Sound(path)
 
@@ -18,6 +18,7 @@ class LoopSound:
 
         self.timer += dt
         if self.timer >= self.delay:
+            self.sound.stop()
             self.sound.play()
             self.timer -= self.delay
 
