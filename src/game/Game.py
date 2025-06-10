@@ -19,7 +19,8 @@ class Game:
             Level(self.isLeft, self.canvas, "level03.level", 450, 950),
             Level(self.isLeft, self.canvas, "level04.level", 450, 950),
             Level(self.isLeft, self.canvas, "level05.level", 450, 950),
-            Level(self.isLeft, self.canvas, "level06.level", 450, 950)
+            Level(self.isLeft, self.canvas, "level06.level", 450, 950),
+            Level(self.isLeft, self.canvas, "level07.level", 450, 950)
         ]
 
         if Debug.DEBUG_LEVELS:
