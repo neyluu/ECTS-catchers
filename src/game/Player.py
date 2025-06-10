@@ -1,9 +1,9 @@
 import pygame as pg
 
 import src.config.DebugConfig as Debug
-from src.config.Settings import SOUND_SFX
 from src.config import Settings
-from src.game.LoopSound import LoopSound
+from src.sounds.LoopSound import LoopSound
+from src.sounds.SFX import SFX
 from src.game.PlayerData import PlayerData
 from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.Map import Map
@@ -29,9 +29,8 @@ class Player:
         }
         self.currentMoveAnimation = "idle"
 
-        self.deathSound = pg.mixer.Sound("assets/audio/death.wav")
+        self.deathSFX = SFX("assets/audio/death.wav")
         self.deathSoundPlayed : bool = False
-        self.deathSound.set_volume(SOUND_SFX)
 
         self.movingSound = LoopSound("assets/audio/step_1.wav", 0.2)
         self.movingSoundPlaying = False
@@ -138,7 +137,7 @@ class Player:
     def handleOnDead(self, dt):
         if self.isDead:
             if not self.deathSoundPlayed:
-                self.deathSound.play()
+                self.deathSFX.play()
                 self.deathSoundPlayed = True
 
             if self.deadBlinkAnimation.timeElapsed > self.deadBlinkAnimation.time / 2 and not self.deadHandled:

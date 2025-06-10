@@ -1,10 +1,10 @@
 import pygame as pg
 
-from src.config.Settings import SOUND_SFX
 from src.game.PlayerData import PlayerData
 from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.tiles.Tile import Tile
 from src.game.map.tiles.Trigger import Trigger
+from src.sounds.SFX import SFX
 import src.config.PowerUpsConfig as config
 
 
@@ -20,8 +20,7 @@ class DoubleJump(Trigger):
         self.started : bool = False
 
         self.animation = SpriteAnimation("assets/animations/doubleJump", 0.6)
-        self.sound = pg.mixer.Sound("assets/audio/double_jump.wav")
-        self.sound.set_volume(SOUND_SFX)
+        self.sfx = SFX("assets/audio/double_jump.wav")
 
 
     def update(self, dt: float):
@@ -47,7 +46,7 @@ class DoubleJump(Trigger):
         if self.wasEntered():
             return
 
-        self.sound.play()
+        self.sfx.play()
         self.started = True
         self.playerData : PlayerData = playerData
         self.playerData.canDoubleJump = True

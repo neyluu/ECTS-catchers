@@ -1,8 +1,8 @@
 import pygame as pg
 
-from src.config.Settings import SOUND_SFX
 from src.game.PlayerData import PlayerData
 from src.game.map.tiles.Trigger import Trigger
+from src.sounds.SFX import SFX
 import src.config.PowerUpsConfig as config
 
 
@@ -21,8 +21,7 @@ class Lava(Trigger):
 
         self.damageDelay : int = config.LAVA_DAMAGE_DELAY_TIME # seconds
         self.playerData : PlayerData = None
-        self.sound = pg.mixer.Sound("assets/audio/damage.wav")
-        self.sound.set_volume(SOUND_SFX)
+        self.sfx = SFX("assets/audio/damage.wav")
 
 
     def update(self, dt: float):
@@ -30,8 +29,9 @@ class Lava(Trigger):
             now = pg.time.get_ticks() / 1000
             if now - Lava.timer > self.damageDelay:
                 self.playerData.gotDamaged = True
-                self.sound.play()
+                self.sfx.play()
                 Lava.timer = now
+                print(f"HP: {self.playerData.hp}")
 
 
     def reset(self):
@@ -49,4 +49,5 @@ class Lava(Trigger):
         if not Lava.inLava:
             Lava.timer = pg.time.get_ticks() / 1000
             self.playerData.hp -= 1
-            self.sound.play()
+            print(f"HP: {self.playerData.hp}")
+            self.sfx.play()

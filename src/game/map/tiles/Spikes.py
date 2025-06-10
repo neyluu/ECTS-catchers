@@ -1,9 +1,9 @@
 import pygame as pg
 
-from src.config.Settings import SOUND_SFX
 from src.game.PlayerData import PlayerData
 from src.game.map.tiles.Tile import Tile
 from src.game.map.tiles.Trigger import Trigger
+from src.sounds.SFX import SFX
 import src.config.PowerUpsConfig as config
 
 
@@ -12,9 +12,7 @@ class Spikes(Trigger):
         super().__init__()
         self.loadTexture("assets/textures/traps/spikes.png")
         self.damage = config.SPIKES_DAMAGE
-
-        self.sound = pg.mixer.Sound("assets/audio/damage.wav")
-        self.sound.set_volume(SOUND_SFX)
+        self.sfx = SFX("assets/audio/damage.wav")
 
         # bottom
         if direction == 0:
@@ -51,5 +49,5 @@ class Spikes(Trigger):
             return
 
         playerData.hp -= self.damage
-        self.sound.play()
+        self.sfx.play()
         print(f"HP: {playerData.hp}")
