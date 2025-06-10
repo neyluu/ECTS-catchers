@@ -11,45 +11,43 @@ from src.game.map.tiles.SpeedUp import SpeedUp
 from src.game.map.tiles.Spikes import Spikes
 
 
-class LevelLoader:
+def loadLevel(filename : str, levelMap : Map):
+    path = "assets/levels/" + filename
 
-    def load(self, filename : str, levelMap : Map):
-        path = "assets/levels/" + filename
+    print(f"Loading level: {filename}")
 
-        print(f"Loading level: {filename}")
+    with open(path, 'r') as f:
+        for line in f.readlines():
 
-        with open(path, 'r') as f:
-            for line in f.readlines():
+            parts = line.split(";")
+            parts.pop()
 
-                parts = line.split(";")
-                parts.pop()
+            x = int(parts[0])
+            y = int(parts[1])
+            classType = parts[2]
+            arguments = parts[3]
+            arguments = arguments.split(" ")
 
-                x = int(parts[0])
-                y = int(parts[1])
-                classType = parts[2]
-                arguments = parts[3]
-                arguments = arguments.split(" ")
+            if classType == "Air":
+                levelMap.setTile(x, y, Air())
+            elif classType == "Block":
+                levelMap.setTile(x, y, Block(arguments[0]))
+            elif classType == "Coin":
+                levelMap.setTile(x, y, Coin())
+            elif classType == "Spikes":
+                levelMap.setTile(x, y, Spikes(int(arguments[0])))
+            elif classType == "Cobweb":
+                levelMap.setTile(x, y, Cobweb())
+            elif classType == "Doors":
+                arg = True if arguments[0] == "True" else False
+                levelMap.setTile(x, y, Doors(arg))
+            elif classType == "Lava":
+                levelMap.setTile(x, y, Lava(arguments[0]))
+            elif classType == "SpeedUp":
+                levelMap.setTile(x, y, SpeedUp())
+            elif classType == "DoubleJump":
+                levelMap.setTile(x, y, DoubleJump())
+            else:
+                print("ERROR: class: " + classType + " dont exist!")
 
-                if classType == "Air":
-                    levelMap.setTile(x, y, Air())
-                elif classType == "Block":
-                    levelMap.setTile(x, y, Block(arguments[0]))
-                elif classType == "Coin":
-                    levelMap.setTile(x, y, Coin())
-                elif classType == "Spikes":
-                    levelMap.setTile(x, y, Spikes(int(arguments[0])))
-                elif classType == "Cobweb":
-                    levelMap.setTile(x, y, Cobweb())
-                elif classType == "Doors":
-                    arg = True if arguments[0] == "True" else False
-                    levelMap.setTile(x, y, Doors(arg))
-                elif classType == "Lava":
-                    levelMap.setTile(x, y, Lava(arguments[0]))
-                elif classType == "SpeedUp":
-                    levelMap.setTile(x, y, SpeedUp())
-                elif classType == "DoubleJump":
-                    levelMap.setTile(x, y, DoubleJump())
-                else:
-                    print("ERROR: class: " + classType + " dont exist!")
-
-        return levelMap
+    return levelMap

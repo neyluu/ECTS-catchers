@@ -1,11 +1,11 @@
 import pygame as pg
 import random
 
-from src.config.Settings import SOUND_SFX
 from src.game.map.tiles.Tile import Tile
 from src.game.PlayerData import PlayerData
 from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.tiles.Trigger import Trigger
+from src.sounds.SFX import SFX
 import src.config.PowerUpsConfig as config
 
 
@@ -15,8 +15,7 @@ class Coin(Trigger):
         self.isResettable = False
         self.points = random.randint(config.COIN_MIN_POINTS, config.COIN_MAX_POINTS)
         self.animation = SpriteAnimation("assets/animations/coin", 0.55)
-        self.sound = pg.mixer.Sound("assets/audio/coin.wav")
-        self.sound.set_volume(SOUND_SFX)
+        self.sfx = SFX("assets/audio/coin.wav")
 
 
     def update(self, dt: float):
@@ -35,7 +34,7 @@ class Coin(Trigger):
         if self.wasEntered():
             return
 
-        self.sound.play()
+        self.sfx.play()
         self.hide()
         playerData.coins += self.points
         print(f"Points: {playerData.coins}")

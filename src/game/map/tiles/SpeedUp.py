@@ -1,10 +1,10 @@
 import pygame as pg
 
-from src.config.Settings import SOUND_SFX
 from src.game.map.tiles.Tile import Tile
 from src.game.PlayerData import PlayerData
 from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.tiles.Trigger import Trigger
+from src.sounds.SFX import SFX
 import src.config.PowerUpsConfig as config
 
 
@@ -21,8 +21,7 @@ class SpeedUp(Trigger):
         self.timer : float = 0
 
         self.animation = SpriteAnimation("assets/animations/speedUp", 0.6)
-        self.sound = pg.mixer.Sound("assets/audio/speed_up.wav")
-        self.sound.set_volume(SOUND_SFX)
+        self.sfx = SFX("assets/audio/speed_up.wav")
 
 
     def update(self, dt: float):
@@ -48,7 +47,7 @@ class SpeedUp(Trigger):
         if self.wasEntered():
             return
 
-        self.sound.play()
+        self.sfx.play()
         self.playerData : PlayerData = playerData
         self.playerData.powerUps.speedUp = True
         self.started = True

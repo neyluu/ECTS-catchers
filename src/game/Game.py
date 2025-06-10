@@ -15,19 +15,19 @@ class Game:
         self.currentLevel = 0
 
         self.levels = [
-            Level(self.isLeft, self.canvas, "level01.level", 450, 950),
-            Level(self.isLeft, self.canvas, "level02.level", 450, 950),
-            Level(self.isLeft, self.canvas, "level03.level", 450, 950),
-            Level(self.isLeft, self.canvas, "level04.level", 450, 950),
-            Level(self.isLeft, self.canvas, "level05.level", 450, 950),
-            Level(self.isLeft, self.canvas, "level06.level", 450, 950),
-            Level(self.isLeft, self.canvas, "level07.level", 450, 950)
+            Level(self.canvas, "level01.level", 450, 950),
+            Level(self.canvas, "level02.level", 450, 950),
+            Level(self.canvas, "level03.level", 450, 950),
+            Level(self.canvas, "level04.level", 450, 950),
+            Level(self.canvas, "level05.level", 450, 950),
+            Level(self.canvas, "level06.level", 450, 950),
+            Level(self.canvas, "level07.level", 450, 950)
         ]
 
         if Debug.DEBUG_LEVELS:
             pass
-            self.levels.insert(0, Level(self.isLeft, self.canvas, "testlevel.level", 550, 950))
-            self.levels.insert(1, Level(self.isLeft, self.canvas, "testlevel2.level", 450, 950))
+            self.levels.insert(0, Level(self.canvas, "testlevel.level", 550, 950))
+            self.levels.insert(1, Level(self.canvas, "testlevel2.level", 450, 950))
 
         self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
         self.setPlayerStartingPosition()
