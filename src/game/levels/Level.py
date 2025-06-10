@@ -1,14 +1,13 @@
 import random
 import pygame as pg
 
-from src.game.levels.LevelLoader import LevelLoader
+from src.game.levels.LevelLoader import loadLevel
 from src.game.map.Map import Map
 from src.game.map.tiles.Tile import Tile
 
 
 class Level:
-    def __init__(self, isLeft : bool, canvas: pg.Rect, filename : str, startPosX : int, startPosY : int):
-        self.isLeft : bool = isLeft
+    def __init__(self, canvas: pg.Rect, filename : str, startPosX : int, startPosY : int):
         self.canvas : pg.Rect = canvas
         self.filename : str = filename
         self.startPosX : int = startPosX
@@ -16,9 +15,8 @@ class Level:
 
         self.color = "black"
 
-        self.levelLoader = LevelLoader()
         self.map = Map(self.canvas)
-        self.map = self.levelLoader.load(filename, self.map)
+        self.map = loadLevel(filename, self.map)
         self.map.checkCoins()
 
         random.seed(filename)
