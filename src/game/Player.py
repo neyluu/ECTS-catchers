@@ -167,9 +167,15 @@ class Player:
         if self.movingUp:
             if not self.isJumping and self.playerData.velocityY < self.playerData.jumpBufferingDropLevel:
                 self.jump()
+
             # self.playerData.velocityY < self.playerData.jumpBufferingDropLevel is responsible for disabling jumping during falling
             # eventually can be disabled for double jump
-            elif self.playerData.canDoubleJump and not self.doubleJumped and self.playerData.velocityY < self.playerData.jumpBufferingDropLevel:
+
+            # Version on double jump without possibility of single jump during falling
+            # elif self.playerData.canDoubleJump and not self.doubleJumped and self.playerData.velocityY < self.playerData.jumpBufferingDropLevel:
+
+            # Double jump with possible single jump during falling
+            elif self.playerData.canDoubleJump and not self.doubleJumped:
                 self.jump()
                 self.doubleJumped = True
             else:
