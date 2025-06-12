@@ -3,6 +3,7 @@ import pygame as pg
 from src.game.PlayerData import PlayerData
 from src.game.map.tiles.Trigger import Trigger
 from src.sounds.SFX import SFX
+from src.game.map.tiles.Tile import Tile
 import src.config.PowerUpsConfig as config
 
 
@@ -18,6 +19,11 @@ class Lava(Trigger):
             print("ERROR: lava texture path is empty!")
 
         self.loadTexture(path)
+
+        self.collisionSizeX = Tile.size - 8
+        self.collisionSizeY = Tile.size - 12
+        self.collisionOffsetX = 4
+        self.collisionOffsetY = 8
 
         self.damageDelay : int = config.LAVA_DAMAGE_DELAY_TIME # seconds
         self.playerData : PlayerData = None
