@@ -14,6 +14,11 @@ class Game:
         self.isLeft = isLeft
         self.currentLevel = 0
 
+        self.DEBUG_levels = [
+            Level(self.canvas, "testlevel.level", 550, 950),
+            Level(self.canvas, "testlevel2.level", 450, 950)
+        ]
+
         self.levels = [
             Level(self.canvas, "level01.level", 450, 950),
             Level(self.canvas, "level02.level", 385, 950),
@@ -25,9 +30,8 @@ class Game:
         ]
 
         if Debug.DEBUG_LEVELS:
-            pass
-            self.levels.insert(0, Level(self.canvas, "testlevel.level", 550, 950))
-            self.levels.insert(1, Level(self.canvas, "testlevel2.level", 450, 950))
+            for i in range(len(self.DEBUG_levels)):
+                self.levels.insert(i, self.DEBUG_levels[i])
 
         self.player = Player(self.isLeft, self.canvas, self.levels[self.currentLevel].map)
         self.setPlayerStartingPosition()
@@ -43,6 +47,8 @@ class Game:
         self.nextLevelAnimation = Blink(self.canvas)
 
         self.inGameUi = InGameUI(self.canvas, self.player.playerData)
+        self.timerStarted : bool = False
+        self.lastLevelTime : int = 0
 
         self.paused = False
         self.playerPaused = False
@@ -68,6 +74,11 @@ class Game:
     def update(self, dt : float):
         if self.paused:
             return
+
+        if not self.timerStarted:
+            self.inGameUi.gameTimer.start()
+            self.timerStarted = True
+
 
         self.dt = dt
 
@@ -118,7 +129,20 @@ class Game:
 
 
     def changeLevel(self):
+        if Debug.DEBUG_LEVELS:
+            if self.currentLevel >= len(self.DEBUG_levels):
+                index = self.currentLevel - len(self.DEBUG_levels) + 1
+                self.player.playerData.stats.times[index] = self.inGameUi.gameTimer.getTotalSeconds() - self.lastLevelTime
+                self.player.playerData.stats.deaths[index] = self.player.deaths
+        else:
+            self.player.playerData.stats.times[self.currentLevel + 1] = self.inGameUi.gameTimer.getTotalSeconds() - self.lastLevelTime
+            self.player.playerData.stats.deaths[self.currentLevel + 1] = self.player.deaths
+
+        self.lastLevelTime = self.inGameUi.gameTimer.getTotalSeconds()
+        self.player.deaths = 0
+
         print(f"Changing level to {self.nextLevel}")
+
         self.currentLevel = self.nextLevel
         self.player.playerData.levelChanged = False
 
@@ -126,6 +150,7 @@ class Game:
 
         self.player.tileMap = self.levels[self.currentLevel].map
         self.player.reset()
+
 
 
     def prepareForLevelChange(self):
@@ -137,6 +162,9 @@ class Game:
             print("Game over!")
             self.isGameOver = True
             self.player.playerData.currentLevel = self.currentLevel
+
+            self.player.playerData.stats.calculateTotal()
+            self.gameOver.init(self.player.playerData.stats)
             return
         if self.nextLevel < 0:
             print("Theres no more previous levels! Setting level to 0")

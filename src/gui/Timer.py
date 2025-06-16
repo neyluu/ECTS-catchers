@@ -20,12 +20,13 @@ class Timer:
             originalIcon = pg.image.load(iconImagePath).convert_alpha()
             self.iconSurface = pg.transform.scale(originalIcon, iconSize)
 
-        self.startTimeCurrentSegmentTicks = pg.time.get_ticks()
+        self.start()
         self.elapsedTimeWhenPausedMs = 0
         self.elapsedTimeStr = "00:00"
         self.lastDisplayedSecond = -1
         self.running = True
         self.iconTextPadding = iconTextPadding
+
 
     def getCurrentTotalElapsedMs(self) -> int:
         if self.running:
@@ -33,6 +34,7 @@ class Timer:
             return self.elapsedTimeWhenPausedMs + currentSegmentElapsedMs
         else:
             return self.elapsedTimeWhenPausedMs
+
 
     def update(self):
         if not self.running:
@@ -46,6 +48,7 @@ class Timer:
             seconds = totalSeconds % 60
             self.elapsedTimeStr = f"{minutes:02d}:{seconds:02d}"
             self.lastDisplayedSecond = totalSeconds
+
 
     def draw(self, screen: pg.Surface, position: tuple):
         currentX = position[0]
@@ -67,6 +70,11 @@ class Timer:
 
         screen.blit(textSurface, (currentX, textY))
 
+
+    def start(self):
+        self.startTimeCurrentSegmentTicks = pg.time.get_ticks()
+
+
     def reset(self):
         self.startTimeCurrentSegmentTicks = pg.time.get_ticks()
         self.elapsedTimeWhenPausedMs = 0
@@ -74,19 +82,23 @@ class Timer:
         self.lastDisplayedSecond = -1
         self.running = True
 
+
     def pause(self):
         if self.running:
             currentTicks = pg.time.get_ticks()
             self.elapsedTimeWhenPausedMs += (currentTicks - self.startTimeCurrentSegmentTicks)
             self.running = False
 
+
     def resume(self):
         if not self.running:
             self.startTimeCurrentSegmentTicks = pg.time.get_ticks()
             self.running = True
 
+
     def getTimeString(self) -> str:
         return self.elapsedTimeStr
+
 
     def getTotalSeconds(self) -> int:
         totalElapsedMs = self.getCurrentTotalElapsedMs()
