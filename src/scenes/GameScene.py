@@ -1,6 +1,7 @@
 import pygame as pg
 
 from src.config import Settings
+from src.gui.Button import Button
 from src.gui.PauseMenu import PauseMenu
 from src.scenes.Scene import Scene
 from src.game.Game import Game
@@ -19,6 +20,22 @@ class GameScene(Scene):
         self.soundtrack = pg.mixer.Sound("assets/audio/soundtrack02.mp3")
         self.soundtrack.set_volume(Settings.SOUND_MUSIC * 0.75)
 
+        self.gameOverButton = Button(
+            x=Settings.SCREEN_WIDTH / 2 - 650 /2,
+            y=750,
+            width=750, height=475,
+            texturePath="assets/textures/gui/gui_button_1.png",
+            text="main menu",
+            rotationAngle=0,
+            fontPath="assets/fonts/timer_and_counter_font.ttf",
+            fontSize=70,
+            textColor=(250, 250, 250),
+            outlineColor=(0, 0, 0),
+            outlineThickness=2,
+            hoverEffectColor=None,
+            action=self.goToMainMenu
+        )
+
 
     def handleEvent(self, event):
         if event.type == pg.KEYDOWN:
@@ -35,6 +52,9 @@ class GameScene(Scene):
 
         self.leftGame.handleEvent(event)
         self.rightGame.handleEvent(event)
+
+        if self.bothGameOvers():
+            self.gameOverButton.handleEvent(event)
 
         if self.paused:
             self.pauseMenu.handleEvent(event)
@@ -58,6 +78,9 @@ class GameScene(Scene):
         self.leftGame.draw(screen)
         self.rightGame.draw(screen)
 
+        if self.bothGameOvers():
+            self.gameOverButton.draw(screen)
+
         if self.paused:
             self.pauseMenu.draw(screen)
 
@@ -77,4 +100,14 @@ class GameScene(Scene):
     def stop(self):
         self.running = False
         self.soundtrack.stop()
-        
+
+
+    def goToMainMenu(self):
+        print("Switching to Main Menu")
+        if self.sceneManager:
+            self.sceneManager.setCurrentScene(0)
+
+
+    def bothGameOvers(self) -> bool:
+        return self.leftGame.isGameOver and self.rightGame.isGameOver \
+                and not self.leftGame.gameOverAnimation.running and not self.rightGame.gameOverAnimation.running
