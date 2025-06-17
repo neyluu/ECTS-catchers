@@ -38,6 +38,8 @@ class Game:
 
         self.gameOver = GameOver(self.canvas)
         self.isGameOver = False
+        self.gameOverAnimation = Blink(self.canvas)
+        self.gameOverAnimation.time = 10
 
         self.dt : float = 0
 
@@ -87,6 +89,7 @@ class Game:
 
         if self.isGameOver:
             self.gameOver.update(dt)
+            self.gameOverAnimation.update(dt)
         else:
             self.levels[self.currentLevel].update(dt)
 
@@ -113,7 +116,7 @@ class Game:
 
 
     def draw(self, screen : pg.Surface):
-        if self.isGameOver:
+        if self.isGameOver and self.gameOverAnimation.timeElapsed > self.gameOverAnimation.time / 2:
             self.gameOver.draw(screen)
         else:
             self.levels[self.currentLevel].draw(screen)
@@ -122,6 +125,8 @@ class Game:
 
             if self.isLevelChanging:
                 self.nextLevelAnimation.draw(screen)
+
+        self.gameOverAnimation.draw(screen)
 
 
     def isNextLevel(self) -> bool:
@@ -160,6 +165,7 @@ class Game:
 
         if self.nextLevel >= len(self.levels):
             print("Game over!")
+            self.gameOverAnimation.start()
             self.isGameOver = True
             self.player.playerData.currentLevel = self.currentLevel
 
