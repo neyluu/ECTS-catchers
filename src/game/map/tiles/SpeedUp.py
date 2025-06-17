@@ -33,7 +33,7 @@ class SpeedUp(Trigger):
         if self.started:
             self.timer += dt
             if self.timer > self.boostTime:
-                if SpeedUp.activeInstances <= 1:
+                if SpeedUp.activeInstances == 1:
                     self.playerData.speed = self.playerData.startSpeed
                     self.playerData.powerUps.speedUp = False
                 self.onMapReset()
@@ -56,7 +56,7 @@ class SpeedUp(Trigger):
         self.playerData : PlayerData = playerData
         self.playerData.powerUps.speedUp = True
         self.started = True
-        if SpeedUp.activeInstances <= 1:
+        if SpeedUp.activeInstances == 1:
             playerData.speed *= self.boostScale
         self.hide()
 

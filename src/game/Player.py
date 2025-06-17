@@ -40,6 +40,8 @@ class Player:
         self.deadBlinkAnimation.color = pg.Color(100, 20, 20)
         self.deadBlinkAnimation.time = 1
 
+        self.deaths : int = 0
+        self.deathAdded : bool = False
         self.isDead = False
         self.deadHandled = False
 
@@ -136,6 +138,12 @@ class Player:
 
     def handleOnDead(self, dt):
         if self.isDead:
+            if not self.deathAdded:
+                self.deaths += 1
+                self.deathAdded = True
+                print(f"DEATH: {self.deaths}")
+
+
             if not self.deathSoundPlayed:
                 self.deathSFX.play()
                 self.deathSoundPlayed = True
@@ -146,6 +154,7 @@ class Player:
                 self.deadHandled = True
             if not self.deadBlinkAnimation.running:
                 self.isDead = False
+                self.deathAdded = False
                 self.deadHandled = False
                 self.deadBlinkAnimation.reset()
                 self.deathSoundPlayed = False

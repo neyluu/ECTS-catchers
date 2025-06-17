@@ -32,7 +32,7 @@ class DoubleJump(Trigger):
         if self.started:
             self.timer += dt
             if self.timer > self.boostTime:
-                if DoubleJump.activeInstances <= 1:
+                if DoubleJump.activeInstances == 1:
                     self.playerData.canDoubleJump = False
                     self.playerData.powerUps.doubleJump = False
                 self.onMapReset()

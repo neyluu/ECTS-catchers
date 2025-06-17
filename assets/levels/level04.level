@@ -155,7 +155,7 @@
 5;9;Block;assets/textures/blocks/red_brick_4.png;
 5;10;Block;assets/textures/blocks/red_brick_3.png;
 5;11;Block;assets/textures/blocks/red_brick_4.png;
-5;12;Spikes;3;
+5;12;Air;;
 5;13;Air;;
 5;14;Air;;
 5;15;Air;;
@@ -181,7 +181,7 @@
 6;6;Air;;
 6;7;Air;;
 6;8;Spikes;2;
-6;9;Spikes;2;
+6;9;Air;;
 6;10;Air;;
 6;11;Air;;
 6;12;Air;;
@@ -205,7 +205,7 @@
 7;1;Block;assets/textures/blocks/red_brick_4.png;
 7;2;Lava;assets/textures/traps/lava_surface_3.png;
 7;3;Block;assets/textures/blocks/red_brick_4.png;
-7;4;Air;;
+7;4;Spikes;3;
 7;5;Air;;
 7;6;Air;;
 7;7;Air;;
@@ -227,14 +227,14 @@
 7;23;Air;;
 7;24;Air;;
 7;25;Air;;
-7;26;Spikes;1;
+7;26;Air;;
 7;27;Block;assets/textures/blocks/red_brick_4.png;
 7;28;Block;assets/textures/blocks/grey_brick_1.png;
 8;0;Block;assets/textures/blocks/grey_brick_1.png;
 8;1;Block;assets/textures/blocks/red_brick_2.png;
 8;2;Block;assets/textures/blocks/red_brick_4.png;
 8;3;Block;assets/textures/blocks/red_brick_1.png;
-8;4;Spikes;3;
+8;4;Air;;
 8;5;Air;;
 8;6;Air;;
 8;7;Spikes;0;
@@ -256,7 +256,7 @@
 8;23;Air;;
 8;24;Air;;
 8;25;Air;;
-8;26;Spikes;1;
+8;26;Air;;
 8;27;Block;assets/textures/blocks/red_brick_7.png;
 8;28;Block;assets/textures/blocks/grey_brick_1.png;
 9;0;Block;assets/textures/blocks/grey_brick_1.png;
@@ -282,15 +282,15 @@
 9;20;Air;;
 9;21;Air;;
 9;22;Air;;
-9;23;Spikes;0;
+9;23;Air;;
 9;24;Air;;
 9;25;Air;;
-9;26;Spikes;1;
+9;26;Air;;
 9;27;Block;assets/textures/blocks/red_brick_4.png;
 9;28;Block;assets/textures/blocks/grey_brick_1.png;
 10;0;Block;assets/textures/blocks/grey_brick_1.png;
 10;1;Block;assets/textures/blocks/red_brick_4.png;
-10;2;Block;assets/textures/blocks/red_brick_3.png;
+10;2;Air;;
 10;3;Air;;
 10;4;Air;;
 10;5;Air;;
@@ -401,7 +401,7 @@
 13;23;Air;;
 13;24;Air;;
 13;25;Air;;
-13;26;Spikes;1;
+13;26;Air;;
 13;27;Block;assets/textures/blocks/red_brick_4.png;
 13;28;Block;assets/textures/blocks/grey_brick_1.png;
 14;0;Block;assets/textures/blocks/grey_brick_1.png;
@@ -430,7 +430,7 @@
 14;23;Air;;
 14;24;Air;;
 14;25;Air;;
-14;26;Spikes;1;
+14;26;Air;;
 14;27;Block;assets/textures/blocks/red_brick_3.png;
 14;28;Block;assets/textures/blocks/grey_brick_1.png;
 15;0;Block;assets/textures/blocks/grey_brick_1.png;
@@ -546,7 +546,7 @@
 18;23;Lava;assets/textures/traps/lava_surface_4.png;
 18;24;Lava;assets/textures/traps/lava_surface_3.png;
 18;25;Lava;assets/textures/traps/lava_surface_2.png;
-18;26;Lava;assets/textures/traps/lava_surface_1.png;
+18;26;Block;assets/textures/blocks/red_brick_6.png;
 18;27;Block;assets/textures/blocks/red_brick_6.png;
 18;28;Block;assets/textures/blocks/grey_brick_1.png;
 19;0;Block;assets/textures/blocks/grey_brick_1.png;
@@ -686,7 +686,7 @@
 23;18;Spikes;0;
 23;19;Air;;
 23;20;Air;;
-23;21;Spikes;1;
+23;21;Air;;
 23;22;Block;assets/textures/blocks/red_brick_4.png;
 23;23;Lava;assets/textures/traps/lava_surface_3.png;
 23;24;Block;assets/textures/blocks/red_brick_5.png;
@@ -715,7 +715,7 @@
 24;18;Block;assets/textures/blocks/red_brick_5.png;
 24;19;Air;;
 24;20;Air;;
-24;21;Spikes;1;
+24;21;Air;;
 24;22;Block;assets/textures/blocks/red_brick_5.png;
 24;23;Block;assets/textures/blocks/red_brick_7.png;
 24;24;Block;assets/textures/blocks/red_brick_4.png;
@@ -787,7 +787,7 @@
 27;3;Air;;
 27;4;Air;;
 27;5;Air;;
-27;6;Spikes;2;
+27;6;Block;assets/textures/blocks/red_brick_3.png;
 27;7;Block;assets/textures/blocks/red_brick_5.png;
 27;8;Block;assets/textures/blocks/red_brick_4.png;
 27;9;Block;assets/textures/blocks/red_brick_5.png;
@@ -803,7 +803,7 @@
 27;19;Air;;
 27;20;Air;;
 27;21;Air;;
-27;22;Block;assets/textures/blocks/red_brick_1.png;
+27;22;Air;;
 27;23;Block;assets/textures/blocks/red_brick_7.png;
 27;24;Air;;
 27;25;Air;;
