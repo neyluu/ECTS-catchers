@@ -33,6 +33,13 @@ class GameOver:
 
         self.statsSurface = None
 
+        self.iconsSize = (80, 80)
+        deathIconRaw = pg.image.load("assets/textures/gui/death.png").convert_alpha()
+        self.deathIcon = pg.transform.scale(deathIconRaw, self.iconsSize)
+
+        timeIconRaw = pg.image.load("assets/textures/gui/clock.png").convert_alpha()
+        self.timeIcon = pg.transform.scale(timeIconRaw, self.iconsSize)
+
 
     def handleEvents(self, event):
         pass
@@ -48,11 +55,12 @@ class GameOver:
         if not self.initialized:
             return
 
-
         screen.blit(self.headerText01, (self.headerText01X, self.headerText01Y))
         screen.blit(self.headerText02, (self.headerText02X, self.headerText02Y))
         screen.blit(self.statsSurface, (self.canvas.left, 0))
 
+        screen.blit(self.deathIcon, (self.canvas.left + 490, 250))
+        screen.blit(self.timeIcon, (self.canvas.left + 670, 250))
 
     def init(self, gameStats : GameStats):
         self.stats = gameStats
