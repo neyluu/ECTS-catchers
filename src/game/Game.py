@@ -163,6 +163,9 @@ class Game:
             self.isGameOver = True
             self.player.playerData.currentLevel = self.currentLevel
 
+            self.player.playerData.stats.times[7] = self.inGameUi.gameTimer.getTotalSeconds() - self.lastLevelTime
+            self.player.playerData.stats.deaths[7] = self.player.deaths
+
             self.player.playerData.stats.calculateTotal()
             self.gameOver.init(self.player.playerData.stats)
             return

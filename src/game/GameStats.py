@@ -4,8 +4,8 @@ class GameStats:
 
     def __init__(self):
         # First index is for total value, rest for values for each level
-        self.times = [0 for _ in range(7)]
-        self.deaths = [0 for _ in range(7)]
+        self.times = [0 for _ in range(8)]
+        self.deaths = [0 for _ in range(8)]
 
 
     def calculateTotal(self):

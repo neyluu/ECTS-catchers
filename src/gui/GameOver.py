@@ -94,7 +94,7 @@ class GameOver:
 
         for i in range(len(self.stats.deaths)):
             if i == 0:
-                label = "TOTAL  :"
+                label = "TOTAL :"
             else:
                 label = "LEVEL " + str(i) + ":"
 
