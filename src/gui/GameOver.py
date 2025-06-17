@@ -26,7 +26,7 @@ class GameOver:
         self.headerText01X = self.canvas.left + self.canvas.width / 2 - textSize.width / 2
         self.headerText01Y = 30
 
-        self.headerText02 = self.font.render("YOU FINISHED GAME!", True, self.fontColor)
+        self.headerText02 = self.font.render("YOU FINISHED THE GAME!", True, self.fontColor)
         textSize = self.headerText02.get_rect()
         self.headerText02Y = 100
         self.headerText02X = self.canvas.left + self.canvas.width / 2 - textSize.width / 2
