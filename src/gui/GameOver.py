@@ -43,8 +43,7 @@ class GameOver:
 
 
     def draw(self, screen):
-        pg.draw.rect(screen, "red", self.canvas)
-        screen.blit(self.backgroundSurface, (0,0))
+        screen.blit(self.backgroundSurface, (self.canvas.left,0))
 
         if not self.initialized:
             return
@@ -52,13 +51,16 @@ class GameOver:
 
         screen.blit(self.headerText01, (self.headerText01X, self.headerText01Y))
         screen.blit(self.headerText02, (self.headerText02X, self.headerText02Y))
-        screen.blit(self.statsSurface, (0, 0))
+        screen.blit(self.statsSurface, (self.canvas.left, 0))
 
 
     def init(self, gameStats : GameStats):
         self.stats = gameStats
         self.initialized = True
         self.statsSurface = self.createStats()
+
+        # print(f"{self.stats.deaths} {len(self.stats.deaths)}")
+        # print(f"{self.stats.times} {len(self.stats.times)}")
 
 
     def parseTime(self, seconds : int) -> str:
@@ -88,19 +90,18 @@ class GameOver:
         surface = pg.Surface((self.canvas.width, self.canvas.height), pg.SRCALPHA)
         surface.fill((0, 0, 0, 0))
 
-        textY = 150
+        textY = 250
 
         for i in range(len(self.stats.deaths)):
             if i == 0:
                 label = "TOTAL  :"
             else:
-                label = "LEVEL " + str(i + 1) + ":"
+                label = "LEVEL " + str(i) + ":"
 
-            text = self.font.render(f"{label}{self.stats.deaths[i]:3d}  {self.parseTime(self.stats.times[i])}", True,
-                                    self.fontColor)
+            text = self.font.render(f"{label}{self.stats.deaths[i]:3d}  {self.parseTime(self.stats.times[i])}", True, self.fontColor)
             textSize = text.get_rect()
             textY += 70
-            textX = self.canvas.left + self.canvas.width / 2 - textSize.width / 2
+            textX = self.canvas.width / 2 - textSize.width / 2
             surface.blit(text, (textX, textY))
 
         return surface
