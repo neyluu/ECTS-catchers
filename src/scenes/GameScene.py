@@ -103,6 +103,9 @@ class GameScene(Scene):
 
 
     def goToMainMenu(self):
+        self.leftGame.reset()
+        self.rightGame.reset()
+
         print("Switching to Main Menu")
         if self.sceneManager:
             self.sceneManager.setCurrentScene(0)
