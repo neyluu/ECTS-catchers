@@ -201,6 +201,29 @@ class Game:
         self.player.unPause()
 
 
+    def reset(self):
+        self.currentLevel = 0
+        self.player.playerData.currentLevel = 0
+        self.player.playerData.levelChanged = False
+        self.player.tileMap = self.levels[self.currentLevel].map
+        self.setPlayerStartingPosition()
+        self.player.reset()
+        self.player.playerData.hp = self.player.playerData.startHp
+        self.isGameOver = False
+        self.gameOverAnimation.reset()
+        self.nextLevel = 0
+        self.isLevelChanging = False
+        self.levelChanged = False
+        self.nextLevelAnimation.reset()
+        self.timerStarted = False
+        self.lastLevelTime = 0
+        self.paused = False
+        self.playerPaused = False
+        self.inGameUi.resumeTimer()
+
+        self.DEBUG_changeLevel = False
+
+
 
     def DEBUG_checkLevelChange(self, event):
         if self.isLeft:

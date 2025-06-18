@@ -95,7 +95,7 @@ class MainMenu(Scene):
     def goToGameScene(self):
         print("Switching to Game Scene")
         if self.sceneManager:
-            self.sceneManager.setCurrentScene(1)
+            self.sceneManager.setCurrentScene(2)
 
 
     def goToSettingsScene(self):
