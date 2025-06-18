@@ -2,7 +2,8 @@ class SceneManager(object):
     """
      0 - mainMenu
      1 - gameScene
-     2 - endScene
+     2 - gameIntro
+     3 - endScene
 
      How to add new scene?
      1. Add new scene object to scenes array in CoreEngine.py (DONT CHANGE ORDER!)
@@ -13,7 +14,7 @@ class SceneManager(object):
 
     def __init__(self):
         self._MIN_SCENE_ID = 0
-        self._MAX_SCENE_ID = 2
+        self._MAX_SCENE_ID = 3
         self.currentScene = 0
 
 
