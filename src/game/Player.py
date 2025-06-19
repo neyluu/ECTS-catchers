@@ -2,6 +2,8 @@ import pygame as pg
 
 import src.config.DebugConfig as Debug
 from src.config import Settings
+from src.game.map.tiles.DoubleJump import DoubleJump
+from src.game.map.tiles.SpeedUp import SpeedUp
 from src.sounds.LoopSound import LoopSound
 from src.sounds.SFX import SFX
 from src.game.PlayerData import PlayerData
@@ -138,6 +140,9 @@ class Player:
 
     def handleOnDead(self, dt):
         if self.isDead:
+            DoubleJump.activeInstances = 0
+            SpeedUp.activeInstances = 0
+
             if not self.deathAdded:
                 self.deaths += 1
                 self.deathAdded = True
