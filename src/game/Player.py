@@ -31,6 +31,8 @@ class Player:
         }
         self.currentMoveAnimation = "idle"
 
+        self.jumpSound = SFX("assets/audio/jump.wav")
+
         self.deathSFX = SFX("assets/audio/death.wav")
         self.deathSoundPlayed : bool = False
 
@@ -221,6 +223,7 @@ class Player:
 
 
     def jump(self):
+        self.jumpSound.play()
         self.jumpPositionY = self.playerData.posY
         self.playerData.velocityY = -self.playerData.jumpForce
         self.isJumping = True
