@@ -2,6 +2,8 @@ import pygame as pg
 
 import src.config.DebugConfig as Debug
 from src.config import Settings
+from src.game.map.tiles.DoubleJump import DoubleJump
+from src.game.map.tiles.SpeedUp import SpeedUp
 from src.sounds.LoopSound import LoopSound
 from src.sounds.SFX import SFX
 from src.game.PlayerData import PlayerData
@@ -28,6 +30,8 @@ class Player:
             "jumpLeft" : SpriteAnimation("assets/animations/playerJumpLeft", 1),
         }
         self.currentMoveAnimation = "idle"
+
+        self.jumpSound = SFX("assets/audio/jump.wav")
 
         self.deathSFX = SFX("assets/audio/death.wav")
         self.deathSoundPlayed : bool = False
@@ -138,6 +142,9 @@ class Player:
 
     def handleOnDead(self, dt):
         if self.isDead:
+            DoubleJump.activeInstances = 0
+            SpeedUp.activeInstances = 0
+
             if not self.deathAdded:
                 self.deaths += 1
                 self.deathAdded = True
@@ -216,6 +223,7 @@ class Player:
 
 
     def jump(self):
+        self.jumpSound.play()
         self.jumpPositionY = self.playerData.posY
         self.playerData.velocityY = -self.playerData.jumpForce
         self.isJumping = True

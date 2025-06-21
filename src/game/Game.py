@@ -2,6 +2,8 @@ import pygame as pg
 
 from src.game.Player import Player
 from src.game.levels.Level import Level
+from src.game.map.tiles.DoubleJump import DoubleJump
+from src.game.map.tiles.SpeedUp import SpeedUp
 from src.gui.GameOver import GameOver
 from src.gui.animations.Blink import Blink
 from src.gui.InGameUI import InGameUI
@@ -162,6 +164,8 @@ class Game:
         self.playerPaused = True
         self.inGameUi.pauseTimer()
         self.nextLevel = self.player.playerData.currentLevel
+        DoubleJump.activeInstances = 0
+        SpeedUp.activeInstances = 0
 
         if self.nextLevel >= len(self.levels):
             print("Game over!")
