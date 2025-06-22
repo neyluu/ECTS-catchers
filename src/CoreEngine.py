@@ -4,7 +4,6 @@ from src.config import Settings
 from src.SceneManager import SceneManager
 from src.scenes.MainMenu import MainMenu
 from src.scenes.GameScene import GameScene
-from src.scenes.EndScene import EndScene
 from src.scenes.GameIntro import GameIntro
 import ctypes
 
@@ -43,8 +42,7 @@ class CoreEngine():
             MainMenu(),
             GameScene(),
             SettingsScene(),
-            GameIntro(),
-            EndScene()
+            GameIntro()
         ]
 
         for scene in self.scenes:
