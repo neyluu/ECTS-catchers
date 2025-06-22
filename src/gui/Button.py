@@ -7,6 +7,7 @@ class Button:
                  fontPath=None, fontSize=30, textColor=(255, 255, 255),
                  outlineColor=(0, 0, 0), outlineThickness=2,
                  hoverEffectColor=(255, 255, 255, 50),
+                 clickEffectColor=(0, 0, 0, 75),
                  action=None):
 
         self.xPosition = x
@@ -22,9 +23,11 @@ class Button:
         self.outlineColor = outlineColor
         self.outlineThickness = outlineThickness
         self.hoverEffectColor = hoverEffectColor
+        self.clickEffectColor = clickEffectColor
         self.action = action
 
         self.isHovered = False
+        self.isPressed = False
 
         if not pg.font.get_init():
             pg.font.init()
@@ -42,13 +45,17 @@ class Button:
         self.mask = None
 
         self._rebuildTexture()
-
-        if self.hoverEffectColor and len(self.hoverEffectColor) == 4 and self.hoverEffectColor[3] > 0:
-            self.hoverSurface = pg.Surface(self.rect.size, pg.SRCALPHA)
-            self.hoverSurface.fill(self.hoverEffectColor)
+        if self.hoverEffectColor:
+            self.hoverSurface = self.texture.copy()
+            self.hoverSurface.fill(self.hoverEffectColor, special_flags=pg.BLEND_RGBA_MULT)
         else:
             self.hoverSurface = None
 
+        if self.clickEffectColor:
+            self.clickSurface = self.texture.copy()
+            self.clickSurface.fill(self.clickEffectColor, special_flags=pg.BLEND_RGBA_MULT)
+        else:
+            self.clickSurface = None
 
     def _rebuildTexture(self):
         imageToTransform = self.baseScaledImage.copy()
@@ -75,7 +82,6 @@ class Button:
 
         self.mask = pg.mask.from_surface(self.texture)
 
-
     def _checkCollision(self, pos):
         if self.rect.collidepoint(pos):
             local_x = pos[0] - self.rect.x
@@ -86,18 +92,26 @@ class Button:
                     return True
         return False
 
-
     def draw(self, screen: pg.Surface):
         screen.blit(self.texture, self.rect.topleft)
 
-        if self.isHovered and self.hoverSurface:
-            screen.blit(self.hoverSurface, self.rect.topleft)
 
+        if self.isPressed and self.clickSurface:
+            screen.blit(self.clickSurface, self.rect.topleft)
+        elif self.isHovered and self.hoverSurface:
+            screen.blit(self.hoverSurface, self.rect.topleft)
 
     def handleEvent(self, event: pg.event.Event):
         if event.type == pg.MOUSEMOTION:
             self.isHovered = self._checkCollision(event.pos)
+
         elif event.type == pg.MOUSEBUTTONDOWN:
             if event.button == 1 and self._checkCollision(event.pos):
-                if self.action:
-                    self.action()
+                self.isPressed = True
+
+        elif event.type == pg.MOUSEBUTTONUP:
+            if event.button == 1:
+                if self.isPressed and self._checkCollision(event.pos):
+                    if self.action:
+                        self.action()
+                self.isPressed = False

@@ -5,6 +5,7 @@ from src.scenes.Scene import Scene
 from src.gui.Button import Button
 
 
+
 class MainMenu(Scene):
     def __init__(self, screenWidth=1920, screenHeight=1080,
                  backgroundTargetWidth=None, backgroundTargetHeight=None,
@@ -95,7 +96,7 @@ class MainMenu(Scene):
     def goToGameScene(self):
         print("Switching to Game Scene")
         if self.sceneManager:
-            self.sceneManager.setCurrentScene(2)
+            self.sceneManager.setCurrentScene(3)
 
 
     def goToSettingsScene(self):

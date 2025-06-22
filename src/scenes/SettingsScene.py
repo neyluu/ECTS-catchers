@@ -3,7 +3,7 @@ import sys
 
 from src.scenes.Scene import Scene
 from src.gui.Button import Button
-from src.config import Settings  # <--- IMPORTUJE PLIK KONFIGURACYJNY
+from src.config import Settings
 
 
 class SettingsScene(Scene):
@@ -13,31 +13,37 @@ class SettingsScene(Scene):
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
 
-        # --- Konfiguracja ścieżek i zasobów ---
+        self.returnIndex = 0
+
         assetsPath = "assets/"
         self.backgroundTexturePath = assetsPath + "textures/background/red_brick_wall_menu.png"
         self.defaultButtonTexturePath = assetsPath + "textures/gui/gui_button_1.png"
         self.fontPath = assetsPath + "fonts/timer_and_counter_font.ttf"
 
-        # --- Tło ---
         rawBackgroundSurf = pg.image.load(self.backgroundTexturePath).convert()
         targetBgWidth = backgroundTargetWidth if backgroundTargetWidth is not None else self.screenWidth
         targetBgHeight = backgroundTargetHeight if backgroundTargetHeight is not None else self.screenHeight
         self.backgroundSurf = pg.transform.scale(rawBackgroundSurf, (targetBgWidth, targetBgHeight))
-
 
         self.masterVolume = int(Settings.SOUND_MASTER * 10)
         self.musicVolume = int(Settings.SOUND_MUSIC * 10)
         self.sfxVolume = int(Settings.SOUND_SFX * 10)
         self.currentFpsLimit = Settings.TARGET_FPS
 
-        # --- Elementy interfejsu ---
         self.uiElements = []
         self.buttons = []
         self.createUi()
 
+    def onEnter(self, previousScene=None):
+        if previousScene and hasattr(self, 'allScenes'):
+            try:
+                self.returnIndex = self.allScenes.index(previousScene)
+            except ValueError:
+                self.returnIndex = 0
+        else:
+            self.returnIndex = 0
+
     def createUi(self):
-        """Tworzy wszystkie elementy interfejsu użytkownika dla sceny ustawień."""
         textColor = (255, 255, 255)
         baseX = self.screenWidth // 2
         baseY = self.screenHeight // 4
@@ -49,29 +55,19 @@ class SettingsScene(Scene):
 
         self.createText("FPS LIMIT:", baseX, baseY + 450, 50, textColor)
         self.fpsButtons = {
-            30: Button(x=585, y=baseY + 460, width=250, height=180, text="30",
-                       texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
-                       action=lambda: self.setFps(30)),
-            60: Button(x=835, y=baseY + 460, width=250, height=180, text="60",
-                       texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
-                       action=lambda: self.setFps(60)),
-            144: Button(x=1085, y=baseY + 460, width=250, height=180, text="144",
-                        texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
-                        action=lambda: self.setFps(144))
+            30: Button(x=585, y=baseY + 460, width=250, height=180, text="30", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(30), hoverEffectColor=None),
+            60: Button(x=835, y=baseY + 460, width=250, height=180, text="60", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(60), hoverEffectColor=None),
+            144: Button(x=1085, y=baseY + 460, width=250, height=180, text="144", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(144), hoverEffectColor=None)
         }
         self.buttons.extend(self.fpsButtons.values())
-        self.updateFpsButtonVisuals()
 
         self.backButton = Button(
-            x=835, y=self.screenHeight - 200,
-            width=250, height=180,
-            texturePath=self.defaultButtonTexturePath,
-            text="back",
-            fontPath=self.fontPath, fontSize=35,
-            textColor=(255, 255, 255),
-            outlineColor=(0, 0, 0),
-            outlineThickness=2,
-            action=self.goToMainMenuScene
+            x=835, y=self.screenHeight - 200, width=250, height=180,
+            texturePath=self.defaultButtonTexturePath, text="back",
+            fontPath=self.fontPath, fontSize=35, textColor=(255, 255, 255),
+            outlineColor=(0, 0, 0), outlineThickness=2,
+            action=self.goBack,
+            hoverEffectColor=None
         )
         self.buttons.append(self.backButton)
 
@@ -84,64 +80,37 @@ class SettingsScene(Scene):
     def createVolumeControl(self, labelText, yPos, action):
         labelX = self.screenWidth // 2 - 250
         buttonsX = self.screenWidth // 2 + 200
-
         self.createText(f"{labelText}:", labelX, yPos, 50, (255, 255, 255))
-
-        leftButton = Button(x=buttonsX - 100, y=yPos-85, width=150, height=180, text="<",
-                             texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
-                             action=lambda: action(-1))
-        rightButton = Button(x=buttonsX + 80, y=yPos-85, width=150, height=180, text=">",
-                              texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
-                              action=lambda: action(1))
+        leftButton = Button(x=buttonsX - 100, y=yPos-85, width=150, height=180, text="<", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: action(-1), hoverEffectColor=None)
+        rightButton = Button(x=buttonsX + 80, y=yPos-85, width=150, height=180, text=">", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: action(1), hoverEffectColor=None)
         self.buttons.extend([leftButton, rightButton])
 
-    # --- Akcje przycisków ---
     def changeMasterVolume(self, change):
         self.masterVolume = max(0, min(10, self.masterVolume + change))
-        # Aktualizacja wartości w pliku config
         Settings.SOUND_MASTER = self.masterVolume / 10.0
-        print(f"Master volume set to: {Settings.SOUND_MASTER}")
 
     def changeMusicVolume(self, change):
         self.musicVolume = max(0, min(10, self.musicVolume + change))
-        # Aktualizacja wartości w pliku config
         Settings.SOUND_MUSIC = self.musicVolume / 10.0
-        print(f"Music volume set to: {Settings.SOUND_MUSIC}")
 
     def changeSfxVolume(self, change):
         self.sfxVolume = max(0, min(10, self.sfxVolume + change))
-        # Aktualizacja wartości w pliku config
         Settings.SOUND_SFX = self.sfxVolume / 10.0
-        print(f"SFX volume set to: {Settings.SOUND_SFX}")
 
     def setFps(self, fps):
         self.currentFpsLimit = fps
-        # Aktualizacja wartości w pliku config
         Settings.TARGET_FPS = self.currentFpsLimit
-        self.updateFpsButtonVisuals()
-        print(f"FPS limit set to: {Settings.TARGET_FPS}")
 
-    def updateFpsButtonVisuals(self):
-        for fps, button in self.fpsButtons.items():
-            try:
-                if fps == self.currentFpsLimit:
-                    button.set_text_color((255, 100, 100))
-                else:
-                    button.set_text_color((255, 255, 255))
-            except AttributeError:
-                pass
-
-    def goToMainMenuScene(self):
+    def goBack(self):
         if self.sceneManager:
-            self.sceneManager.setCurrentScene(0)
+            self.sceneManager.setCurrentScene(self.returnIndex)
 
     def handleEvent(self, event: pg.event.Event):
         for button in self.buttons:
             button.handleEvent(event)
         if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-            self.goToMainMenuScene()
+            self.goBack()
 
-    # Brak zmian w update i draw, ponieważ nie zawierają lokalnych zmiennych/metod do zmiany
     def update(self, dt: float):
         pass
 

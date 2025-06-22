@@ -2,7 +2,7 @@ class SceneManager(object):
     """
      0 - mainMenu
      1 - gameScene
-     2 - gameIntro
+     2 - settingsScene
      3 - endScene
 
      How to add new scene?
@@ -14,7 +14,7 @@ class SceneManager(object):
 
     def __init__(self):
         self._MIN_SCENE_ID = 0
-        self._MAX_SCENE_ID = 3
+        self._MAX_SCENE_ID = 4
         self.currentScene = 0
 
 
