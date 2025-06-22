@@ -14,7 +14,7 @@ class MainMenu(Scene):
         self.screenHeight = screenHeight
 
         assetsPath = "assets/"
-        self.backgroundTexturePath = assetsPath + "textures/background/red_brick_wall_1.png"
+        self.backgroundTexturePath = assetsPath + "textures/background/red_brick_wall_menu.png"
         self.logoTexturePath = assetsPath + "textures/logo/icon.png"
         defaultButtonTexturePath = assetsPath + "textures/gui/gui_button_1.png"
         defaultButtonFontPath = assetsPath + "fonts/timer_and_counter_font.ttf"
