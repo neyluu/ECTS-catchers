@@ -1,5 +1,4 @@
 import pygame as pg
-import sys
 
 from src.scenes.Scene import Scene
 from src.gui.Button import Button
@@ -25,9 +24,9 @@ class SettingsScene(Scene):
         targetBgHeight = backgroundTargetHeight if backgroundTargetHeight is not None else self.screenHeight
         self.backgroundSurf = pg.transform.scale(rawBackgroundSurf, (targetBgWidth, targetBgHeight))
 
-        self.masterVolume = int(Settings.SOUND_MASTER * 10)
-        self.musicVolume = int(Settings.SOUND_MUSIC * 10)
-        self.sfxVolume = int(Settings.SOUND_SFX * 10)
+        self.masterVolume = int(Settings.sounds.master * 10)
+        self.musicVolume = int(Settings.sounds.music * 10)
+        self.sfxVolume = int(Settings.sounds.sfx * 10)
         self.currentFpsLimit = Settings.TARGET_FPS
 
         self.uiElements = []
@@ -87,15 +86,15 @@ class SettingsScene(Scene):
 
     def changeMasterVolume(self, change):
         self.masterVolume = max(0, min(10, self.masterVolume + change))
-        Settings.SOUND_MASTER = self.masterVolume / 10.0
+        Settings.sounds.setMaster(self.masterVolume / 10.0)
 
     def changeMusicVolume(self, change):
         self.musicVolume = max(0, min(10, self.musicVolume + change))
-        Settings.SOUND_MUSIC = self.musicVolume / 10.0
+        Settings.sounds.setMusic(self.musicVolume / 10.0)
 
     def changeSfxVolume(self, change):
         self.sfxVolume = max(0, min(10, self.sfxVolume + change))
-        Settings.SOUND_SFX = self.sfxVolume / 10.0
+        Settings.sounds.setSFX(self.sfxVolume / 10.0)
 
     def setFps(self, fps):
         self.currentFpsLimit = fps

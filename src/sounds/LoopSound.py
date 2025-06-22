@@ -1,5 +1,7 @@
 import pygame as pg
 
+from src.config.Settings import sounds
+
 class LoopSound:
     def __init__(self, path : str, delay : float):
         self.path = path
@@ -8,6 +10,8 @@ class LoopSound:
         self.timer : float = delay
         self.playing : bool = False
         self.sound = pg.mixer.Sound(path)
+        sounds.register(self)
+        self.updateVolume()
 
         self.start()
 
@@ -29,3 +33,6 @@ class LoopSound:
 
     def stop(self):
         self.playing = False
+
+    def updateVolume(self):
+        self.sound.set_volume(sounds.sfx)

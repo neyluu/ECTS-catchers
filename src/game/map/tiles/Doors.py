@@ -5,6 +5,7 @@ from src.game.PlayerData import PlayerData
 from src.game.SpriteAnimation import SpriteAnimation
 from src.game.map.tiles.Tile import Tile
 from src.game.map.tiles.Trigger import Trigger
+from src.sounds.SFX import SFX
 
 
 class Doors(Trigger):
@@ -23,7 +24,7 @@ class Doors(Trigger):
         else:
             self.animation = SpriteAnimation("assets/animations/doorBottom", self.animationTime)
 
-        self.sound = pg.mixer.Sound("assets/audio/teleport.wav")
+        self.sound = SFX("assets/audio/teleport.wav")
 
 
     def update(self, dt: float):
