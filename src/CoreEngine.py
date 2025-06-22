@@ -5,7 +5,7 @@ from src.SceneManager import SceneManager
 from src.scenes.MainMenu import MainMenu
 from src.scenes.GameScene import GameScene
 from src.scenes.EndScene import EndScene
-from src.scenes.SettingsScene import SettingsScene
+from src.scenes.GameIntro import GameIntro
 import ctypes
 
 ctypes.windll.user32.SetProcessDPIAware()
@@ -43,7 +43,7 @@ class CoreEngine():
         self.scenes = [
             MainMenu(),
             GameScene(),
-            SettingsScene(),
+            GameIntro(),
             EndScene()
         ]
         self.dt = 0

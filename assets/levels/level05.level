@@ -137,7 +137,7 @@
 4;20;Air;;
 4;21;Air;;
 4;22;Air;;
-4;23;Spikes;2;
+4;23;Air;;
 4;24;Block;assets/textures/blocks/red_brick_5.png;
 4;25;Block;assets/textures/blocks/red_brick_1.png;
 4;26;Block;assets/textures/blocks/red_brick_6.png;
@@ -508,8 +508,8 @@
 17;14;Air;;
 17;15;Air;;
 17;16;Air;;
-17;17;Spikes;2;
-17;18;Spikes;2;
+17;17;Air;;
+17;18;Air;;
 17;19;Air;;
 17;20;Air;;
 17;21;Air;;

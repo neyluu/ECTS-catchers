@@ -2,6 +2,8 @@ import pygame as pg
 
 import src.config.DebugConfig as Debug
 from src.config import Settings
+from src.game.map.tiles.DoubleJump import DoubleJump
+from src.game.map.tiles.SpeedUp import SpeedUp
 from src.sounds.LoopSound import LoopSound
 from src.sounds.SFX import SFX
 from src.game.PlayerData import PlayerData
@@ -29,6 +31,8 @@ class Player:
         }
         self.currentMoveAnimation = "idle"
 
+        self.jumpSound = SFX("assets/audio/jump.wav")
+
         self.deathSFX = SFX("assets/audio/death.wav")
         self.deathSoundPlayed : bool = False
 
@@ -40,6 +44,8 @@ class Player:
         self.deadBlinkAnimation.color = pg.Color(100, 20, 20)
         self.deadBlinkAnimation.time = 1
 
+        self.deaths : int = 0
+        self.deathAdded : bool = False
         self.isDead = False
         self.deadHandled = False
 
@@ -136,6 +142,15 @@ class Player:
 
     def handleOnDead(self, dt):
         if self.isDead:
+            DoubleJump.activeInstances = 0
+            SpeedUp.activeInstances = 0
+
+            if not self.deathAdded:
+                self.deaths += 1
+                self.deathAdded = True
+                print(f"DEATH: {self.deaths}")
+
+
             if not self.deathSoundPlayed:
                 self.deathSFX.play()
                 self.deathSoundPlayed = True
@@ -146,6 +161,7 @@ class Player:
                 self.deadHandled = True
             if not self.deadBlinkAnimation.running:
                 self.isDead = False
+                self.deathAdded = False
                 self.deadHandled = False
                 self.deadBlinkAnimation.reset()
                 self.deathSoundPlayed = False
@@ -167,9 +183,15 @@ class Player:
         if self.movingUp:
             if not self.isJumping and self.playerData.velocityY < self.playerData.jumpBufferingDropLevel:
                 self.jump()
+
             # self.playerData.velocityY < self.playerData.jumpBufferingDropLevel is responsible for disabling jumping during falling
             # eventually can be disabled for double jump
-            elif self.playerData.canDoubleJump and not self.doubleJumped and self.playerData.velocityY < self.playerData.jumpBufferingDropLevel:
+
+            # Version on double jump without possibility of single jump during falling
+            # elif self.playerData.canDoubleJump and not self.doubleJumped and self.playerData.velocityY < self.playerData.jumpBufferingDropLevel:
+
+            # Double jump with possible single jump during falling
+            elif self.playerData.canDoubleJump and not self.doubleJumped:
                 self.jump()
                 self.doubleJumped = True
             else:
@@ -201,6 +223,7 @@ class Player:
 
 
     def jump(self):
+        self.jumpSound.play()
         self.jumpPositionY = self.playerData.posY
         self.playerData.velocityY = -self.playerData.jumpForce
         self.isJumping = True

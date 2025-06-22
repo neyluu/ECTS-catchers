@@ -9,6 +9,8 @@ import src.config.PowerUpsConfig as config
 
 
 class SpeedUp(Trigger):
+    activeInstances : int = 0
+
     def __init__(self):
         super().__init__()
         self.isResettable = False
@@ -31,9 +33,11 @@ class SpeedUp(Trigger):
         if self.started:
             self.timer += dt
             if self.timer > self.boostTime:
-                self.playerData.speed = self.playerData.startSpeed
-                self.playerData.powerUps.speedUp = False
+                if SpeedUp.activeInstances <= 1:
+                    self.playerData.speed = self.playerData.startSpeed
+                    self.playerData.powerUps.speedUp = False
                 self.onMapReset()
+                SpeedUp.activeInstances -= 1
 
 
     def draw(self, screen: pg.Surface):
@@ -47,11 +51,13 @@ class SpeedUp(Trigger):
         if self.wasEntered():
             return
 
+        SpeedUp.activeInstances += 1
         self.sfx.play()
         self.playerData : PlayerData = playerData
         self.playerData.powerUps.speedUp = True
         self.started = True
-        playerData.speed *= self.boostScale
+        if SpeedUp.activeInstances == 1:
+            playerData.speed *= self.boostScale
         self.hide()
 
 

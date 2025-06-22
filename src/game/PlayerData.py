@@ -1,4 +1,5 @@
 from src.game.PowerUpsStates import PowerUpsStates
+from src.game.GameStats import GameStats
 
 
 class PlayerData():
@@ -39,6 +40,8 @@ class PlayerData():
         self.currentLevel = 0
 
         self.powerUps = PowerUpsStates()
+
+        self.stats = GameStats()
 
 
     def reset(self):

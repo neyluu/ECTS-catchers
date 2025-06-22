@@ -9,6 +9,8 @@ import src.config.PowerUpsConfig as config
 
 
 class DoubleJump(Trigger):
+    activeInstances : int = 0
+
     def __init__(self):
         super().__init__()
 
@@ -30,9 +32,11 @@ class DoubleJump(Trigger):
         if self.started:
             self.timer += dt
             if self.timer > self.boostTime:
-                self.playerData.canDoubleJump = False
-                self.playerData.powerUps.doubleJump = False
+                if DoubleJump.activeInstances <= 1:
+                    self.playerData.canDoubleJump = False
+                    self.playerData.powerUps.doubleJump = False
                 self.onMapReset()
+                DoubleJump.activeInstances -= 1
 
 
     def draw(self, screen: pg.Surface):
@@ -46,6 +50,7 @@ class DoubleJump(Trigger):
         if self.wasEntered():
             return
 
+        DoubleJump.activeInstances += 1
         self.sfx.play()
         self.started = True
         self.playerData : PlayerData = playerData
