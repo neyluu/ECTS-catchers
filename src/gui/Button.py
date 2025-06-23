@@ -1,5 +1,7 @@
 import pygame as pg
 
+import src.config.Settings as Settings
+
 
 class Button:
     def __init__(self, x, y, width, height, texturePath,
@@ -83,6 +85,9 @@ class Button:
         self.mask = pg.mask.from_surface(self.texture)
 
     def _checkCollision(self, pos):
+
+        print(self.normalizeMousePosition(pos))
+
         if self.rect.collidepoint(pos):
             local_x = pos[0] - self.rect.x
             local_y = pos[1] - self.rect.y
@@ -115,3 +120,39 @@ class Button:
                     if self.action:
                         self.action()
                 self.isPressed = False
+
+
+    def normalizeMousePosition(self, position):
+        info = pg.display.Info()
+        screenWidth = info.current_w
+        screenHeight = info.current_h
+
+
+        differenceWidth = abs(Settings.SCREEN_WIDTH - screenWidth)
+        differenceHeight = abs(Settings.SCREEN_HEIGHT - screenHeight)
+
+        normalizedPosition = (
+            position[0] - (differenceWidth // 2),
+            position[1] - (differenceHeight // 2)
+        )
+
+        print(f"screen: {screenWidth} {screenHeight}\ndfference: {differenceWidth} { differenceHeight}")
+
+        # return normalizedPosition
+        return position
+
+        # scaleX = screenWidth / Settings.SCREEN_WIDTH
+        # scaleY = screenHeight / Settings.SCREEN_HEIGHT
+        #
+        # scale = min(scaleX, scaleY)
+        #
+        # offsetX = (screenWidth - Settings.SCREEN_WIDTH * scale) / 2
+        # offsetY = (screenHeight - Settings.SCREEN_HEIGHT * scale) / 2
+        #
+        # normalizedPosition = (
+        #     (position[0] - offsetX) / scale,
+        #     (position[1] - offsetY) / scale
+        # )
+        #
+        # return normalizedPosition
+
