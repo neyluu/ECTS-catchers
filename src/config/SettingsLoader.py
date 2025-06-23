@@ -14,6 +14,9 @@ def loadSettings():
 
     with open(SETTINGS_FILE_NAME, "r") as file:
         lines = file.readlines()
+        if len(lines) < 4:
+            print("ERROR: file is corrupted! Loaded base settings")
+            return
 
         targetFPS = int(_loadLine(lines[0], r'targetFPS:\s(\d+)'))
         if targetFPS == -1:
@@ -29,7 +32,7 @@ def loadSettings():
         elif not _musicInBound(soundMaster):
             print("ERROR: wrong value of sound master! Loaded base setting")
         else:
-            Settings.sounds.master = soundMaster
+            Settings.sounds.setMaster(soundMaster)
 
         soundMusic = float(_loadLine(lines[2], r'soundMusic:\s*([0-9]*\.?[0-9]+)'))
         if soundMusic == -1:
@@ -37,7 +40,7 @@ def loadSettings():
         elif not _musicInBound(soundMusic):
             print("ERROR: wrong value of sound music! Loaded base setting")
         else:
-            Settings.sounds.music = soundMusic
+            Settings.sounds.setMusic(soundMusic)
 
         soundSFX = float(_loadLine(lines[3], r'soundSFX:\s*([0-9]*\.?[0-9]+)'))
         if soundSFX == -1:
@@ -45,20 +48,21 @@ def loadSettings():
         elif not _musicInBound(soundSFX):
             print("ERROR: wrong value of sound sfx! Loaded base setting")
         else:
-            Settings.sounds.sfx = soundSFX
+            Settings.sounds.setSFX(soundSFX)
 
     print("Settings loaded!")
 
 
 def saveSettings():
-    if not os.path.isdir("/config"):
-        os.mkdir("config")
+    os.makedirs("config", exist_ok=True)
 
     with open(SETTINGS_FILE_NAME, "w+") as file:
         file.write(f"targetFPS: {Settings.TARGET_FPS}\n")
         file.write(f"soundMaster: {Settings.sounds.master}\n")
-        file.write(f"soundMusic: {Settings.sounds.music}\n")
-        file.write(f"soundSFX: {Settings.sounds.master}\n")
+        file.write(f"soundMusic: {Settings.sounds.musicBase}\n")
+        file.write(f"soundSFX: {Settings.sounds.sfxBase}\n")
+
+    print("Settings saved!")
 
 
 def _loadLine(line, regex):
