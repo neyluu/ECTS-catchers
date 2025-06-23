@@ -84,13 +84,12 @@ class Button:
 
         self.mask = pg.mask.from_surface(self.texture)
 
-    def _checkCollision(self, pos):
+    def _checkCollision(self, position):
+        normalizedPosition = self.normalizeMousePosition(position)
 
-        print(self.normalizeMousePosition(pos))
-
-        if self.rect.collidepoint(pos):
-            local_x = pos[0] - self.rect.x
-            local_y = pos[1] - self.rect.y
+        if self.rect.collidepoint(normalizedPosition):
+            local_x = normalizedPosition[0] - self.rect.x
+            local_y = normalizedPosition[1] - self.rect.y
             if 0 <= local_x < self.mask.get_size()[0] and \
                     0 <= local_y < self.mask.get_size()[1]:
                 if self.mask.get_at((local_x, local_y)):
@@ -123,36 +122,19 @@ class Button:
 
 
     def normalizeMousePosition(self, position):
+        # Normalizing width dont work properly when resolution is narrower than game render resolution, so its commented for now
+
         info = pg.display.Info()
-        screenWidth = info.current_w
+        # screenWidth = info.current_w
         screenHeight = info.current_h
 
-
-        differenceWidth = abs(Settings.SCREEN_WIDTH - screenWidth)
+        # differenceWidth = abs(Settings.SCREEN_WIDTH - screenWidth)
         differenceHeight = abs(Settings.SCREEN_HEIGHT - screenHeight)
 
         normalizedPosition = (
-            position[0] - (differenceWidth // 2),
+            # position[0] - (differenceWidth // 2),
+            position[0],
             position[1] - (differenceHeight // 2)
         )
 
-        print(f"screen: {screenWidth} {screenHeight}\ndfference: {differenceWidth} { differenceHeight}")
-
-        # return normalizedPosition
-        return position
-
-        # scaleX = screenWidth / Settings.SCREEN_WIDTH
-        # scaleY = screenHeight / Settings.SCREEN_HEIGHT
-        #
-        # scale = min(scaleX, scaleY)
-        #
-        # offsetX = (screenWidth - Settings.SCREEN_WIDTH * scale) / 2
-        # offsetY = (screenHeight - Settings.SCREEN_HEIGHT * scale) / 2
-        #
-        # normalizedPosition = (
-        #     (position[0] - offsetX) / scale,
-        #     (position[1] - offsetY) / scale
-        # )
-        #
-        # return normalizedPosition
-
+        return normalizedPosition
