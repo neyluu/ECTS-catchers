@@ -3,7 +3,7 @@ import pygame as pg
 from src.scenes.Scene import Scene
 from src.gui.Button import Button
 from src.config import Settings
-
+import src.config.SettingsLoader as SettingsLoader
 
 class SettingsScene(Scene):
     def __init__(self, screenWidth=1920, screenHeight=1080,
@@ -25,8 +25,8 @@ class SettingsScene(Scene):
         self.backgroundSurf = pg.transform.scale(rawBackgroundSurf, (targetBgWidth, targetBgHeight))
 
         self.masterVolume = int(Settings.sounds.master * 10)
-        self.musicVolume = int(Settings.sounds.music * 10)
-        self.sfxVolume = int(Settings.sounds.sfx * 10)
+        self.musicVolume = int(Settings.sounds.musicBase * 10)
+        self.sfxVolume = int(Settings.sounds.sfxBase * 10)
         self.currentFpsLimit = Settings.TARGET_FPS
 
         self.uiElements = []
@@ -86,19 +86,29 @@ class SettingsScene(Scene):
 
     def changeMasterVolume(self, change):
         self.masterVolume = max(0, min(10, self.masterVolume + change))
-        Settings.sounds.setMaster(self.masterVolume / 10.0)
+        newMasterVolume = self.masterVolume / 10.0
+        Settings.sounds.setMaster(newMasterVolume)
+        print(f"Changed sound master to: {newMasterVolume}")
+        SettingsLoader.saveSettings()
 
     def changeMusicVolume(self, change):
         self.musicVolume = max(0, min(10, self.musicVolume + change))
-        Settings.sounds.setMusic(self.musicVolume / 10.0)
+        newMusicVolume = self.musicVolume / 10.0
+        Settings.sounds.setMusic(newMusicVolume)
+        print(f"Changed sound music to: {newMusicVolume}")
+        SettingsLoader.saveSettings()
 
     def changeSfxVolume(self, change):
         self.sfxVolume = max(0, min(10, self.sfxVolume + change))
-        Settings.sounds.setSFX(self.sfxVolume / 10.0)
+        newSFXVolume = self.sfxVolume / 10.0
+        Settings.sounds.setSFX(newSFXVolume)
+        print(f"Changed sound sfx to: {newSFXVolume}")
+        SettingsLoader.saveSettings()
 
     def setFps(self, fps):
         self.currentFpsLimit = fps
         Settings.TARGET_FPS = self.currentFpsLimit
+        SettingsLoader.saveSettings()
 
     def goBack(self):
         if self.sceneManager:
