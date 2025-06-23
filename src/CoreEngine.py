@@ -5,11 +5,14 @@ from src.SceneManager import SceneManager
 from src.scenes.MainMenu import MainMenu
 from src.scenes.GameScene import GameScene
 from src.scenes.GameIntro import GameIntro
+import src.config.SettingsLoader as SettingsLoader
 import ctypes
 
 from src.scenes.SettingsScene import SettingsScene
 
 ctypes.windll.user32.SetProcessDPIAware()
+
+SettingsLoader.loadSettings()
 
 pg.init()
 
