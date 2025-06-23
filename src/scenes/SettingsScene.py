@@ -25,8 +25,8 @@ class SettingsScene(Scene):
         self.backgroundSurf = pg.transform.scale(rawBackgroundSurf, (targetBgWidth, targetBgHeight))
 
         self.masterVolume = int(Settings.sounds.master * 10)
-        self.musicVolume = int(Settings.sounds.music * 10)
-        self.sfxVolume = int(Settings.sounds.sfx * 10)
+        self.musicVolume = int(Settings.sounds.musicBase * 10)
+        self.sfxVolume = int(Settings.sounds.sfxBase * 10)
         self.currentFpsLimit = Settings.TARGET_FPS
 
         self.uiElements = []
