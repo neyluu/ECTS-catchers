@@ -1,5 +1,10 @@
 import pygame as pg
 
+import ctypes
+import src.config.SettingsLoader as SettingsLoader
+
+ctypes.windll.user32.SetProcessDPIAware()
+SettingsLoader.loadSettings()
 pg.init()
 
 from src.config import Settings
@@ -9,15 +14,7 @@ from src.scenes.GameScene import GameScene
 from src.scenes.GameIntro import GameIntro
 from src.sounds.SoundtrackManager import soundtrackManager
 from src.gui.animations.Slide import slideAnimation
-import src.config.SettingsLoader as SettingsLoader
-import ctypes
-
 from src.scenes.SettingsScene import SettingsScene
-
-ctypes.windll.user32.SetProcessDPIAware()
-
-SettingsLoader.loadSettings()
-
 
 BASE_RESOLUTION = (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT)
 
