@@ -8,6 +8,7 @@ from src.scenes.MainMenu import MainMenu
 from src.scenes.GameScene import GameScene
 from src.scenes.GameIntro import GameIntro
 from src.sounds.SoundtrackManager import soundtrackManager
+from src.gui.animations.Slide import slideAnimation
 import src.config.SettingsLoader as SettingsLoader
 import ctypes
 
@@ -81,10 +82,13 @@ class CoreEngine():
             self.previousSceneIndex = currentSceneIndex
 
         self.scenes[self.sceneManager.getCurrentScene()].update(self.dt)
+
+        slideAnimation.update(self.dt)
         soundtrackManager.update(self.dt)
 
     def draw(self):
         self.scenes[self.sceneManager.getCurrentScene()].draw(surface)
+        slideAnimation.draw(surface)
 
         fps = self.clock.get_fps()
         fps_text = self.font.render(f"FPS: {int(fps)}", True, pg.Color('lime'))
