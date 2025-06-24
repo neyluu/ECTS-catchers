@@ -25,16 +25,13 @@ class Slide:
         if not self.running:
             return
 
-
         self.timeElapsed += dt
-
-
         self.step = Settings.SCREEN_HEIGHT / ((self.time / 2 * (1 - self.offset)) / dt)
 
         if self.timeElapsed < ((self.time * (1 - self.offset)) / 2):
-            self.height += self.step
+            self.height += self.step * 1.1
         if self.timeElapsed > ((self.time * (1 + self.offset)) / 2):
-            self.top += self.step
+            self.top += self.step * 1.1
 
         if self.timeElapsed > self.time:
             self.stop()
@@ -45,7 +42,7 @@ class Slide:
         if not self.running:
             return
 
-        pg.draw.rect(screen, self.color, (self.left, self.top, self.width, self.height))
+        pg.draw.rect(screen, self.color, (int(self.left), int(self.top), int(self.width), int(self.height)))
 
 
     def start(self):
