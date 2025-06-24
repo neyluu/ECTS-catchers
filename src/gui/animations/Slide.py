@@ -4,8 +4,8 @@ import src.config.Settings as Settings
 
 class Slide:
     def __init__(self,
-                 time : float = 1.5,
-                 color = (33,33,33)):
+                 time : float = 1,
+                 color = (22,22,22)):
         self.time = time
         self.color = color
 
@@ -27,7 +27,6 @@ class Slide:
 
 
         self.timeElapsed += dt
-        print(self.timeElapsed)
 
 
         self.step = Settings.SCREEN_HEIGHT / ((self.time / 2 * (1 - self.offset)) / dt)

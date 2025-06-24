@@ -1,6 +1,7 @@
 import pygame as pg
 import sys
 
+from src.gui.animations.Slide import slideAnimation
 from src.scenes.Scene import Scene
 from src.gui.Button import Button
 from src.sounds.Soundtrack import Soundtrack
@@ -93,19 +94,26 @@ class MainMenu(Scene):
 
         self.buttons = [self.playButton, self.settingsButton, self.exitButton]
 
+        self.sceneChange : bool = False
+        self.newScene : int = 0
+
         soundtrackManager.playMenuSoundtrack()
 
 
     def goToGameScene(self):
         print("Switching to Game Scene")
         if self.sceneManager:
-            self.sceneManager.setCurrentScene(3)
+            self.newScene = 3
+            self.sceneChange = True
+            slideAnimation.start()
 
 
     def goToSettingsScene(self):
         print("Switching to Settings Scene")
         if self.sceneManager:
-            self.sceneManager.setCurrentScene(2)
+            self.newScene = 2
+            self.sceneChange = True
+            slideAnimation.start()
 
 
     def quitGame(self):
@@ -124,7 +132,12 @@ class MainMenu(Scene):
 
 
     def update(self, dt: float):
-        pass
+        if self.sceneChange:
+            if slideAnimation.timeElapsed >= slideAnimation.time / 2:
+                self.sceneManager.setCurrentScene(self.newScene)
+                soundtrackManager.playGameSoundtrack()
+            if slideAnimation.timeElapsed > slideAnimation.time:
+                self.sceneChange = False
 
 
     def draw(self, screen: pg.Surface):
