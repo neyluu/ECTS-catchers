@@ -1,6 +1,8 @@
 import pygame as pg
 
 from src.scenes.Scene import Scene
+from src.sounds.SoundtrackManager import soundtrackManager
+
 
 class GameIntro(Scene):
     def __init__(self):
@@ -11,6 +13,7 @@ class GameIntro(Scene):
     def handleEvent(self, event):
         if event.type == pg.KEYDOWN:
             self.sceneManager.setCurrentScene(1)
+            soundtrackManager.playGameSoundtrack()
 
 
     def update(self, dt : float):

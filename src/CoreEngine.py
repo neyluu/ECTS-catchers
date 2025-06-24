@@ -1,10 +1,13 @@
 import pygame as pg
 
+pg.init()
+
 from src.config import Settings
 from src.SceneManager import SceneManager
 from src.scenes.MainMenu import MainMenu
 from src.scenes.GameScene import GameScene
 from src.scenes.GameIntro import GameIntro
+from src.sounds.SoundtrackManager import soundtrackManager
 import src.config.SettingsLoader as SettingsLoader
 import ctypes
 
@@ -14,7 +17,6 @@ ctypes.windll.user32.SetProcessDPIAware()
 
 SettingsLoader.loadSettings()
 
-pg.init()
 
 BASE_RESOLUTION = (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT)
 
@@ -79,6 +81,7 @@ class CoreEngine():
             self.previousSceneIndex = currentSceneIndex
 
         self.scenes[self.sceneManager.getCurrentScene()].update(self.dt)
+        soundtrackManager.update(self.dt)
 
     def draw(self):
         self.scenes[self.sceneManager.getCurrentScene()].draw(surface)

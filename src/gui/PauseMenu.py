@@ -2,6 +2,7 @@ import pygame as pg
 
 from src.config import Settings
 from src.gui.Button import Button
+from src.sounds.SoundtrackManager import soundtrackManager
 
 
 class PauseMenu:
@@ -74,6 +75,7 @@ class PauseMenu:
     def goToMainMenu(self):
         if self.sceneManager:
             self.sceneManager.setCurrentScene(0)
+            soundtrackManager.playMenuSoundtrack()
 
     def handleEvent(self, event):
         if not self.isActive:

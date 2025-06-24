@@ -3,7 +3,8 @@ import sys
 
 from src.scenes.Scene import Scene
 from src.gui.Button import Button
-
+from src.sounds.Soundtrack import Soundtrack
+from src.sounds.SoundtrackManager import soundtrackManager
 
 
 class MainMenu(Scene):
@@ -91,6 +92,8 @@ class MainMenu(Scene):
         )
 
         self.buttons = [self.playButton, self.settingsButton, self.exitButton]
+
+        soundtrackManager.playMenuSoundtrack()
 
 
     def goToGameScene(self):

@@ -5,7 +5,6 @@ from src.game.Game import Game
 from src.config import Settings
 from src.gui.PauseMenu import PauseMenu
 from src.scenes.SettingsScene import SettingsScene
-from src.sounds.Soundtrack import Soundtrack
 
 
 class GameScene(Scene):
@@ -19,9 +18,6 @@ class GameScene(Scene):
 
         self.gameLeft = Game(isLeft=True, canvas=self.leftCanvas)
         self.gameRight = Game(isLeft=False, canvas=self.rightCanvas)
-
-        self.running = False
-        self.soundtrack = Soundtrack("assets/audio/soundtrack02.mp3")
 
         self.divider = pg.Rect(screenWidth // 2 - 2, 0, 4, screenHeight)
         self.pauseMenu = PauseMenu(self.sceneManager)
@@ -37,10 +33,6 @@ class GameScene(Scene):
             self.gameRight.handleEvent(event)
 
     def update(self, dt: float):
-        if not self.running:
-            self.running = True
-            self.soundtrack.play()
-
         if self.pauseMenu.isActive:
             self.pauseMenu.update(dt)
             return
