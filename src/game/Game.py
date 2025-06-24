@@ -23,12 +23,12 @@ class Game:
 
         self.levels = [
             Level(self.canvas, "level01.level", 450, 950),
-            Level(self.canvas, "level02.level", 385, 950),
-            Level(self.canvas, "level03.level", 365, 955),
-            Level(self.canvas, "level04.level", 450, 950),
-            Level(self.canvas, "level05.level", 460, 890),
-            Level(self.canvas, "level06.level", 70, 760),
-            Level(self.canvas, "level07.level", 50, 950)
+            Level(self.canvas, "level02.level", 400, 925),
+            Level(self.canvas, "level03.level", 70, 760),
+            Level(self.canvas, "level04.level", 465, 925),
+            Level(self.canvas, "level05.level", 380, 950),
+            Level(self.canvas, "level06.level", 50, 950),
+            Level(self.canvas, "level07.level", 370, 890)
         ]
 
         if Debug.DEBUG_LEVELS:
