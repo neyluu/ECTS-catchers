@@ -21,7 +21,7 @@ PLAYER_RIGHT_KEYMAP.MOVE_RIGHT = pg.K_RIGHT
 PLAYER_RIGHT_KEYMAP.MOVE_DOWN = pg.K_DOWN
 PLAYER_RIGHT_KEYMAP.MOVE_LEFT = pg.K_LEFT
 
-KEYMAP_PAUSE = pg.K_p
+KEYMAP_PAUSE = pg.K_ESCAPE
 
 # Sound can be changed from 0 to 1, menu will have 10 steps so sound can change by 0.1
 sounds = SoundSettings(1.0, 0.5, 1.0)

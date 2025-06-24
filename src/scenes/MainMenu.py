@@ -126,10 +126,6 @@ class MainMenu(Scene):
         for button in self.buttons:
             button.handleEvent(event)
 
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_ESCAPE:
-                self.quitGame()
-
 
     def update(self, dt: float):
         if self.sceneChange:
