@@ -1,5 +1,7 @@
 import pygame as pg
 
+import src.config.Settings as Settings
+
 
 class Button:
     def __init__(self, x, y, width, height, texturePath,
@@ -7,6 +9,7 @@ class Button:
                  fontPath=None, fontSize=30, textColor=(255, 255, 255),
                  outlineColor=(0, 0, 0), outlineThickness=2,
                  hoverEffectColor=(255, 255, 255, 50),
+                 clickEffectColor=(0, 0, 0, 75),
                  action=None):
 
         self.xPosition = x
@@ -22,9 +25,11 @@ class Button:
         self.outlineColor = outlineColor
         self.outlineThickness = outlineThickness
         self.hoverEffectColor = hoverEffectColor
+        self.clickEffectColor = clickEffectColor
         self.action = action
 
         self.isHovered = False
+        self.isPressed = False
 
         if not pg.font.get_init():
             pg.font.init()
@@ -42,13 +47,17 @@ class Button:
         self.mask = None
 
         self._rebuildTexture()
-
-        if self.hoverEffectColor and len(self.hoverEffectColor) == 4 and self.hoverEffectColor[3] > 0:
-            self.hoverSurface = pg.Surface(self.rect.size, pg.SRCALPHA)
-            self.hoverSurface.fill(self.hoverEffectColor)
+        if self.hoverEffectColor:
+            self.hoverSurface = self.texture.copy()
+            self.hoverSurface.fill(self.hoverEffectColor, special_flags=pg.BLEND_RGBA_MULT)
         else:
             self.hoverSurface = None
 
+        if self.clickEffectColor:
+            self.clickSurface = self.texture.copy()
+            self.clickSurface.fill(self.clickEffectColor, special_flags=pg.BLEND_RGBA_MULT)
+        else:
+            self.clickSurface = None
 
     def _rebuildTexture(self):
         imageToTransform = self.baseScaledImage.copy()
@@ -75,29 +84,57 @@ class Button:
 
         self.mask = pg.mask.from_surface(self.texture)
 
+    def _checkCollision(self, position):
+        normalizedPosition = self.normalizeMousePosition(position)
 
-    def _checkCollision(self, pos):
-        if self.rect.collidepoint(pos):
-            local_x = pos[0] - self.rect.x
-            local_y = pos[1] - self.rect.y
+        if self.rect.collidepoint(normalizedPosition):
+            local_x = normalizedPosition[0] - self.rect.x
+            local_y = normalizedPosition[1] - self.rect.y
             if 0 <= local_x < self.mask.get_size()[0] and \
                     0 <= local_y < self.mask.get_size()[1]:
                 if self.mask.get_at((local_x, local_y)):
                     return True
         return False
 
-
     def draw(self, screen: pg.Surface):
         screen.blit(self.texture, self.rect.topleft)
 
-        if self.isHovered and self.hoverSurface:
-            screen.blit(self.hoverSurface, self.rect.topleft)
 
+        if self.isPressed and self.clickSurface:
+            screen.blit(self.clickSurface, self.rect.topleft)
+        elif self.isHovered and self.hoverSurface:
+            screen.blit(self.hoverSurface, self.rect.topleft)
 
     def handleEvent(self, event: pg.event.Event):
         if event.type == pg.MOUSEMOTION:
             self.isHovered = self._checkCollision(event.pos)
+
         elif event.type == pg.MOUSEBUTTONDOWN:
             if event.button == 1 and self._checkCollision(event.pos):
-                if self.action:
-                    self.action()
+                self.isPressed = True
+
+        elif event.type == pg.MOUSEBUTTONUP:
+            if event.button == 1:
+                if self.isPressed and self._checkCollision(event.pos):
+                    if self.action:
+                        self.action()
+                self.isPressed = False
+
+
+    def normalizeMousePosition(self, position):
+        # Normalizing width dont work properly when resolution is narrower than game render resolution, so its commented for now
+
+        info = pg.display.Info()
+        # screenWidth = info.current_w
+        screenHeight = info.current_h
+
+        # differenceWidth = abs(Settings.SCREEN_WIDTH - screenWidth)
+        differenceHeight = abs(Settings.SCREEN_HEIGHT - screenHeight)
+
+        normalizedPosition = (
+            # position[0] - (differenceWidth // 2),
+            position[0],
+            position[1] - (differenceHeight // 2)
+        )
+
+        return normalizedPosition

@@ -1,10 +1,11 @@
 import pygame as pg
 
+from src.config.SoundSettings import SoundSettings
 from src.game.PlayerKeymap import PlayerKeymap
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
-TARGET_FPS = 144
+TARGET_FPS = 60
 TITLE = "ECTS catchers"
 
 PLAYER_LEFT_KEYMAP = PlayerKeymap()
@@ -22,6 +23,4 @@ PLAYER_RIGHT_KEYMAP.MOVE_LEFT = pg.K_LEFT
 KEYMAP_PAUSE = pg.K_p
 
 # Sound can be changed from 0 to 1, menu will have 10 steps so sound can change by 0.1
-SOUND_MASTER : float = 1
-SOUND_MUSIC  : float = 0.0 * SOUND_MASTER
-SOUND_SFX    : float = 1 * SOUND_MASTER
+sounds = SoundSettings(1.0, 0.5, 1.0)
