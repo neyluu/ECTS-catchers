@@ -25,6 +25,8 @@ class SettingsScene(Scene):
         targetBgHeight = backgroundTargetHeight if backgroundTargetHeight is not None else self.screenHeight
         self.backgroundSurf = pg.transform.scale(rawBackgroundSurf, (targetBgWidth, targetBgHeight))
 
+        self.baseY = self.screenHeight // 4 - 150
+
         self.masterVolume = int(Settings.sounds.master * 10)
         self.musicVolume = int(Settings.sounds.musicBase * 10)
         self.sfxVolume = int(Settings.sounds.sfxBase * 10)
@@ -48,20 +50,26 @@ class SettingsScene(Scene):
     def createUi(self):
         textColor = (255, 255, 255)
         baseX = self.screenWidth // 2
-        baseY = self.screenHeight // 4
 
-        self.createText("SOUND", baseX, baseY, 70, textColor)
-        self.createVolumeControl("master", baseY + 100, self.changeMasterVolume)
-        self.createVolumeControl("music", baseY + 200, self.changeMusicVolume)
-        self.createVolumeControl("sfx", baseY + 300, self.changeSfxVolume)
+        self.createText("SOUND", baseX, self.baseY, 70, textColor)
+        self.createVolumeControl("master", self.baseY + 100, self.changeMasterVolume)
+        self.createVolumeControl("music", self.baseY + 200, self.changeMusicVolume)
+        self.createVolumeControl("sfx", self.baseY + 300, self.changeSfxVolume)
 
-        self.createText("FPS LIMIT:", baseX, baseY + 450, 50, textColor)
+        self.createText("FPS LIMIT:", baseX, self.baseY + 450, 50, textColor)
         self.fpsButtons = {
-            30: Button(x=585, y=baseY + 460, width=250, height=180, text="30", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(30), hoverEffectColor=None),
-            60: Button(x=835, y=baseY + 460, width=250, height=180, text="60", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(60), hoverEffectColor=None),
-            144: Button(x=1085, y=baseY + 460, width=250, height=180, text="144", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(144), hoverEffectColor=None)
+            30: Button(x=585, y=self.baseY + 460, width=250, height=180, text="30", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(30), hoverEffectColor=None),
+            60: Button(x=835, y=self.baseY + 460, width=250, height=180, text="60", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(60), hoverEffectColor=None),
+            144: Button(x=1085, y=self.baseY + 460, width=250, height=180, text="144", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(144), hoverEffectColor=None)
         }
         self.buttons.extend(self.fpsButtons.values())
+
+        self.createText("FPS COUNTER: ", baseX, self.baseY + 650, 50, textColor)
+        fpsCounterButtons = {
+            True: Button(x=760, y=self.baseY + 650, width=200, height=180, text="ON", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFPSCounter(True), hoverEffectColor=None),
+            False: Button(x=960, y=self.baseY + 650, width=200, height=180, text="OFF", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFPSCounter(False), hoverEffectColor=None)
+        }
+        self.buttons.extend(fpsCounterButtons.values())
 
         self.backButton = Button(
             x=835, y=self.screenHeight - 200, width=250, height=180,
@@ -113,6 +121,9 @@ class SettingsScene(Scene):
         Settings.TARGET_FPS = self.currentFpsLimit
         SettingsLoader.saveSettings()
 
+    def setFPSCounter(self, visible : bool):
+        Settings.FPS_COUNTER = visible
+
     def goBack(self):
         self.sceneChange = True
         slideAnimation.start()
@@ -139,16 +150,15 @@ class SettingsScene(Scene):
             screen.blit(surf, rect)
 
         font = pg.font.Font(self.fontPath, 50)
-        baseY = self.screenHeight // 4
 
         masterValSurf = font.render(f"{self.masterVolume}/10", True, (255, 255, 255))
-        screen.blit(masterValSurf, masterValSurf.get_rect(center=(self.screenWidth // 2, baseY + 100)))
+        screen.blit(masterValSurf, masterValSurf.get_rect(center=(self.screenWidth // 2, self.baseY + 100)))
 
         musicValSurf = font.render(f"{self.musicVolume}/10", True, (255, 255, 255))
-        screen.blit(musicValSurf, musicValSurf.get_rect(center=(self.screenWidth // 2, baseY + 200)))
+        screen.blit(musicValSurf, musicValSurf.get_rect(center=(self.screenWidth // 2, self.baseY + 200)))
 
         sfxValSurf = font.render(f"{self.sfxVolume}/10", True, (255, 255, 255))
-        screen.blit(sfxValSurf, sfxValSurf.get_rect(center=(self.screenWidth // 2, baseY + 300)))
+        screen.blit(sfxValSurf, sfxValSurf.get_rect(center=(self.screenWidth // 2, self.baseY + 300)))
 
         for button in self.buttons:
             button.draw(screen)

@@ -6,6 +6,7 @@ from src.game.PlayerKeymap import PlayerKeymap
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 TARGET_FPS = 60
+FPS_COUNTER = False
 TITLE = "ECTS catchers"
 
 PLAYER_LEFT_KEYMAP = PlayerKeymap()

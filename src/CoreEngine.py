@@ -90,9 +90,10 @@ class CoreEngine():
         self.scenes[self.sceneManager.getCurrentScene()].draw(surface)
         slideAnimation.draw(surface)
 
-        fps = self.clock.get_fps()
-        fps_text = self.font.render(f"FPS: {int(fps)}", True, pg.Color('lime'))
-        surface.blit(fps_text, (0, 0))
+        if Settings.FPS_COUNTER:
+            fps = self.clock.get_fps()
+            fps_text = self.font.render(f"FPS: {int(fps)}", True, pg.Color('lime'))
+            surface.blit(fps_text, (0, 0))
 
         offsetX = 0
         offsetY = (screenHeight - Settings.SCREEN_HEIGHT) / 2
