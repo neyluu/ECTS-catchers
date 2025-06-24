@@ -2,6 +2,7 @@ import pygame as pg
 
 from src.config import Settings
 from src.gui.Button import Button
+from src.gui.animations.Slide import slideAnimation
 from src.sounds.SoundtrackManager import soundtrackManager
 
 
@@ -27,6 +28,9 @@ class PauseMenu:
         if backgroundTexturePath:
             rawImage = pg.image.load(backgroundTexturePath).convert_alpha()
             self.backgroundTexture = pg.transform.scale(rawImage, (self.menuWidth, self.menuHeight))
+
+        self.sceneChange: bool = False
+        self.newScene: int = 0
 
         self.createButtons()
 
@@ -69,13 +73,16 @@ class PauseMenu:
         print("Menu pauzy: Wznawiam grę.")
 
     def goToSettings(self):
-        if self.sceneManager:
-            self.sceneManager.setCurrentScene(2)
+        self.newScene = 2
+        self.sceneChange = True
+        slideAnimation.start()
+
 
     def goToMainMenu(self):
-        if self.sceneManager:
-            self.sceneManager.setCurrentScene(0)
-            soundtrackManager.playMenuSoundtrack()
+        self.newScene = 0
+        self.sceneChange = True
+        slideAnimation.start()
+
 
     def handleEvent(self, event):
         if not self.isActive:
@@ -84,9 +91,16 @@ class PauseMenu:
         for button in self.buttons:
             button.handleEvent(event)
 
+
     def update(self, dt: float):
-        if not self.isActive:
-            return
+        if self.sceneChange:
+            if slideAnimation.timeElapsed >= slideAnimation.time / 2:
+                self.sceneManager.setCurrentScene(self.newScene)
+                self.sceneChange = False
+
+                if self.newScene == 0:
+                    soundtrackManager.playMenuSoundtrack()
+
 
     def draw(self, screen: pg.Surface):
         if not self.isActive:

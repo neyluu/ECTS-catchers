@@ -135,8 +135,7 @@ class MainMenu(Scene):
         if self.sceneChange:
             if slideAnimation.timeElapsed >= slideAnimation.time / 2:
                 self.sceneManager.setCurrentScene(self.newScene)
-                soundtrackManager.playGameSoundtrack()
-            if slideAnimation.timeElapsed > slideAnimation.time:
+                print(f"Changing scene to: {self.newScene}")
                 self.sceneChange = False
 
 

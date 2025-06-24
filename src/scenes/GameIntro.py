@@ -23,7 +23,6 @@ class GameIntro(Scene):
             if slideAnimation.timeElapsed >= slideAnimation.time / 2:
                 self.sceneManager.setCurrentScene(1)
                 soundtrackManager.playGameSoundtrack()
-            if slideAnimation.timeElapsed > slideAnimation.time:
                 self.sceneChange = False
 
 

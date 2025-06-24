@@ -9,7 +9,7 @@ class Slide:
         self.time = time
         self.color = color
 
-        self.offset = 0.4
+        self.offset = 0.2
         self.top = 0
         self.left = 0
         self.width = Settings.SCREEN_WIDTH

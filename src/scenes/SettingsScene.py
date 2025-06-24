@@ -1,5 +1,6 @@
 import pygame as pg
 
+from src.gui.animations.Slide import slideAnimation
 from src.scenes.Scene import Scene
 from src.gui.Button import Button
 from src.config import Settings
@@ -32,6 +33,8 @@ class SettingsScene(Scene):
         self.uiElements = []
         self.buttons = []
         self.createUi()
+
+        self.sceneChange: bool = False
 
     def onEnter(self, previousScene=None):
         if previousScene and hasattr(self, 'allScenes'):
@@ -111,8 +114,8 @@ class SettingsScene(Scene):
         SettingsLoader.saveSettings()
 
     def goBack(self):
-        if self.sceneManager:
-            self.sceneManager.setCurrentScene(self.returnIndex)
+        self.sceneChange = True
+        slideAnimation.start()
 
     def handleEvent(self, event: pg.event.Event):
         for button in self.buttons:
@@ -121,7 +124,10 @@ class SettingsScene(Scene):
             self.goBack()
 
     def update(self, dt: float):
-        pass
+        if self.sceneChange:
+            if slideAnimation.timeElapsed >= slideAnimation.time / 2:
+                self.sceneManager.setCurrentScene(self.returnIndex)
+                self.sceneChange = False
 
     def draw(self, screen: pg.Surface):
         if self.backgroundSurf:
