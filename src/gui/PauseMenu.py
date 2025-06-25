@@ -4,11 +4,11 @@ from src.config import Settings
 from src.gui.Button import Button
 from src.gui.animations.Slide import slideAnimation
 from src.sounds.SoundtrackManager import soundtrackManager
-from src.SceneManager import SceneManager
 
 
 class PauseMenu:
-    def __init__(self, backgroundTexturePath="assets/textures/background/dark_grey_brick_bg.png"):
+    def __init__(self, sceneManager, backgroundTexturePath="assets/textures/background/dark_grey_brick_bg.png"):
+        self.sceneManager = sceneManager
         self.isActive = False
 
         self.overlay = pg.Surface((Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT), pg.SRCALPHA)

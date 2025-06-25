@@ -22,7 +22,7 @@ class GameScene(Scene):
         self.gameRight = Game(isLeft=False, canvas=self.rightCanvas)
 
         self.divider = pg.Rect(self.screenWidth // 2 - 2, 0, 4, self.screenHeight)
-        self.pauseMenu = PauseMenu()
+        self.pauseMenu = PauseMenu(self.sceneManager)
 
         self.gameOverButton = Button(
             x=Settings.SCREEN_WIDTH / 2 - 650 / 2,
