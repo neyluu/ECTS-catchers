@@ -50,6 +50,13 @@ def loadSettings():
         else:
             Settings.sounds.setSFX(soundSFX)
 
+        fpsCounter = _loadLine(lines[4], r'fpsCounter:\s*(True|False)')
+        if fpsCounter == -1:
+            print("ERROR: failed to load fps counter! Loaded base setting")
+        else:
+            Settings.FPS_COUNTER = False if fpsCounter == "False" else True
+
+
     print("Settings loaded!")
 
 
@@ -61,6 +68,7 @@ def saveSettings():
         file.write(f"soundMaster: {Settings.sounds.master}\n")
         file.write(f"soundMusic: {Settings.sounds.musicBase}\n")
         file.write(f"soundSFX: {Settings.sounds.sfxBase}\n")
+        file.write(f"fpsCounter: {Settings.FPS_COUNTER}\n")
 
     print("Settings saved!")
 

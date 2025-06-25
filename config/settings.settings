@@ -1,4 +1,5 @@
 targetFPS: 60
 soundMaster: 1.0
-soundMusic: 0.5
+soundMusic: 0.0
 soundSFX: 1.0
+fpsCounter: False
