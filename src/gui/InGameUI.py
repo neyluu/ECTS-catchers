@@ -42,7 +42,7 @@ class InGameUI:
 
         self.powerUpDisplay = PowerUpDisplay(
             playerData=self.playerData,
-            iconSize=(28, 28),
+            iconSize=(32, 32),
             iconPadding=8
         )
         self.powerUpDisplayPosition = (self.canvas.x +25,
