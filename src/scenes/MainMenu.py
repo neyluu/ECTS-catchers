@@ -97,8 +97,6 @@ class MainMenu(Scene):
         self.sceneChange : bool = False
         self.newScene : int = 0
 
-        soundtrackManager.playMenuSoundtrack()
-
 
     def goToGameScene(self):
         print("Switching to Game Scene")

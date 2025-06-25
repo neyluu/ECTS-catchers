@@ -48,6 +48,8 @@ class CoreEngine():
             GameIntro()
         ]
 
+        soundtrackManager.playMenuSoundtrack()
+
         for scene in self.scenes:
             scene.sceneManager = self.sceneManager
             scene.allScenes = self.scenes

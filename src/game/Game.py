@@ -8,7 +8,6 @@ from src.gui.GameOver import GameOver
 from src.gui.animations.Blink import Blink
 from src.gui.InGameUI import InGameUI
 from src.gui.Button import Button
-from src.config import Settings
 import src.config.DebugConfig as Debug
 
 
