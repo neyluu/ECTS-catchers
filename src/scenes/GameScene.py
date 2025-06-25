@@ -5,8 +5,9 @@ from src.game.Game import Game
 from src.config import Settings
 from src.gui.PauseMenu import PauseMenu
 from src.scenes.SettingsScene import SettingsScene
-from src.sounds.Soundtrack import Soundtrack
 from src.gui.Button import Button
+from src.gui.animations.Slide import slideAnimation
+from src.sounds.SoundtrackManager import soundtrackManager
 
 
 class GameScene(Scene):
@@ -40,6 +41,8 @@ class GameScene(Scene):
             action=self.goToMainMenu
         )
 
+        self.sceneChange : bool = False
+
 
     def handleEvent(self, event: pg.event.Event):
         if event.type == pg.KEYDOWN and event.key == Settings.KEYMAP_PAUSE:
@@ -62,6 +65,15 @@ class GameScene(Scene):
         self.gameLeft.update(dt)
         self.gameRight.update(dt)
 
+        if self.sceneChange:
+            if slideAnimation.timeElapsed >= slideAnimation.time / 2:
+                print("Switching to Main Menu")
+                self.gameLeft.reset()
+                self.gameRight.reset()
+                self.sceneManager.setCurrentScene(0)
+                soundtrackManager.playMenuSoundtrack()
+                self.sceneChange = False
+
 
     def draw(self, screen: pg.Surface):
         self.gameLeft.draw(screen)
@@ -78,6 +90,7 @@ class GameScene(Scene):
         self.gameRight.reset()
         self.pauseMenu.isActive = False
 
+
     def onEnter(self, previousScene=None):
         if isinstance(previousScene, SettingsScene):
             self.pauseMenu.isActive = True
@@ -87,12 +100,8 @@ class GameScene(Scene):
 
     def goToMainMenu(self):
         print("Going to main menu")
-        self.gameLeft.reset()
-        self.gameRight.reset()
-
-        print("Switching to Main Menu")
-        if self.sceneManager:
-            self.sceneManager.setCurrentScene(0)
+        self.sceneChange = True
+        slideAnimation.start()
 
 
     def bothGameOvers(self) -> bool:
