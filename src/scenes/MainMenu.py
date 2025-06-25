@@ -4,12 +4,11 @@ import sys
 from src.gui.animations.Slide import slideAnimation
 from src.scenes.Scene import Scene
 from src.gui.Button import Button
-from src.sounds.SoundtrackManager import soundtrackManager
 import src.config.Settings as Settings
 
 
 class MainMenu(Scene):
-    def __init__(self, screenWidth=1920, screenHeight=1080,
+    def __init__(self,
                  backgroundTargetWidth=None, backgroundTargetHeight=None,
                  logoTargetWidth=750, logoTargetHeight=750):
         super().__init__()
