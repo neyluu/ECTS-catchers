@@ -1,27 +1,33 @@
 import pygame as pg
 
-from src.config import Settings
-from src.gui.Button import Button
-from src.gui.PauseMenu import PauseMenu
 from src.scenes.Scene import Scene
 from src.game.Game import Game
+from src.config import Settings
+from src.gui.PauseMenu import PauseMenu
+from src.scenes.SettingsScene import SettingsScene
+from src.sounds.Soundtrack import Soundtrack
+from src.gui.Button import Button
 
 class GameScene(Scene):
-
     def __init__(self):
         super().__init__()
-        self.leftGame  = Game(True, pg.Rect(0, 0, Settings.SCREEN_WIDTH // 2, Settings.SCREEN_HEIGHT))
-        self.rightGame = Game(False, pg.Rect(Settings.SCREEN_WIDTH // 2, 0, Settings.SCREEN_WIDTH // 2, Settings.SCREEN_HEIGHT))
+        self.screenWidth = Settings.SCREEN_WIDTH
+        self.screenHeight = Settings.SCREEN_HEIGHT
 
-        self.paused : bool = False
-        self.pauseMenu = PauseMenu()
+        self.leftCanvas = pg.Rect(0, 0, self.screenWidth // 2, self.screenHeight)
+        self.rightCanvas = pg.Rect(self.screenWidth // 2, 0, self.screenWidth // 2, self.screenHeight)
+
+        self.gameLeft = Game(isLeft=True, canvas=self.leftCanvas)
+        self.gameRight = Game(isLeft=False, canvas=self.rightCanvas)
 
         self.running = False
-        self.soundtrack = pg.mixer.Sound("assets/audio/soundtrack02.mp3")
-        self.soundtrack.set_volume(Settings.SOUND_MUSIC * 0.75)
+        self.soundtrack = Soundtrack("assets/audio/soundtrack02.mp3")
+
+        self.divider = pg.Rect(self.screenWidth // 2 - 2, 0, 4, self.screenHeight)
+        self.pauseMenu = PauseMenu()
 
         self.gameOverButton = Button(
-            x=Settings.SCREEN_WIDTH / 2 - 650 /2,
+            x=Settings.SCREEN_WIDTH / 2 - 650 / 2,
             y=750,
             width=750, height=475,
             texturePath="assets/textures/gui/gui_button_1.png",
@@ -35,76 +41,52 @@ class GameScene(Scene):
             hoverEffectColor=None,
             action=self.goToMainMenu
         )
+    def handleEvent(self, event: pg.event.Event):
+        if event.type == pg.KEYDOWN and event.key == Settings.KEYMAP_PAUSE:
+            self.pauseMenu.toggle()
 
-
-    def handleEvent(self, event):
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_2:
-                self.sceneManager.setCurrentScene(2)
-            elif event.key == pg.K_1:
-                self.sceneManager.setCurrentScene(0)
-            if event.key == Settings.KEYMAP_PAUSE:
-                self.paused = not self.paused
-                if self.paused:
-                    self.onPause()
-                else:
-                    self.onUnPause()
-
-        self.leftGame.handleEvent(event)
-        self.rightGame.handleEvent(event)
-
+        if self.pauseMenu.isActive:
+            self.pauseMenu.handleEvent(event)
+        else:
+            self.gameLeft.handleEvent(event)
+            self.gameRight.handleEvent(event)
         if self.bothGameOvers():
             self.gameOverButton.handleEvent(event)
 
-        if self.paused:
-            self.pauseMenu.handleEvent(event)
-
-
-    def update(self, dt : float):
+    def update(self, dt: float):
         if not self.running:
             self.running = True
-            self.soundtrack.play(-1)
+            self.soundtrack.play()
 
-        self.leftGame.update(dt)
-        self.rightGame.update(dt)
-
-        if self.paused:
+        if self.pauseMenu.isActive:
             self.pauseMenu.update(dt)
+            return
 
+        self.gameLeft.update(dt)
+        self.gameRight.update(dt)
 
-    def draw(self, screen : pg.Surface):
-        screen.fill("red")
-
-        self.leftGame.draw(screen)
-        self.rightGame.draw(screen)
-
+    def draw(self, screen: pg.Surface):
+        self.gameLeft.draw(screen)
+        self.gameRight.draw(screen)
+        pg.draw.rect(screen, (20, 20, 20), self.divider)
+        self.pauseMenu.draw(screen)
         if self.bothGameOvers():
             self.gameOverButton.draw(screen)
+    def reset(self):
+        self.gameLeft.reset()
+        self.gameRight.reset()
+        self.pauseMenu.isActive = False
 
-        if self.paused:
-            self.pauseMenu.draw(screen)
-
-
-    def onPause(self):
-        print("Game paused")
-        self.leftGame.pause()
-        self.rightGame.pause()
-
-
-    def onUnPause(self):
-        print("Game unpaused")
-        self.leftGame.unPause()
-        self.rightGame.unPause()
-
-
-    def stop(self):
-        self.running = False
-        self.soundtrack.stop()
-
+    def onEnter(self, previousScene=None):
+        if isinstance(previousScene, SettingsScene):
+            self.pauseMenu.isActive = True
+        else:
+            self.reset()
 
     def goToMainMenu(self):
-        self.leftGame.reset()
-        self.rightGame.reset()
+        print("Going to main menu")
+        self.gameLeft.reset()
+        self.gameRight.reset()
 
         print("Switching to Main Menu")
         if self.sceneManager:
@@ -112,5 +94,5 @@ class GameScene(Scene):
 
 
     def bothGameOvers(self) -> bool:
-        return self.leftGame.isGameOver and self.rightGame.isGameOver \
-                and not self.leftGame.gameOverAnimation.running and not self.rightGame.gameOverAnimation.running
+        return self.gameLeft.isGameOver and self.gameRight.isGameOver \
+                and not self.gameLeft.gameOverAnimation.running and not self.gameRight.gameOverAnimation.running

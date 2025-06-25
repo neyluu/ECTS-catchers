@@ -4,11 +4,15 @@ from src.config import Settings
 from src.SceneManager import SceneManager
 from src.scenes.MainMenu import MainMenu
 from src.scenes.GameScene import GameScene
-from src.scenes.EndScene import EndScene
 from src.scenes.GameIntro import GameIntro
+import src.config.SettingsLoader as SettingsLoader
 import ctypes
 
+from src.scenes.SettingsScene import SettingsScene
+
 ctypes.windll.user32.SetProcessDPIAware()
+
+SettingsLoader.loadSettings()
 
 pg.init()
 
@@ -23,10 +27,7 @@ screenHeight = pg.display.Info().current_h
 
 print(screenWidth, screenHeight)
 
-# Final screen to draw content on
 screen = pg.display.set_mode((screenWidth, screenHeight), pg.NOFRAME)
-
-# Temporary screen to draw content to be later scaled
 surface = pg.Surface(BASE_RESOLUTION)
 
 
@@ -43,12 +44,16 @@ class CoreEngine():
         self.scenes = [
             MainMenu(),
             GameScene(),
-            GameIntro(),
-            EndScene()
+            SettingsScene(),
+            GameIntro()
         ]
+
+        for scene in self.scenes:
+            scene.sceneManager = self.sceneManager
+            scene.allScenes = self.scenes
+
         self.dt = 0
         self.previousSceneIndex = self.sceneManager.getCurrentScene()
-
 
     def handleEvent(self):
         for event in pg.event.get():
@@ -59,14 +64,21 @@ class CoreEngine():
 
             self.scenes[self.sceneManager.getCurrentScene()].handleEvent(event)
 
-
     def update(self):
-        if self.previousSceneIndex != self.sceneManager.getCurrentScene():
-            self.scenes[self.previousSceneIndex].stop()
-            self.previousSceneIndex = self.sceneManager.getCurrentScene()
+        currentSceneIndex = self.sceneManager.getCurrentScene()
+        if self.previousSceneIndex != currentSceneIndex:
+            previousScene = self.scenes[self.previousSceneIndex]
+            currentScene = self.scenes[currentSceneIndex]
+
+            if hasattr(previousScene, 'stop'):
+                previousScene.stop()
+
+            if hasattr(currentScene, 'onEnter'):
+                currentScene.onEnter(previousScene)
+
+            self.previousSceneIndex = currentSceneIndex
 
         self.scenes[self.sceneManager.getCurrentScene()].update(self.dt)
-
 
     def draw(self):
         self.scenes[self.sceneManager.getCurrentScene()].draw(surface)
@@ -79,8 +91,6 @@ class CoreEngine():
         offsetY = (screenHeight - Settings.SCREEN_HEIGHT) / 2
         screen.blit(surface, (offsetX, offsetY))
         pg.display.update()
-        # pg.display.flip()
-
 
     def run(self):
         while self.running:
@@ -89,4 +99,3 @@ class CoreEngine():
             self.draw()
             self.dt = self.clock.tick(Settings.TARGET_FPS) * 0.001
             self.dt = min(self.dt, 0.05)
-
