@@ -3,8 +3,9 @@ import pygame as pg
 from src.config.Settings import sounds
 
 class Soundtrack:
-    def __init__(self, path : str):
+    def __init__(self, path : str, loop : bool = True):
         self.path = path
+        self.loop = loop
         self.volumeFactor = 0.1
         self.sound = pg.mixer.Sound(self.path)
         sounds.register(self)
@@ -12,7 +13,7 @@ class Soundtrack:
 
 
     def play(self):
-        self.sound.play(-1)
+        return self.sound.play(-1 if self.loop else 0)
 
 
     def stop(self):

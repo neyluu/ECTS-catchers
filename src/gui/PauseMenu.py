@@ -2,10 +2,13 @@ import pygame as pg
 
 from src.config import Settings
 from src.gui.Button import Button
-from src.SceneManager import SceneManager
+from src.gui.animations.Slide import slideAnimation
+from src.sounds.SoundtrackManager import soundtrackManager
+
 
 class PauseMenu:
-    def __init__(self, backgroundTexturePath="assets/textures/background/dark_grey_brick_bg.png"):
+    def __init__(self, sceneManager, backgroundTexturePath="assets/textures/background/dark_grey_brick_bg.png"):
+        self.sceneManager = sceneManager
         self.isActive = False
 
         self.overlay = pg.Surface((Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT), pg.SRCALPHA)
@@ -26,7 +29,11 @@ class PauseMenu:
             rawImage = pg.image.load(backgroundTexturePath).convert_alpha()
             self.backgroundTexture = pg.transform.scale(rawImage, (self.menuWidth, self.menuHeight))
 
+        self.sceneChange: bool = False
+        self.newScene: int = 0
+
         self.createButtons()
+
 
     def createButtons(self):
         buttonTexturePath = "assets/textures/gui/gui_button_1.png"
@@ -62,15 +69,23 @@ class PauseMenu:
 
         self.buttons = [self.resumeButton, self.settingsButton, self.backToMenuButton]
 
+
     def resumeGame(self):
         self.isActive = False
         print("Menu pauzy: Wznawiam grę.")
 
+
     def goToSettings(self):
-        SceneManager().setCurrentScene(2)
+        self.newScene = 2
+        self.sceneChange = True
+        slideAnimation.start()
+
 
     def goToMainMenu(self):
-        SceneManager().setCurrentScene(0)
+        self.newScene = 0
+        self.sceneChange = True
+        slideAnimation.start()
+
 
     def handleEvent(self, event):
         if not self.isActive:
@@ -79,9 +94,16 @@ class PauseMenu:
         for button in self.buttons:
             button.handleEvent(event)
 
+
     def update(self, dt: float):
-        if not self.isActive:
-            return
+        if self.sceneChange:
+            if slideAnimation.timeElapsed >= slideAnimation.time / 2:
+                self.sceneManager.setCurrentScene(self.newScene)
+                self.sceneChange = False
+
+                if self.newScene == 0:
+                    soundtrackManager.playMenuSoundtrack()
+
 
     def draw(self, screen: pg.Surface):
         if not self.isActive:
@@ -98,6 +120,7 @@ class PauseMenu:
 
         for button in self.buttons:
             button.draw(screen)
+
 
     def toggle(self):
         self.isActive = not self.isActive

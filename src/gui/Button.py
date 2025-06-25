@@ -1,6 +1,7 @@
 import pygame as pg
 
 import src.config.Settings as Settings
+from src.sounds.SFX import SFX
 
 
 class Button:
@@ -58,6 +59,8 @@ class Button:
             self.clickSurface.fill(self.clickEffectColor, special_flags=pg.BLEND_RGBA_MULT)
         else:
             self.clickSurface = None
+
+        self.clickSFX = SFX("assets/audio/click.mp3")
 
     def _rebuildTexture(self):
         imageToTransform = self.baseScaledImage.copy()
@@ -117,6 +120,7 @@ class Button:
             if event.button == 1:
                 if self.isPressed and self._checkCollision(event.pos):
                     if self.action:
+                        self.clickSFX.play()
                         self.action()
                 self.isPressed = False
 

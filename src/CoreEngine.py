@@ -1,20 +1,20 @@
 import pygame as pg
 
+import ctypes
+import src.config.SettingsLoader as SettingsLoader
+
+ctypes.windll.user32.SetProcessDPIAware()
+SettingsLoader.loadSettings()
+pg.init()
+
 from src.config import Settings
 from src.SceneManager import SceneManager
 from src.scenes.MainMenu import MainMenu
 from src.scenes.GameScene import GameScene
 from src.scenes.GameIntro import GameIntro
-import src.config.SettingsLoader as SettingsLoader
-import ctypes
-
+from src.sounds.SoundtrackManager import soundtrackManager
+from src.gui.animations.Slide import slideAnimation
 from src.scenes.SettingsScene import SettingsScene
-
-ctypes.windll.user32.SetProcessDPIAware()
-
-SettingsLoader.loadSettings()
-
-pg.init()
 
 BASE_RESOLUTION = (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT)
 
@@ -57,11 +57,6 @@ class CoreEngine():
 
     def handleEvent(self):
         for event in pg.event.get():
-            if event.type == pg.QUIT:
-                self.running = False
-            if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-                self.running = False
-
             self.scenes[self.sceneManager.getCurrentScene()].handleEvent(event)
 
     def update(self):
@@ -80,12 +75,17 @@ class CoreEngine():
 
         self.scenes[self.sceneManager.getCurrentScene()].update(self.dt)
 
+        slideAnimation.update(self.dt)
+        soundtrackManager.update(self.dt)
+
     def draw(self):
         self.scenes[self.sceneManager.getCurrentScene()].draw(surface)
+        slideAnimation.draw(surface)
 
-        fps = self.clock.get_fps()
-        fps_text = self.font.render(f"FPS: {int(fps)}", True, pg.Color('lime'))
-        surface.blit(fps_text, (0, 0))
+        if Settings.FPS_COUNTER:
+            fps = self.clock.get_fps()
+            fps_text = self.font.render(f"FPS: {int(fps)}", True, pg.Color('lime'))
+            surface.blit(fps_text, (0, 0))
 
         offsetX = 0
         offsetY = (screenHeight - Settings.SCREEN_HEIGHT) / 2
