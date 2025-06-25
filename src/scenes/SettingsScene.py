@@ -8,11 +8,10 @@ import src.config.SettingsLoader as SettingsLoader
 
 
 class SettingsScene(Scene):
-    def __init__(self, screenWidth=1920, screenHeight=1080,
-                 backgroundTargetWidth=None, backgroundTargetHeight=None):
+    def __init__(self, backgroundTargetWidth=None, backgroundTargetHeight=None):
         super().__init__()
-        self.screenWidth = screenWidth
-        self.screenHeight = screenHeight
+        self.screenWidth = Settings.SCREEN_WIDTH
+        self.screenHeight = Settings.SCREEN_HEIGHT
 
         self.returnIndex = 0
 
@@ -40,7 +39,6 @@ class SettingsScene(Scene):
 
         self.sceneChange: bool = False
 
-
     def onEnter(self, previousScene=None):
         if previousScene and hasattr(self, 'allScenes'):
             try:
@@ -49,7 +47,6 @@ class SettingsScene(Scene):
                 self.returnIndex = 0
         else:
             self.returnIndex = 0
-
 
     def createUi(self):
         self.defaultTextColor = (255, 255, 255)
@@ -65,19 +62,29 @@ class SettingsScene(Scene):
         self.createText("FPS LIMIT:", baseX, self.baseY + 450, 50, textColor)
         self.fpsButtons = {
 
-            30: Button(textColor=self.defaultTextColor,x=585, y=self.baseY + 460, width=250, height=180, text="30", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(30), hoverEffectColor=None),
-            60: Button(textColor=self.defaultTextColor,x=835, y=self.baseY + 460, width=250, height=180, text="60", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(60), hoverEffectColor=None),
-            144: Button(textColor=self.defaultTextColor,x=1085, y=self.baseY + 460, width=250, height=180, text="144", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(144), hoverEffectColor=None)
+            30: Button(textColor=self.defaultTextColor, x=585, y=self.baseY + 460, width=250, height=180, text="30",
+                       texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
+                       action=lambda: self.setFps(30), hoverEffectColor=None),
+            60: Button(textColor=self.defaultTextColor, x=835, y=self.baseY + 460, width=250, height=180, text="60",
+                       texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
+                       action=lambda: self.setFps(60), hoverEffectColor=None),
+            144: Button(textColor=self.defaultTextColor, x=1085, y=self.baseY + 460, width=250, height=180, text="144",
+                        texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
+                        action=lambda: self.setFps(144), hoverEffectColor=None)
 
         }
         self.buttons.extend(self.fpsButtons.values())
 
         self.createText("FPS COUNTER: ", baseX, self.baseY + 650, 50, textColor)
-        fpsCounterButtons = {
-            True: Button(x=760, y=self.baseY + 650, width=200, height=180, text="ON", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFPSCounter(True), hoverEffectColor=None),
-            False: Button(x=960, y=self.baseY + 650, width=200, height=180, text="OFF", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFPSCounter(False), hoverEffectColor=None)
+        self.fpsCounterButtons = {
+            True: Button(textColor=self.defaultTextColor, x=760, y=self.baseY + 650, width=200, height=180, text="ON",
+                         texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
+                         action=lambda: self.setFPSCounter(True), hoverEffectColor=None),
+            False: Button(textColor=self.defaultTextColor, x=960, y=self.baseY + 650, width=200, height=180, text="OFF",
+                          texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
+                          action=lambda: self.setFPSCounter(False), hoverEffectColor=None)
         }
-        self.buttons.extend(fpsCounterButtons.values())
+        self.buttons.extend(self.fpsCounterButtons.values())
 
         self.backButton = Button(
             x=835, y=self.screenHeight - 200, width=250, height=180,
@@ -89,7 +96,7 @@ class SettingsScene(Scene):
         )
         self.buttons.append(self.backButton)
         self.updateFpsButtonHighlights()
-
+        self.updateFpsCounterButtonHighlights()
 
     def createText(self, text, centerX, centerY, size, color):
         font = pg.font.Font(self.fontPath, size)
@@ -97,15 +104,17 @@ class SettingsScene(Scene):
         textRect = textSurf.get_rect(center=(centerX, centerY))
         self.uiElements.append((textSurf, textRect))
 
-
     def createVolumeControl(self, labelText, yPos, action):
         labelX = self.screenWidth // 2 - 250
         buttonsX = self.screenWidth // 2 + 200
         self.createText(f"{labelText}:", labelX, yPos, 50, (255, 255, 255))
-        leftButton = Button(x=buttonsX - 100, y=yPos-85, width=150, height=180, text="<", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: action(-1), hoverEffectColor=None)
-        rightButton = Button(x=buttonsX + 80, y=yPos-85, width=150, height=180, text=">", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: action(1), hoverEffectColor=None)
+        leftButton = Button(x=buttonsX - 100, y=yPos - 85, width=150, height=180, text="<",
+                            texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
+                            action=lambda: action(-1), hoverEffectColor=None)
+        rightButton = Button(x=buttonsX + 80, y=yPos - 85, width=150, height=180, text=">",
+                             texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35,
+                             action=lambda: action(1), hoverEffectColor=None)
         self.buttons.extend([leftButton, rightButton])
-
 
     def changeMasterVolume(self, change):
         self.masterVolume = max(0, min(10, self.masterVolume + change))
@@ -114,7 +123,6 @@ class SettingsScene(Scene):
         print(f"Changed sound master to: {newMasterVolume}")
         SettingsLoader.saveSettings()
 
-
     def changeMusicVolume(self, change):
         self.musicVolume = max(0, min(10, self.musicVolume + change))
         newMusicVolume = self.musicVolume / 10.0
@@ -122,14 +130,12 @@ class SettingsScene(Scene):
         print(f"Changed sound music to: {newMusicVolume}")
         SettingsLoader.saveSettings()
 
-
     def changeSfxVolume(self, change):
         self.sfxVolume = max(0, min(10, self.sfxVolume + change))
         newSFXVolume = self.sfxVolume / 10.0
         Settings.sounds.setSFX(newSFXVolume)
         print(f"Changed sound sfx to: {newSFXVolume}")
         SettingsLoader.saveSettings()
-
 
     def setFps(self, fps):
         self.currentFpsLimit = fps
@@ -148,16 +154,24 @@ class SettingsScene(Scene):
             button.baseScaledImage = pg.transform.scale(imageToUse, (button.buttonWidth, button.buttonHeight))
             button._rebuildTexture()
 
-
-    def setFPSCounter(self, visible : bool):
+    def setFPSCounter(self, visible: bool):
         Settings.FPS_COUNTER = visible
         SettingsLoader.saveSettings()
+        self.updateFpsCounterButtonHighlights()
 
+    def updateFpsCounterButtonHighlights(self):
+        """Podmienia teksturę przycisków licznika FPS i odświeża ich wygląd."""
+        defaultImg = pg.image.load(self.defaultButtonTexturePath).convert_alpha()
+        selectedImg = pg.image.load(self.selectedButtonTexturePath).convert_alpha()
+
+        for state, button in self.fpsCounterButtons.items():
+            imageToUse = selectedImg if state == Settings.FPS_COUNTER else defaultImg
+            button.baseScaledImage = pg.transform.scale(imageToUse, (button.buttonWidth, button.buttonHeight))
+            button._rebuildTexture()
 
     def goBack(self):
         self.sceneChange = True
         slideAnimation.start()
-
 
     def handleEvent(self, event: pg.event.Event):
         for button in self.buttons:
@@ -165,13 +179,11 @@ class SettingsScene(Scene):
         if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
             self.goBack()
 
-
     def update(self, dt: float):
         if self.sceneChange:
             if slideAnimation.timeElapsed >= slideAnimation.time / 2:
                 self.sceneManager.setCurrentScene(self.returnIndex)
                 self.sceneChange = False
-
 
     def draw(self, screen: pg.Surface):
         if self.backgroundSurf:
