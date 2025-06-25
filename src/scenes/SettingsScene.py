@@ -18,6 +18,7 @@ class SettingsScene(Scene):
         assetsPath = "assets/"
         self.backgroundTexturePath = assetsPath + "textures/background/red_brick_wall_menu.png"
         self.defaultButtonTexturePath = assetsPath + "textures/gui/gui_button_1.png"
+        self.selectedButtonTexturePath = assetsPath + "textures/gui/gui_button_4.png"
         self.fontPath = assetsPath + "fonts/timer_and_counter_font.ttf"
 
         rawBackgroundSurf = pg.image.load(self.backgroundTexturePath).convert()
@@ -44,7 +45,9 @@ class SettingsScene(Scene):
             self.returnIndex = 0
 
     def createUi(self):
-        textColor = (255, 255, 255)
+        self.defaultTextColor = (255, 255, 255)
+
+        textColor = self.defaultTextColor
         baseX = self.screenWidth // 2
         baseY = self.screenHeight // 4
 
@@ -55,9 +58,9 @@ class SettingsScene(Scene):
 
         self.createText("FPS LIMIT:", baseX, baseY + 450, 50, textColor)
         self.fpsButtons = {
-            30: Button(x=585, y=baseY + 460, width=250, height=180, text="30", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(30), hoverEffectColor=None),
-            60: Button(x=835, y=baseY + 460, width=250, height=180, text="60", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(60), hoverEffectColor=None),
-            144: Button(x=1085, y=baseY + 460, width=250, height=180, text="144", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(144), hoverEffectColor=None)
+            30: Button(textColor=self.defaultTextColor,x=585, y=baseY + 460, width=250, height=180, text="30", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(30), hoverEffectColor=None),
+            60: Button(textColor=self.defaultTextColor,x=835, y=baseY + 460, width=250, height=180, text="60", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(60), hoverEffectColor=None),
+            144: Button(textColor=self.defaultTextColor,x=1085, y=baseY + 460, width=250, height=180, text="144", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: self.setFps(144), hoverEffectColor=None)
         }
         self.buttons.extend(self.fpsButtons.values())
 
@@ -70,6 +73,7 @@ class SettingsScene(Scene):
             hoverEffectColor=None
         )
         self.buttons.append(self.backButton)
+        self.updateFpsButtonHighlights()
 
     def createText(self, text, centerX, centerY, size, color):
         font = pg.font.Font(self.fontPath, size)
@@ -110,6 +114,18 @@ class SettingsScene(Scene):
         self.currentFpsLimit = fps
         Settings.TARGET_FPS = self.currentFpsLimit
         SettingsLoader.saveSettings()
+        self.updateFpsButtonHighlights()
+
+    def updateFpsButtonHighlights(self):
+        """Podmienia teksturę przycisków FPS i odświeża ich wygląd."""
+
+        defaultImg = pg.image.load(self.defaultButtonTexturePath).convert_alpha()
+        selectedImg = pg.image.load(self.selectedButtonTexturePath).convert_alpha()
+
+        for fps, button in self.fpsButtons.items():
+            imageToUse = selectedImg if fps == self.currentFpsLimit else defaultImg
+            button.baseScaledImage = pg.transform.scale(imageToUse, (button.buttonWidth, button.buttonHeight))
+            button._rebuildTexture()
 
     def goBack(self):
         SceneManager().setCurrentScene(self.returnIndex)

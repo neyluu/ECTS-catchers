@@ -1,4 +1,4 @@
-targetFPS: 60
+targetFPS: 144
 soundMaster: 1.0
-soundMusic: 0.5
+soundMusic: 0.2
 soundSFX: 1.0
