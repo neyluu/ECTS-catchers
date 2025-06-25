@@ -1,4 +1,6 @@
 import pygame as pg
+
+from src.gui.LevelDisplay import LevelDisplay
 from src.gui.Timer import Timer
 from src.gui.HealthBar import HealthBar
 from src.gui.CoinCounter import CoinCounter
@@ -16,7 +18,7 @@ class InGameUI:
             iconSize=(40, 40),
             iconTextPadding=10
         )
-        self.timerPosition = (self.canvas.x + self.canvas.width -556,
+        self.timerPosition = (self.canvas.x + self.canvas.width - 620,
                               self.canvas.y + 15)
 
         self.healthBar = HealthBar(
@@ -36,7 +38,7 @@ class InGameUI:
             fontSize=48,
             iconSize=(37, 37),
         )
-        self.coinCounterPosition = (self.canvas.x + 745, self.canvas.y + 24)
+        self.coinCounterPosition = (self.canvas.x + 710, self.canvas.y + 24)
 
         self.powerUpDisplay = PowerUpDisplay(
             playerData=self.playerData,
@@ -46,17 +48,22 @@ class InGameUI:
         self.powerUpDisplayPosition = (self.canvas.x +25,
                                        self.canvas.y + 70)
 
+        self.levelDisplay = LevelDisplay(playerData, fontSize=48)
+        self.levelDisplayPosition = (self.canvas.x + 550, self.canvas.y + 16)
+
     def update(self):
         self.gameTimer.update()
         self.healthBar.update()
         self.coinCounter.update()
         self.powerUpDisplay.update()
+        self.levelDisplay.update()
 
     def draw(self, screen: pg.Surface):
         self.gameTimer.draw(screen, self.timerPosition)
         self.healthBar.draw(screen, self.healthBarPosition)
         self.coinCounter.draw(screen, self.coinCounterPosition)
         self.powerUpDisplay.draw(screen, self.powerUpDisplayPosition)
+        self.levelDisplay.draw(screen, self.levelDisplayPosition)
 
     def pauseTimer(self):
         self.gameTimer.pause()
