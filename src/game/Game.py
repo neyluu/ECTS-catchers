@@ -260,6 +260,7 @@ class Game:
         self.paused = False
         self.playerPaused = False
         self.inGameUi.resumeTimer()
+        self.inGameUi.gameTimer.reset()
 
         self.DEBUG_changeLevel = False
 
