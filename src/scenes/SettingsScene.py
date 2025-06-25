@@ -123,6 +123,7 @@ class SettingsScene(Scene):
 
     def setFPSCounter(self, visible : bool):
         Settings.FPS_COUNTER = visible
+        SettingsLoader.saveSettings()
 
     def goBack(self):
         self.sceneChange = True
