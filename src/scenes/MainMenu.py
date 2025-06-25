@@ -3,16 +3,16 @@ import sys
 
 from src.scenes.Scene import Scene
 from src.gui.Button import Button
-
-
+from src.SceneManager import SceneManager
+import src.config.Settings as Settings
 
 class MainMenu(Scene):
     def __init__(self, screenWidth=1920, screenHeight=1080,
                  backgroundTargetWidth=None, backgroundTargetHeight=None,
                  logoTargetWidth=750, logoTargetHeight=750):
         super().__init__()
-        self.screenWidth = screenWidth
-        self.screenHeight = screenHeight
+        self.screenWidth = Settings.SCREEN_WIDTH
+        self.screenHeight = Settings.SCREEN_HEIGHT
 
         assetsPath = "assets/"
         self.backgroundTexturePath = assetsPath + "textures/background/red_brick_wall_menu.png"
@@ -95,14 +95,12 @@ class MainMenu(Scene):
 
     def goToGameScene(self):
         print("Switching to Game Scene")
-        if self.sceneManager:
-            self.sceneManager.setCurrentScene(3)
+        SceneManager().setCurrentScene(3)
 
 
     def goToSettingsScene(self):
         print("Switching to Settings Scene")
-        if self.sceneManager:
-            self.sceneManager.setCurrentScene(2)
+        SceneManager().setCurrentScene(2)
 
 
     def quitGame(self):

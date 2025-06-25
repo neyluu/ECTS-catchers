@@ -9,13 +9,13 @@ from src.sounds.Soundtrack import Soundtrack
 
 
 class GameScene(Scene):
-    def __init__(self, screenWidth=1920, screenHeight=1080):
+    def __init__(self):
         super().__init__()
-        self.screenWidth = screenWidth
-        self.screenHeight = screenHeight
+        self.screenWidth = Settings.SCREEN_WIDTH
+        self.screenHeight = Settings.SCREEN_HEIGHT
 
-        self.leftCanvas = pg.Rect(0, 0, screenWidth // 2, screenHeight)
-        self.rightCanvas = pg.Rect(screenWidth // 2, 0, screenWidth // 2, screenHeight)
+        self.leftCanvas = pg.Rect(0, 0, self.screenWidth // 2, self.screenHeight)
+        self.rightCanvas = pg.Rect(self.screenWidth // 2, 0, self.screenWidth // 2, self.screenHeight)
 
         self.gameLeft = Game(isLeft=True, canvas=self.leftCanvas)
         self.gameRight = Game(isLeft=False, canvas=self.rightCanvas)
@@ -23,8 +23,8 @@ class GameScene(Scene):
         self.running = False
         self.soundtrack = Soundtrack("assets/audio/soundtrack02.mp3")
 
-        self.divider = pg.Rect(screenWidth // 2 - 2, 0, 4, screenHeight)
-        self.pauseMenu = PauseMenu(self.sceneManager)
+        self.divider = pg.Rect(self.screenWidth // 2 - 2, 0, 4, self.screenHeight)
+        self.pauseMenu = PauseMenu()
 
     def handleEvent(self, event: pg.event.Event):
         if event.type == pg.KEYDOWN and event.key == Settings.KEYMAP_PAUSE:

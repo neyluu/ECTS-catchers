@@ -1,5 +1,6 @@
 import pygame as pg
 
+from src.SceneManager import SceneManager
 from src.scenes.Scene import Scene
 from src.gui.Button import Button
 from src.config import Settings
@@ -111,8 +112,7 @@ class SettingsScene(Scene):
         SettingsLoader.saveSettings()
 
     def goBack(self):
-        if self.sceneManager:
-            self.sceneManager.setCurrentScene(self.returnIndex)
+        SceneManager().setCurrentScene(self.returnIndex)
 
     def handleEvent(self, event: pg.event.Event):
         for button in self.buttons:

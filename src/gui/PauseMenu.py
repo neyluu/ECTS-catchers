@@ -2,11 +2,10 @@ import pygame as pg
 
 from src.config import Settings
 from src.gui.Button import Button
-
+from src.SceneManager import SceneManager
 
 class PauseMenu:
-    def __init__(self, sceneManager, backgroundTexturePath="assets/textures/background/dark_grey_brick_bg.png"):
-        self.sceneManager = sceneManager
+    def __init__(self, backgroundTexturePath="assets/textures/background/dark_grey_brick_bg.png"):
         self.isActive = False
 
         self.overlay = pg.Surface((Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT), pg.SRCALPHA)
@@ -68,12 +67,10 @@ class PauseMenu:
         print("Menu pauzy: Wznawiam grę.")
 
     def goToSettings(self):
-        if self.sceneManager:
-            self.sceneManager.setCurrentScene(2)
+        SceneManager().setCurrentScene(2)
 
     def goToMainMenu(self):
-        if self.sceneManager:
-            self.sceneManager.setCurrentScene(0)
+        SceneManager().setCurrentScene(0)
 
     def handleEvent(self, event):
         if not self.isActive:
