@@ -31,11 +31,11 @@ class CoinCounter:
             originalIcon = pg.image.load(self.iconImagePath).convert_alpha()
             self.iconSurface = pg.transform.scale(originalIcon, self.iconSize)
 
-        self.currentPointsStr = f"0/{self.maxPoints}"
+        self.currentPointsStr = f"00/{self.maxPoints}"
 
     def update(self):
         currentPoints = min(self.playerData.coins, self.maxPoints)
-        self.currentPointsStr = f"{currentPoints}/{self.maxPoints}"
+        self.currentPointsStr = f"{currentPoints:02d}/{self.maxPoints}"
 
     def draw(self, screen: pg.Surface, position: tuple):
         textSurface = self.font.render(self.currentPointsStr, True, self.textColor)
@@ -56,4 +56,4 @@ class CoinCounter:
         screen.blit(textSurface, (currentX, textY))
 
     def reset(self):
-        self.currentPointsStr = f"0/{self.maxPoints}"
+        self.currentPointsStr = f"00/{self.maxPoints}"
