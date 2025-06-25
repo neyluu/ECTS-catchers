@@ -4,8 +4,8 @@ import sys
 from src.gui.animations.Slide import slideAnimation
 from src.scenes.Scene import Scene
 from src.gui.Button import Button
-from src.sounds.Soundtrack import Soundtrack
 from src.sounds.SoundtrackManager import soundtrackManager
+import src.config.Settings as Settings
 
 
 class MainMenu(Scene):
@@ -13,8 +13,8 @@ class MainMenu(Scene):
                  backgroundTargetWidth=None, backgroundTargetHeight=None,
                  logoTargetWidth=750, logoTargetHeight=750):
         super().__init__()
-        self.screenWidth = screenWidth
-        self.screenHeight = screenHeight
+        self.screenWidth = Settings.SCREEN_WIDTH
+        self.screenHeight = Settings.SCREEN_HEIGHT
 
         assetsPath = "assets/"
         self.backgroundTexturePath = assetsPath + "textures/background/red_brick_wall_menu.png"
@@ -102,18 +102,16 @@ class MainMenu(Scene):
 
     def goToGameScene(self):
         print("Switching to Game Scene")
-        if self.sceneManager:
-            self.newScene = 3
-            self.sceneChange = True
-            slideAnimation.start()
+        self.newScene = 3
+        self.sceneChange = True
+        slideAnimation.start()
 
 
     def goToSettingsScene(self):
         print("Switching to Settings Scene")
-        if self.sceneManager:
-            self.newScene = 2
-            self.sceneChange = True
-            slideAnimation.start()
+        self.newScene = 2
+        self.sceneChange = True
+        slideAnimation.start()
 
 
     def quitGame(self):

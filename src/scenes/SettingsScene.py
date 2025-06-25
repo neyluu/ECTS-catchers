@@ -6,6 +6,7 @@ from src.gui.Button import Button
 from src.config import Settings
 import src.config.SettingsLoader as SettingsLoader
 
+
 class SettingsScene(Scene):
     def __init__(self, screenWidth=1920, screenHeight=1080,
                  backgroundTargetWidth=None, backgroundTargetHeight=None):
@@ -38,6 +39,7 @@ class SettingsScene(Scene):
 
         self.sceneChange: bool = False
 
+
     def onEnter(self, previousScene=None):
         if previousScene and hasattr(self, 'allScenes'):
             try:
@@ -46,6 +48,7 @@ class SettingsScene(Scene):
                 self.returnIndex = 0
         else:
             self.returnIndex = 0
+
 
     def createUi(self):
         textColor = (255, 255, 255)
@@ -81,11 +84,13 @@ class SettingsScene(Scene):
         )
         self.buttons.append(self.backButton)
 
+
     def createText(self, text, centerX, centerY, size, color):
         font = pg.font.Font(self.fontPath, size)
         textSurf = font.render(text, True, color)
         textRect = textSurf.get_rect(center=(centerX, centerY))
         self.uiElements.append((textSurf, textRect))
+
 
     def createVolumeControl(self, labelText, yPos, action):
         labelX = self.screenWidth // 2 - 250
@@ -95,12 +100,14 @@ class SettingsScene(Scene):
         rightButton = Button(x=buttonsX + 80, y=yPos-85, width=150, height=180, text=">", texturePath=self.defaultButtonTexturePath, fontPath=self.fontPath, fontSize=35, action=lambda: action(1), hoverEffectColor=None)
         self.buttons.extend([leftButton, rightButton])
 
+
     def changeMasterVolume(self, change):
         self.masterVolume = max(0, min(10, self.masterVolume + change))
         newMasterVolume = self.masterVolume / 10.0
         Settings.sounds.setMaster(newMasterVolume)
         print(f"Changed sound master to: {newMasterVolume}")
         SettingsLoader.saveSettings()
+
 
     def changeMusicVolume(self, change):
         self.musicVolume = max(0, min(10, self.musicVolume + change))
@@ -109,6 +116,7 @@ class SettingsScene(Scene):
         print(f"Changed sound music to: {newMusicVolume}")
         SettingsLoader.saveSettings()
 
+
     def changeSfxVolume(self, change):
         self.sfxVolume = max(0, min(10, self.sfxVolume + change))
         newSFXVolume = self.sfxVolume / 10.0
@@ -116,18 +124,22 @@ class SettingsScene(Scene):
         print(f"Changed sound sfx to: {newSFXVolume}")
         SettingsLoader.saveSettings()
 
+
     def setFps(self, fps):
         self.currentFpsLimit = fps
         Settings.TARGET_FPS = self.currentFpsLimit
         SettingsLoader.saveSettings()
 
+
     def setFPSCounter(self, visible : bool):
         Settings.FPS_COUNTER = visible
         SettingsLoader.saveSettings()
 
+
     def goBack(self):
         self.sceneChange = True
         slideAnimation.start()
+
 
     def handleEvent(self, event: pg.event.Event):
         for button in self.buttons:
@@ -135,11 +147,13 @@ class SettingsScene(Scene):
         if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
             self.goBack()
 
+
     def update(self, dt: float):
         if self.sceneChange:
             if slideAnimation.timeElapsed >= slideAnimation.time / 2:
                 self.sceneManager.setCurrentScene(self.returnIndex)
                 self.sceneChange = False
+
 
     def draw(self, screen: pg.Surface):
         if self.backgroundSurf:

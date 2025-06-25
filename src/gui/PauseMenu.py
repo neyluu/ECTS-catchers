@@ -4,11 +4,11 @@ from src.config import Settings
 from src.gui.Button import Button
 from src.gui.animations.Slide import slideAnimation
 from src.sounds.SoundtrackManager import soundtrackManager
+from src.SceneManager import SceneManager
 
 
 class PauseMenu:
-    def __init__(self, sceneManager, backgroundTexturePath="assets/textures/background/dark_grey_brick_bg.png"):
-        self.sceneManager = sceneManager
+    def __init__(self, backgroundTexturePath="assets/textures/background/dark_grey_brick_bg.png"):
         self.isActive = False
 
         self.overlay = pg.Surface((Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT), pg.SRCALPHA)
@@ -33,6 +33,7 @@ class PauseMenu:
         self.newScene: int = 0
 
         self.createButtons()
+
 
     def createButtons(self):
         buttonTexturePath = "assets/textures/gui/gui_button_1.png"
@@ -68,9 +69,11 @@ class PauseMenu:
 
         self.buttons = [self.resumeButton, self.settingsButton, self.backToMenuButton]
 
+
     def resumeGame(self):
         self.isActive = False
         print("Menu pauzy: Wznawiam grę.")
+
 
     def goToSettings(self):
         self.newScene = 2
@@ -117,6 +120,7 @@ class PauseMenu:
 
         for button in self.buttons:
             button.draw(screen)
+
 
     def toggle(self):
         self.isActive = not self.isActive
