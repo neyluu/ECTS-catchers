@@ -1,6 +1,7 @@
 import pygame as pg
 
 from src.scenes.Scene import Scene
+from src.sounds.SFX import SFX
 from src.sounds.SoundtrackManager import soundtrackManager
 from src.gui.animations.Slide import slideAnimation
 
@@ -11,10 +12,13 @@ class GameIntro(Scene):
         self.image = pg.image.load("assets/textures/gui/intro.png").convert()
         self.sceneChange : bool = False
 
+        self.sfx = SFX("assets/audio/click.mp3")
+
 
     def handleEvent(self, event):
         if event.type == pg.KEYDOWN or event.type == pg.MOUSEBUTTONDOWN:
             self.sceneChange = True
+            self.sfx.play()
             slideAnimation.start()
 
 
